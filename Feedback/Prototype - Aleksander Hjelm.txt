@@ -1,0 +1,19 @@
+hehe, kult spel. Kunde bara spela de 3 första levels dock :frowning:
+og tror du trenger och fixa ett interface som är lettere og förstå(edited)
+(edit:spelling)
+det store problemet jeg hade var att det var för mange keys å huske
+hade ikke gjört noe hvis du hade lagt alla komponenter i en hotbar och lagt en till hotbar där en kan velge kategori för "main"-bar:en for exempel
+Så det blir som å scrolla mellom pages
+Q för å rotere var icke så intitivt heller. hade gjerne brukt mouse wheel eller R
+muligen bruke lmb för å legge til og rmb för å fjerne, eller en erasor tool
+Men likte att den viser tooltips hver gang jeg byter komponent ^^
+Men det är min opinion. Tycker fortsatt att den har potential, så keep at it! :smiley:
+vet icke hur nyttig min feedback var? ^^
+
+tl:dr:
+-Need better interface
+-Controls/keys are weird/un-intuitive and many
+	-Q og E for å rotere
+	-rmb for å erase el. eraser tool?
+-More puzzles
+-

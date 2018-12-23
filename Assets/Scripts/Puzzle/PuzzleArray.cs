@@ -1,0 +1,68 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PuzzleArray : MonoBehaviour {
+
+    public PuzzleCreator[] puzzles;
+    public EOTP_PuzzleCreator[] EOTP_puzzles;
+
+    // Use this for initialization
+    void Start () {
+        puzzles = new PuzzleCreator[3];
+        EOTP_puzzles = new EOTP_PuzzleCreator[1];
+        puzzleInit();
+	}
+	
+    private void puzzleInit()
+    {
+        int[][] puzzle1 = new int[][] { 
+            new int[]{ 1, 15, 3, 0 },
+            new int[]{ 3, 15, 3, 0 },
+            new int[]{ 6, 1, 0, 1 },
+            new int[]{ 8, 1, 0, 1 },
+            new int[]{ 22, 1, 0, -1 }
+        };
+
+        int[][] puzzle2 = new int[][] {
+            new int[]{ 1, 15, 3, 0 },
+            new int[]{ 3, 15, 3, 0 },
+            new int[]{ 6, 1, 0, 1 },
+            new int[]{ 8, 1, 0, 1 },
+            new int[]{ 22, 1, 0, -1 }
+        };
+
+        int[][] puzzle3 = new int[][] {
+            new int[]{ 1, 15, 3, 0 },
+            new int[]{ 3, 15, 3, 0 },
+            new int[]{ 6, 1, 0, 1 },
+            new int[]{ 8, 1, 0, 1 },
+            new int[]{ 27, 1, 0, -1 }
+        };
+
+        //name, id, length, heigth, lockedtiles(tileNr, tileID, dir, input/output), winCondition(tileNr)
+        puzzles[0] = new PuzzleCreator("Puzzle 1: OR", 1, 5, 5, puzzle1, PuzzleController.logic.OR, "Create a logic gate " +
+                                        "that lets either or both inputs power the output.");
+
+        puzzles[1] = new PuzzleCreator("Puzzle 2: NOR", 2, 5, 5, puzzle2, PuzzleController.logic.NOR, "Create a logic gate " +
+                                        "so that the output is on whenever no inputs are on.");
+
+        puzzles[2] = new PuzzleCreator("Puzzle 3: AND", 3, 5, 6, puzzle3, PuzzleController.logic.AND, "Create a logic gate " +
+                                         "so that the output is on only when both inputs are on.");
+    }
+
+    private void EOTP_init()
+    {
+        EOTP_IOCreator[] io = new EOTP_IOCreator[]
+        {
+            new EOTP_IOCreator(false, 1, 15, 0, new int[]
+            { 1, 1, 0, 0 }),
+            new EOTP_IOCreator(false, 3, 15, 0, new int[]
+            { 1, 0, 1, 0 }),
+            new EOTP_IOCreator(true, 22, 1, -1, new int[]
+            { 1, 1, 1, 0 })
+        };
+
+        EOTP_puzzles[0] = new EOTP_PuzzleCreator("Stage 1", 1, 5, 5, io, "My first stage: OR");
+    }
+}
