@@ -14,7 +14,7 @@ public abstract class Undo {
     //Remove undo after a certain length
     public bool checkLength(int max, int current)
     {
-        Debug.Log("Check: M/C: " + max + "/" + current);
+        //Debug.Log("Check: M/C: " + max + "/" + current);
         if(current >= max)
         {
             //Debug.Log("current >= max, child: " + child);
