@@ -21,7 +21,7 @@ public class IOPicker : MonoBehaviour {
 
     private void Start()
     {
-        hub = GameObject.Find("Manager").GetComponent<TileHub>();
+        hub = GameObject.Find("TileHub").GetComponent<TileHub>();
         closeAll();
     }
 

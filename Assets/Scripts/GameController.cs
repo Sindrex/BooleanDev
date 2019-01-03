@@ -67,7 +67,7 @@ public class GameController : MonoBehaviour {
 
     //UI
     public Text itemName;
-    public SignManager uiManager;
+    public SignManager signManager;
     public TileHub tileHub;
     public ComponentUI compUI;
     public bool changedLocked;
@@ -1059,7 +1059,7 @@ public class GameController : MonoBehaviour {
 
     private void rotateSelected()
     {
-        if (!uiManager.pinned)
+        if (!signManager.pinned)
         {
             if(selectedTiles.Count > 0)
             {

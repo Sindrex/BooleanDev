@@ -56,8 +56,8 @@ public abstract class TileController : MonoBehaviour
 
     private void Awake()
     {
-        GC = GameObject.Find("Main Camera").GetComponent<GameController>();
-        AC = GameObject.Find("UI_Bars").GetComponent<ActionbarController>();
+        GC = GameObject.Find("GameController").GetComponent<GameController>();
+        AC = GameObject.Find("ActionBar").GetComponent<ActionbarController>();
     }
 
     // Use this for initialization

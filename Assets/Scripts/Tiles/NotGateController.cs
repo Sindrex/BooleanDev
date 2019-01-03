@@ -10,8 +10,8 @@ public class NotGateController : InputBasedWire
     override
     protected void Start()
     {
-        GC = GameObject.Find("Main Camera").GetComponent<GameController>();
-        AC = GameObject.Find("UI_Bars").GetComponent<ActionbarController>();
+        //GC = GameObject.Find("GameController").GetComponent<GameController>();
+        //AC = GameObject.Find("ActionBar").GetComponent<ActionbarController>();
         output = new int[4];
 
         if (repeatRate <= 0)

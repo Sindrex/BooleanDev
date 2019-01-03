@@ -107,7 +107,7 @@ public class MainMenu : MonoBehaviour {
             if(puzzleIndex < PA.puzzles.Length + 1)
             {
                 Game.current = new Game(PA.puzzles[puzzleIndex - 1]);
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene("Main");
             }
             else
             {
@@ -135,7 +135,7 @@ public class MainMenu : MonoBehaviour {
             //Save the current Game as a new saved Game
             SaveLoad.Save();
             //Move on to game...
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene("Main");
         }
     }
     public void OpenSandboxLoadWorld()

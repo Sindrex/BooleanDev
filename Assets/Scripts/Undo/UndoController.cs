@@ -16,7 +16,7 @@ public class UndoController : MonoBehaviour {
             newUndo.child = root;
         }
         root = newUndo;
-        bool ok = root.checkLength(PlayerPrefs.GetInt(OptionController.gameplayOK[2]), 1);
+        root.checkLength(PlayerPrefs.GetInt(OptionController.gameplayOK[2]), 1);
     }
 
     public void undo()

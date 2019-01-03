@@ -48,7 +48,7 @@ public class PausedController : MonoBehaviour {
     }
     public void exitToMenu()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Menu");
     }
     public void exitToDesk()
     {

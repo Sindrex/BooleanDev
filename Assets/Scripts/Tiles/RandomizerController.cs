@@ -15,7 +15,7 @@ public class RandomizerController : InputBasedWire {
     {
         if (state)
         {
-            print("beingPowered!");
+            //print("beingPowered!");
 
             if (!isOn)
             {

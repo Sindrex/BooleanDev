@@ -18,7 +18,7 @@ public class MenuButtonController : MonoBehaviour {
     {
         Game.current = myGame;
         //Move on to game...
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("Main");
     }
 
     public void removeSave()

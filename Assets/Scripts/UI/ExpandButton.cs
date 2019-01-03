@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ExpandButton : MonoBehaviour {
 
+    //@DEPRECATED: see ExpandController instead
     //also for expandUI's buttons, tracking ints++
 
     public GameController GC;

@@ -10,7 +10,7 @@ public class SignController : TileController {
     override
     protected void Start()
     {
-        ui = GameObject.Find("Manager").GetComponent<SignManager>();
+        ui = GameObject.Find("SignManager").GetComponent<SignManager>();
     }
 
     private void OnMouseOver()

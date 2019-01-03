@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class GraphicalOptionsController : MonoBehaviour {
 
@@ -21,18 +22,7 @@ public class GraphicalOptionsController : MonoBehaviour {
     }
     public void setDisplayMode(int displayIndex)
     {
-        switch (displayIndex)
-        {
-            case 0: //fullscreen
-                Screen.fullScreen = true;
-                break;
-            case 1: //windowed
-                Screen.fullScreen = false;
-                break;
-            case 2: //borderless fullscreen :(
-                break;
-
-        }
+        Screen.fullScreen = (displayIndex == 0); //no borderless fullscreen unfortunately :c
     }
 
     public void saveGraphicalSettings()
@@ -67,8 +57,8 @@ public class GraphicalOptionsController : MonoBehaviour {
         int qualIndex = PlayerPrefs.GetInt(OptionController.graphicsOK[1]);
         int disIndex = PlayerPrefs.GetInt(OptionController.graphicsOK[2]);
 
-        //UI
-        resolutions = Screen.resolutions;
+        //Resolution
+        resolutions = Screen.resolutions.Select(resolution => new Resolution { width = resolution.width, height = resolution.height }).Distinct().ToArray();
         resolution.ClearOptions();
         List<string> resolutionNames = new List<string>();
         for (int i = 0; i < resolutions.Length; i++)
@@ -80,33 +70,15 @@ public class GraphicalOptionsController : MonoBehaviour {
         resolution.value = resIndex;
         resolution.RefreshShownValue();
 
-        /*
-        int currentResIndex = 0;
-        List<string> resolutionNames = new List<string>();
-        for (int i = 0; i < resolutions.Length; i++)
-        {
-            string name = resolutions[i].width + " x " + resolutions[i].height;
-            resolutionNames.Add(name);
-
-            if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
-            {
-                currentResIndex = i;
-            }
-        }
-        resolution.AddOptions(resolutionNames);
-        resolution.value = currentResIndex;
-        resolution.RefreshShownValue();*/
-
+        //Quality
+        string[] qualities = QualitySettings.names;
+        graphicsQuality.ClearOptions();
+        graphicsQuality.AddOptions(qualities.ToList());
         graphicsQuality.value = qualIndex;
-        switch(disIndex)
-        {
-            case 0:
-                displayOption.value = 0;
-                break;
-            case 1:
-                displayOption.value = 1;
-                break;
-        }
+        graphicsQuality.RefreshShownValue();
+        
+        //Fullscreen/windowed
+        displayOption.value = disIndex;
     }
 
     public int getResolution()
@@ -121,14 +93,4 @@ public class GraphicalOptionsController : MonoBehaviour {
     {
         return displayOption.value;
     }
-
-    /*
-    public void setSortingLayer()
-    {
-        print("yo1");
-        resolution.transform.GetChild(2).GetComponent<Canvas>().sortingLayerName = "UI";
-        print("yo");
-        //graphicsQuality
-        //displayOption
-    }*/
 }

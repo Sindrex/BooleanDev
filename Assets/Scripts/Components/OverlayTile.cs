@@ -20,7 +20,7 @@ public class OverlayTile : MonoBehaviour {
         myLabel.gameObject.GetComponent<MeshRenderer>().sortingOrder = 5;
 
         CC = GameObject.Find("Main Camera").GetComponent<CamController>();
-        GC = GameObject.Find("Main Camera").GetComponent<GameController>();
+        GC = GameObject.Find("GameController").GetComponent<GameController>();
         myLabel.text = "";
     }
 

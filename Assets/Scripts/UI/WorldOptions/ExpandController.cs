@@ -13,7 +13,7 @@ public class ExpandController : MonoBehaviour {
     public Button acceptButton;
     public Button clearButton;
 
-    public ExpandButton depExpand;
+    public GameController GC;
     public GameObject loading;
 
     private void Update()
@@ -38,19 +38,27 @@ public class ExpandController : MonoBehaviour {
     public void acceptExpand()
     {
         //print("Expanding!!");
-        depExpand.dirs = new int[4];
+        int[] dirs = new int[4];
 
         int left = int.Parse(inputLeft.text);
         int right = int.Parse(inputRight.text);
         int up = int.Parse(inputUp.text);
         int down = int.Parse(inputDown.text);
 
-        depExpand.dirs[0] = up;
-        depExpand.dirs[1] = left;
-        depExpand.dirs[2] = down;
-        depExpand.dirs[3] = right;
+        dirs[0] = up;
+        dirs[1] = left;
+        dirs[2] = down;
+        dirs[3] = right;
 
-        depExpand.startExpand();
+        GC.doExpand = new int[4];
+        for (int i = 0; i < dirs.Length; i++)
+        {
+            if (dirs[i] > 0)
+            {
+                //print(i + "/" + GC.doExpand.Length + "/" + dirs.Length);
+                GC.doExpand[i] = dirs[i];
+            }
+        }
         clearAll();
     }
 

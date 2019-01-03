@@ -6,15 +6,13 @@ public class OptionController : MonoBehaviour {
 
     //option keys
     public static readonly string[] graphicsOK = new string[] { "ScreenSize", "GraphicsQuality", "WindowedOption" };
-
     public static readonly string[] gameplayOK = new string[] { "MouseSensitivity", "MovementSensitivity", "UndoLimit" };
-
     public static readonly string[] controlsOK = new string[] { "K_DeleteTile", "K_PlaceTile", "K_InteractTile", "K_RotateLeftTile",
                                                                 "K_RotateRightTile", "K_OpenSelectionBar", "K_OpenPause", "K_Selector",
                                                                 "K_DeleteSelected" };
-
     public static readonly string[] audioOK = new string[] { "MasterVolume", "MusicVolume", "SFXVolume" };
 
+    //Default
     public static readonly int[] defaultAudioSettings = new int[] { 0, -40, -40 };
     public static readonly int[] defaultGameplaySettings = new int[] { 20, 20, 10 };
     public static readonly int[] defaultGraphicsSettings = new int[] { -1 , 4 , 0 };
