@@ -7,6 +7,8 @@ using UnityEngine.UI;
 [System.Serializable]
 public class GameController : MonoBehaviour {
 
+    private readonly string classTag = "GameController: ";
+
     public GameObject tileFather;
     public GameObject selectedFather;
     public GameObject floorFather;
@@ -119,7 +121,7 @@ public class GameController : MonoBehaviour {
         }
         else
         {
-            print("GameController:Start():Game.current is null");
+            print(classTag + "Start():Game.current is null");
             newSave = true;
         }
 
@@ -132,7 +134,7 @@ public class GameController : MonoBehaviour {
             //Create floor
             if (!newSave)
             {
-                print("Loading old floor!");
+                print(classTag + "Loading old floor!");
                 Vector2 current = start;
                 //make floor
                 for (int i = 0; i < height; i++)//For each unity in height
@@ -152,7 +154,7 @@ public class GameController : MonoBehaviour {
                 }
                 if(tileIDs.Length > 0)
                 {
-                    print("spawning...");
+                    print(classTag + "spawning...");
                     spawn();
                 }
             }
@@ -160,7 +162,7 @@ public class GameController : MonoBehaviour {
             {
                 if (Game.current != null)
                 {
-                    print("NewSave is false");
+                    print(classTag + "NewSave is false");
                     Game.current.newSave = false;
                 }
 
@@ -175,7 +177,7 @@ public class GameController : MonoBehaviour {
         else
         {
             //Make way for the puzzle
-            print(myPuzzle.getName());
+            print(classTag + myPuzzle.getName());
             if(myPuzzle.getID() > 1)
             {
                 //First puzzle
@@ -193,7 +195,7 @@ public class GameController : MonoBehaviour {
 
         itemName.gameObject.SetActive(false);
 
-        Game.current = new Game(null);
+        //Game.current = new Game(null);
 
         /*
         //EOTP testing --------------------------------------------------------------------
@@ -865,9 +867,10 @@ public class GameController : MonoBehaviour {
     {
         if(selectedTiles.Count <= 0)
         {
+            print(classTag + "deleteSelected(): selectedTiles.Count <= 0");
             return;
         }
-        print("Delete selected");
+        print(classTag + "deleteSelected(): Deleting selected");
         int[] tileIds = new int[selectedTiles.Count];
         int[] dirs = new int[selectedTiles.Count];
         int[] spotIndexes = new int[selectedTiles.Count];
@@ -971,7 +974,7 @@ public class GameController : MonoBehaviour {
         GameObject prefab = Instantiate(tileHub.getPrefab(id), floorList[index].transform.position + new Vector3(0,0,-1), Quaternion.identity);
         prefab.GetComponent<TileController>().spotIndex = index;
         prefab.GetComponent<TileController>().setDir(dir);
-        print("GameController:spawnSingle():index: " + index);
+        print(classTag + "spawnSingle():index: " + index);
         tiles[index] = prefab;
         return prefab;
     }
@@ -1006,7 +1009,7 @@ public class GameController : MonoBehaviour {
 
     public void moveSingle(int from, int to)
     {
-        print("MoveSingle: " + from + "/" + to);
+        print(classTag + "MoveSingle: " + from + "/" + to);
         if(from < tiles.Length)
         {
             GameObject tile = tiles[from];
@@ -1035,7 +1038,7 @@ public class GameController : MonoBehaviour {
     {
         if(spotIndexes.Length != spotIndexes2.Length)
         {
-            print("GC:moveMultiple(): Index-lists not of same length!");
+            print(classTag + "moveMultiple(): Index-lists not of same length!");
             return;
         }
         for(int i = 0; i < spotIndexes.Length; i++)
@@ -1065,7 +1068,7 @@ public class GameController : MonoBehaviour {
             {
                 dragSelected();
 
-                print("Trying to rotate, wish me luck");
+                print(classTag + "Trying to rotate, wish me luck");
 
                 int tempInt = selectedHeigth - 1;
                 selectedHeigth = selectedLength + 1;
@@ -1382,10 +1385,10 @@ public class GameController : MonoBehaviour {
 
     public void duplicateSelected()
     {
-        print("Trying to dupe");
+        //print(classTag + "Trying to dupe");
         if(selectedTiles.Count > 0)
         {
-            print("Dupin");
+            print(classTag + "Dupin");
             foreach(GameObject go in selectedTiles)
             {
                 if(go != null)

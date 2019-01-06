@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ActionbarController : MonoBehaviour {
 
+    private readonly string classTag = "ActionbarController: ";
+
     public GameController GC;
     public TileHub tileHub;
     public GameObject tileFather;
@@ -90,7 +92,7 @@ public class ActionbarController : MonoBehaviour {
 
         if (InputController.getInput(InputPurpose.RESET_ACTIONBAR))
         {
-            print("Reset");
+            print(classTag + "Reset");
             selectedA = 0;
         }
         if (InputController.getInput(InputPurpose.ACTIONBAR_RIGHT)) //backward
@@ -202,9 +204,9 @@ public class ActionbarController : MonoBehaviour {
             if(hit.transform.GetComponent<TileController>() != null)
             {
                 //print("got a hit: " + hit.transform.name);
-                if (InputController.getInput(InputPurpose.DELETE_TILE))
+                if (InputController.getInput(InputPurpose.DELETE_TILE) && !UtilBools.tileLock)
                 {
-                    //print("Destroying!");
+                    print(classTag + "Destroying!");
                     TileController tile = hit.transform.GetComponent<TileController>();
                     int setting = 0;
                     string text = "";

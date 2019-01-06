@@ -33,7 +33,7 @@ public class MiscController : MonoBehaviour {
 
     public void toggleNoPlace()
     {
-        print("woo: " + noPlaceToggle.isOn);
+        //print("woo: " + noPlaceToggle.isOn);
         UtilBools.noPlaceTile = noPlaceToggle.isOn;
     }
 }

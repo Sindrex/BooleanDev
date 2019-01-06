@@ -22,7 +22,7 @@ public class RandomizerController : InputBasedWire {
                 isOn = true;
 
                 int random = Random.Range(0, 2);
-                print("R: " + random);
+                //print("R: " + random);
 
                 //randomly
                 if (random > 0)
@@ -33,6 +33,7 @@ public class RandomizerController : InputBasedWire {
                 }
                 else
                 {
+                    //Change sprite
                     if(currentInputs.Contains(0) || currentInputs.Contains(3))
                     {
                         if(dir == 0 || dir == 1)

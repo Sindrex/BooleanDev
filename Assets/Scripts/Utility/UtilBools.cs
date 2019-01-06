@@ -31,8 +31,16 @@ public static class UtilBools {
 
     public static void setDefaultGame(Game game)
     {
-        tileLock = game.lockTiles;
-        noPlaceTile = game.noPlaceTiles;
+        if(game != null)
+        {
+            tileLock = game.lockTiles;
+            noPlaceTile = game.noPlaceTiles;
+        }
+        else
+        {
+            Debug.Log("UtilBools: NB! Game is null");
+        }
+
     }
 
     public static void setAll(bool state)

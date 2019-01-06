@@ -338,6 +338,7 @@
     <Compile Include="Assets\Scripts\Tiles\WireController.cs" />
     <Compile Include="Assets\Scripts\UI\ActionbarController.cs" />
     <Compile Include="Assets\Scripts\UI\ExpandButton.cs" />
+    <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\UI\IO.cs" />
     <Compile Include="Assets\Scripts\UI\IOPicker.cs" />
     <Compile Include="Assets\Scripts\UI\MainMenu.cs" />
