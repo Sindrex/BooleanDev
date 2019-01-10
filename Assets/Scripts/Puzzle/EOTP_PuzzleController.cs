@@ -116,7 +116,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
             for (int li = 0; li < realInput.Count; li++)
             {
                 realInput[li].Add(actualInput[li]);
-                print(this.GetType().Name + ":addActualToReal():li/actualInput: " + li + "/" + actualInput[li]);
+                print(this.GetType().Name + ":addActualToReal():i/actualInput: " + li + "/" + actualInput[li]);
             }
         }
     }
@@ -154,10 +154,12 @@ public class EOTP_PuzzleController : MonoBehaviour {
         if (ok)
         {
             print(this.GetType().Name + ":EOTPwaitFinish(): All inputs OK. Good job!");
+            PV.openVerdict(PuzzleVerdict.verdict.WIN, myPuzzle.getName());
         }
         else
         {
             print(this.GetType().Name + ":EOTPwaitFinish(): Try again dumbo!");
+            PV.openVerdict(PuzzleVerdict.verdict.LOSS, myPuzzle.getName());
         }
 
     }

@@ -21,7 +21,7 @@ public class Game {
 
     //Bools
     public bool newSave;
-    public PuzzleCreator puzzle;
+    public EOTP_PuzzleCreator puzzle;
 
     //WorldOptions
     public bool lockTiles;
@@ -32,7 +32,7 @@ public class Game {
     public string dateLastPlayed;
     public string version = "Alpha 2";
 
-    public Game(PuzzleCreator puzzle)
+    public Game(EOTP_PuzzleCreator puzzle)
     {
         gameName = "";
         tileIDs = new int[0];

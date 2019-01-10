@@ -4,6 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class PuzzleController : MonoBehaviour {
+    private readonly string classTag = "PuzzleController: ";
 
     public enum logic { NULL, AND, OR, NAND, NOR, ONLY_B, ONLY_A, NOT_A_OR_B, A_OR_NOT_B}
 
@@ -17,7 +18,7 @@ public class PuzzleController : MonoBehaviour {
 
     public void setupPuzzle(PuzzleCreator puzzle)
     {
-        print("Setting up puzzle!");
+        print(classTag + "Setting up puzzle!");
 
         for (int i = 0; i < puzzle.getLockedTiles().Length; i++)//For each unit in length
         {
@@ -51,6 +52,7 @@ public class PuzzleController : MonoBehaviour {
         PO.setup(puzzle);
     }
 
+    /*
     public void pathfinder()
     {
         List<List<GameObject>> connectedList = new List<List<GameObject>>();
@@ -114,7 +116,7 @@ public class PuzzleController : MonoBehaviour {
         }
 
         //print em'
-        /*
+
         foreach (List<GameObject> a in connectedList)
         {
             if (a.Count > 1)
@@ -130,7 +132,7 @@ public class PuzzleController : MonoBehaviour {
         {
             print("Output: " + a.name);
         }
-        */
+        
 
         List<List<GameObject>> discoveredList = new List<List<GameObject>>();
         List<bool> negates = new List<bool>();
@@ -411,7 +413,7 @@ public class PuzzleController : MonoBehaviour {
         }
         //print("Count: " + res.Count);
         return res;
-    }
+    }*/
 
     private int getIndexOf(GameObject neigh, GameObject[] list)
     {

@@ -5,9 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public class EOTP_IOCreator {
 
+    [SerializeField]
     private bool input;
+    [SerializeField]
     private int tileNr;
+    [SerializeField]
     private int dir;
+    [SerializeField]
     private int tileId;
 
     //Output for outputs or expected input for inputs (0, 1, 0, 1 etc)

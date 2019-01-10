@@ -5,9 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public class EOTP_PuzzleCreator
 {
+    [SerializeField]
     private string name;
+    [SerializeField]
     private int id;
+    [SerializeField]
     private int length; //floor length (row)
+    [SerializeField]
     private int height; //floor heigth (nr. of rows)
 
     [SerializeField]
@@ -50,5 +54,10 @@ public class EOTP_PuzzleCreator
     public string getDesc()
     {
         return desc;
+    }
+    override
+    public string ToString()
+    {
+        return name + ", " + id + ", " + length + " x " + height + ", " + desc;
     }
 }

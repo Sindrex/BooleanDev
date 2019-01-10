@@ -104,9 +104,11 @@ public class MainMenu : MonoBehaviour {
     {
         if(puzzleIndex > 0)
         {
-            if(puzzleIndex < PA.puzzles.Length + 1)
+            if(puzzleIndex < PA.EOTP_puzzles.Length + 1)
             {
-                Game.current = new Game(PA.puzzles[puzzleIndex - 1]);
+                //  print(PA.EOTP_puzzles.Length + "/" + PA.EOTP_puzzles[puzzleIndex - 1]);
+                Game.current = new Game(PA.EOTP_puzzles[puzzleIndex - 1]);
+                //print(Game.current.puzzle);
                 SceneManager.LoadScene("Main");
             }
             else

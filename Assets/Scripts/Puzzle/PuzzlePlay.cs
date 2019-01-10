@@ -24,7 +24,7 @@ public class PuzzlePlay : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        print(this.GetType().Name + ":" + System.Reflection.MethodBase.GetCurrentMethod().Name + ": EOTP-testing: Running another puzzleController instead");
+        print(this.GetType().Name + ":" + System.Reflection.MethodBase.GetCurrentMethod().Name + ": EOTP: Play");
         //PC.pathfinder();
         ePC.puzzlePlay();
     }

@@ -100,7 +100,7 @@ public class GameController : MonoBehaviour {
         length = 15;
         height = 10;
         bool newSave = false;
-        PuzzleCreator myPuzzle = null;
+        EOTP_PuzzleCreator myPuzzle = null;
 
         if(Game.current != null)
         {
@@ -174,9 +174,8 @@ public class GameController : MonoBehaviour {
             ioPicker.gameObject.SetActive(false);
             ioPicker.GetComponent<IOPicker>().isPuzzle = false;
         }
-        else
+        else //it is a puzzle
         {
-            //Make way for the puzzle
             print(classTag + myPuzzle.getName());
             if(myPuzzle.getID() > 1)
             {
@@ -185,9 +184,11 @@ public class GameController : MonoBehaviour {
             length = myPuzzle.getLength();
             height = myPuzzle.getHeight();
             makeNewFloor(myPuzzle.getLength(), myPuzzle.getHeight());
-            PC.GC = this;
-            PC.setupPuzzle(myPuzzle);
+            ePC.GC = this;
+            ePC.setupPuzzle(myPuzzle);
             ioPicker.gameObject.SetActive(false);
+            tileIDs = new int[length * height];
+
         }
 
         //Create the selectedtiles beforehand and put in cache
