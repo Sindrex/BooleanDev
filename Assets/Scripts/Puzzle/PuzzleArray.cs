@@ -9,12 +9,13 @@ public class PuzzleArray : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        puzzles = new PuzzleCreator[3];
-        EOTP_puzzles = new EOTP_PuzzleCreator[3];
-        puzzleInit();
+        puzzles = new PuzzleCreator[4];
+        EOTP_puzzles = new EOTP_PuzzleCreator[4];
+        //puzzleInit();
         EOTP_init();
 	}
 	
+    //@Deprecated
     private void puzzleInit()
     {
         int[][] puzzle1 = new int[][] { 
@@ -42,6 +43,8 @@ public class PuzzleArray : MonoBehaviour {
         };
 
         //name, id, length, heigth, lockedtiles(tileNr, tileID, dir, input/output), winCondition(tileNr)
+        puzzles[0] = new PuzzleCreator("TUTORIAL", 1, 5, 5, puzzle1, PuzzleController.logic.OR, "Tutorial.");
+
         puzzles[0] = new PuzzleCreator("Puzzle 1: OR", 1, 5, 5, puzzle1, PuzzleController.logic.OR, "Create a logic gate " +
                                         "that lets either or both inputs power the output.");
 
@@ -54,6 +57,11 @@ public class PuzzleArray : MonoBehaviour {
 
     private void EOTP_init()
     {
+        EOTP_IOCreator[] io_0 = new EOTP_IOCreator[]
+        {
+        };
+        EOTP_puzzles[0] = new EOTP_PuzzleCreator("TUTORIAL", 0, 5, 5, io_0, "Tutorial desc.");
+
         EOTP_IOCreator[] io_1 = new EOTP_IOCreator[]
         {
             //              input/spotIndex/tileId/dir/signal-array
@@ -62,7 +70,7 @@ public class PuzzleArray : MonoBehaviour {
             new EOTP_IOCreator(true, 22, 1, -1, new int[]{ 1, 1, 1, 0 })
         };
         //                                      name, id, length, height, io, desc
-        EOTP_puzzles[0] = new EOTP_PuzzleCreator("Puzzle 1", 1, 5, 5, io_1, "My 1st Puzzle: OR");
+        EOTP_puzzles[1] = new EOTP_PuzzleCreator("Puzzle 1", 1, 5, 5, io_1, "My 1st Puzzle: OR");
 
         EOTP_IOCreator[] io_2 = new EOTP_IOCreator[]
         {
@@ -70,7 +78,7 @@ public class PuzzleArray : MonoBehaviour {
             new EOTP_IOCreator(false, 3, 15, 0, new int[]{ 1, 0, 1, 0 }),
             new EOTP_IOCreator(true, 22, 1, -1, new int[]{ 0, 0, 0, 1 })
         };
-        EOTP_puzzles[1] = new EOTP_PuzzleCreator("Puzzle 2", 2, 5, 5, io_2, "My 2nd Puzzle: NOR");
+        EOTP_puzzles[2] = new EOTP_PuzzleCreator("Puzzle 2", 2, 5, 5, io_2, "My 2nd Puzzle: NOR");
 
         EOTP_IOCreator[] io_3 = new EOTP_IOCreator[]
         {
@@ -78,6 +86,6 @@ public class PuzzleArray : MonoBehaviour {
             new EOTP_IOCreator(false, 3, 15, 0, new int[] { 1, 0, 1, 0 }),
             new EOTP_IOCreator(true, 22, 1, -1, new int[] { 1, 0, 0, 0 })
         };
-        EOTP_puzzles[2] = new EOTP_PuzzleCreator("Puzzle 3", 3, 5, 5, io_3, "My 3rd Puzzle: AND");
+        EOTP_puzzles[3] = new EOTP_PuzzleCreator("Puzzle 3", 3, 5, 5, io_3, "My 3rd Puzzle: AND");
     }
 }

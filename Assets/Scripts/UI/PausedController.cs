@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PausedController : MonoBehaviour {
 
@@ -9,6 +10,9 @@ public class PausedController : MonoBehaviour {
     public GameObject saved;
     public GameObject options;
     public GameObject worldOptions;
+
+    public Button worldOptionsButton;
+    public Button saveButton;
 
     private void Start()
     {
@@ -38,13 +42,16 @@ public class PausedController : MonoBehaviour {
     }
     public void openWorldOptions()
     {
-        worldOptions.SetActive(true);
-        worldOptions.GetComponent<WorldOptionsController>().loadSettingsUI();
-        cancel();
+        if (!UtilBools.isPuzzle)
+        {
+            worldOptions.SetActive(true);
+            worldOptions.GetComponent<WorldOptionsController>().loadSettingsUI();
+            cancel();
 
-        UtilBools.pausedBools(Game.current, true);
-        UtilBools.paused = false;
-        UtilBools.worldOptions = true;
+            UtilBools.pausedBools(Game.current, true);
+            UtilBools.paused = false;
+            UtilBools.worldOptions = true;
+        }
     }
     public void exitToMenu()
     {

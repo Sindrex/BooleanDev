@@ -12,6 +12,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
 
     public PuzzleObjective PO;
     public PuzzleVerdict PV;
+    public PuzzleTutorial PT;
 
     public float EOTP_WAIT_TIME = 1;
     public float EOTP_MIDDLE_WAIT_TIME_MS = 1;
@@ -58,6 +59,10 @@ public class EOTP_PuzzleController : MonoBehaviour {
 
         myPuzzle = puzzle;
         PO.setup(puzzle);
+        if(myPuzzle.getID() <= 1)
+        {
+            PT.setup(puzzle);
+        }
     }
 
     public void puzzlePlay()

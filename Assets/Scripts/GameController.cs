@@ -121,8 +121,9 @@ public class GameController : MonoBehaviour {
         }
         else
         {
-            print(classTag + "Start():Game.current is null");
+            print(classTag + "Start():Game.current is null, creating temp");
             newSave = true;
+            Game.current = new Game(null);
         }
 
         cacheList = new List<GameObject>();
@@ -177,9 +178,11 @@ public class GameController : MonoBehaviour {
         else //it is a puzzle
         {
             print(classTag + myPuzzle.getName());
-            if(myPuzzle.getID() > 1)
+            if(myPuzzle.getID() <= 1)
             {
                 //First puzzle
+                puzzlePlay.gameObject.SetActive(false);
+                puzzleObjectve.gameObject.SetActive(false);
             }
             length = myPuzzle.getLength();
             height = myPuzzle.getHeight();
@@ -188,39 +191,15 @@ public class GameController : MonoBehaviour {
             ePC.setupPuzzle(myPuzzle);
             ioPicker.gameObject.SetActive(false);
             tileIDs = new int[length * height];
-
+            UtilBools.isPuzzle = true;
+            paused.GetComponent<PausedController>().worldOptionsButton.interactable = false;
+            paused.GetComponent<PausedController>().saveButton.interactable = false;
         }
 
         //Create the selectedtiles beforehand and put in cache
         createSelectedTiles(startCachedSelectedTiles);
 
         itemName.gameObject.SetActive(false);
-
-        //Game.current = new Game(null);
-
-        /*
-        //EOTP testing --------------------------------------------------------------------
-        EOTP_IOCreator[] io = new EOTP_IOCreator[]
-        {
-            new EOTP_IOCreator(false, 1, 15, 3, new int[]
-            { 1, 1, 0, 0 }),
-            new EOTP_IOCreator(false, 3, 15, 3, new int[]
-            { 1, 0, 1, 0 }),
-            new EOTP_IOCreator(true, 22, 1, -1, new int[]
-            { 1, 1, 1, 0 })
-        };
-
-        EOTP_PuzzleCreator eotpPuzzle = new EOTP_PuzzleCreator("Stage 1", 1, 5, 5, io, "My first stage: OR");
-        print("GameController:Start():" + eotpPuzzle.getName());
-        length = eotpPuzzle.getLength();
-        height = eotpPuzzle.getHeight();
-        makeNewFloor(eotpPuzzle.getLength(), eotpPuzzle.getHeight());
-        ePC.GC = this;
-        tileIDs = new int[length * height];
-        ePC.setupPuzzle(eotpPuzzle);
-        ioPicker.gameObject.SetActive(false);
-        puzzlePlay.gameObject.SetActive(true);
-        puzzleObjectve.gameObject.SetActive(true);*/
     }
 
     private void setWorldSettings()

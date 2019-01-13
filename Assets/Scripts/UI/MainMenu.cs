@@ -5,12 +5,19 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour {
 
-    public PuzzleArray PA;
+    public PuzzleArray puzzleArray;
 
-    public GameObject MainMenuObj;
-    public GameObject Puzzles;
+    public GameObject mainMenu;
 
-    public GameObject Sandbox;
+    //Puzzles
+    public GameObject puzzles;
+    public Text puzzleWorldNameObj;
+    public GameObject[] puzzleWorlds;
+    public string[] puzzleWorldNames;
+    private int puzzleIndex = 0;
+
+    //Sandbox
+    public GameObject sandbox;
     public GameObject newWorld;
     public InputField worldNameInput;
     public GameObject loadWorld;
@@ -18,14 +25,11 @@ public class MainMenu : MonoBehaviour {
     public GameObject cancelPrefab;
     public GameObject savedGamesPrefab;
     public GameObject deleteSavedGamesPrefab;
+    public GameObject scrollContent;
+    public GameObject scrollContentDelete;
 
+    //Options
     public GameObject options;
-
-    private int puzzleIndex = 0;
-
-    public GameObject ScrollContent;
-    public GameObject ScrollContentDelete;
-
     public OptionController optionCon;
     public Camera cam;
     public Vector3 optionsPos;
@@ -61,18 +65,18 @@ public class MainMenu : MonoBehaviour {
 
     private void Start()
     {
-        OpenMainMenu();
+        openMainMenu();
         SaveLoad.Load();
         setDefaultOptions();
     }
 
     public void closeAll()
     {
-        MainMenuObj.SetActive(false);
-        Puzzles.SetActive(false);
+        mainMenu.SetActive(false);
+        puzzles.SetActive(false);
         puzzleIndex = 0;
 
-        Sandbox.SetActive(false);
+        sandbox.SetActive(false);
         newWorld.SetActive(false);
         loadWorld.SetActive(false);
         deleteWorld.SetActive(false);
@@ -86,28 +90,56 @@ public class MainMenu : MonoBehaviour {
         }
         Destroy(GameObject.FindGameObjectWithTag("cancel"));
     }
-    public void OpenMainMenu()
+    public void openMainMenu()
     {
         closeAll();
-        MainMenuObj.SetActive(true);
+        mainMenu.SetActive(true);
     }
-    public void OpenPuzzles()
+
+    public void puzzleOpen()
     {
         closeAll();
-        Puzzles.SetActive(true);
+        puzzles.SetActive(true);
+        puzzleWorldNameObj.text = puzzleWorldNames[0];
     }
-    public void pickLevel(int index)
+    public void puzzleNextWorld()
+    {
+        for(int i = 0; i < puzzleWorlds.Length; i++)
+        {
+            if (puzzleWorlds[i].activeSelf && (i + 1) < puzzleWorlds.Length)
+            {
+                puzzleWorlds[i].SetActive(false);
+                puzzleWorlds[i + 1].SetActive(true);
+                puzzleWorldNameObj.text = puzzleWorldNames[i + 1];
+                break;
+            }
+        }
+    }
+    public void puzzlePrevWorld()
+    {
+        for (int i = 0; i < puzzleWorlds.Length; i++)
+        {
+            if (puzzleWorlds[i].activeSelf && (i - 1) >= 0)
+            {
+                puzzleWorlds[i].SetActive(false);
+                puzzleWorlds[i - 1].SetActive(true);
+                puzzleWorldNameObj.text = puzzleWorldNames[i - 1];
+                break;
+            }
+        }
+    }
+    public void puzzlePickLevel(int index)
     {
         puzzleIndex = index;
     }
-    public void playPuzzle()
+    public void puzzlePlay()
     {
         if(puzzleIndex > 0)
         {
-            if(puzzleIndex < PA.EOTP_puzzles.Length + 1)
+            if(puzzleIndex < puzzleArray.EOTP_puzzles.Length + 1)
             {
                 //  print(PA.EOTP_puzzles.Length + "/" + PA.EOTP_puzzles[puzzleIndex - 1]);
-                Game.current = new Game(PA.EOTP_puzzles[puzzleIndex - 1]);
+                Game.current = new Game(puzzleArray.EOTP_puzzles[puzzleIndex - 1]);
                 //print(Game.current.puzzle);
                 SceneManager.LoadScene("Main");
             }
@@ -118,12 +150,12 @@ public class MainMenu : MonoBehaviour {
         }
     }
 
-    public void OpenSandbox()
+    public void openSandbox()
     {
         closeAll();
-        Sandbox.SetActive(true);
+        sandbox.SetActive(true);
     }
-    public void OpenSandboxNewWorld()
+    public void openSandboxNewWorld()
     {
         closeAll();
         newWorld.SetActive(true);
@@ -140,19 +172,19 @@ public class MainMenu : MonoBehaviour {
             SceneManager.LoadScene("Main");
         }
     }
-    public void OpenSandboxLoadWorld()
+    public void openSandboxLoadWorld()
     {
         closeAll();
         loadWorld.SetActive(true);
-        destroyButtons(ScrollContent);
-        createButtons(savedGamesPrefab, ScrollContent);
+        destroyButtons(scrollContent);
+        createButtons(savedGamesPrefab, scrollContent);
     }
-    public void OpenSandboxDeleteWorld()
+    public void openSandboxDeleteWorld()
     {
         closeAll();
         deleteWorld.SetActive(true);
-        destroyButtons(ScrollContentDelete);
-        createButtons(deleteSavedGamesPrefab, ScrollContentDelete);
+        destroyButtons(scrollContentDelete);
+        createButtons(deleteSavedGamesPrefab, scrollContentDelete);
     }
     private void createButtons(GameObject buttonPrefab, GameObject scroller)
     {
@@ -173,7 +205,7 @@ public class MainMenu : MonoBehaviour {
         }
     }
 
-    public void OpenOptions()
+    public void openOptions()
     {
         //print("MainMenu: OpenOptions(): Options not implemented");
         options.SetActive(true);
@@ -240,7 +272,7 @@ public class MainMenu : MonoBehaviour {
         Application.OpenURL("http://sindrex.wordpress.com/game-boolean/");
     }
 
-    public void Quit()
+    public void quit()
     {
         Application.Quit();
     }

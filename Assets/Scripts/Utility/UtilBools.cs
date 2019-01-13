@@ -13,6 +13,7 @@ public static class UtilBools {
     public static bool worldOptions = false;
     public static bool tileLock = false;
     public static bool expandLoading = false;
+    public static bool isPuzzle = false;
 
     public static void pausedBools(Game game, bool state)
     {

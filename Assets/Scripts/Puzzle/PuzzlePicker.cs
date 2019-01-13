@@ -10,7 +10,7 @@ public class PuzzlePicker : MonoBehaviour
 
     public void onClick()
     {
-        MM.pickLevel(index);
+        MM.puzzlePickLevel(index);
         foreach(GameObject go in GameObject.FindGameObjectsWithTag("PuzzlePicker"))
         {
             if(go.GetComponent<Image>().color == Color.yellow)

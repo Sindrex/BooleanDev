@@ -32,6 +32,6 @@ public class MenuButtonController : MonoBehaviour {
 
     public void cancel()
     {
-        MM.OpenSandbox();
+        MM.openSandbox();
     }
 }
