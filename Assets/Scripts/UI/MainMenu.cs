@@ -15,6 +15,8 @@ public class MainMenu : MonoBehaviour {
     public GameObject[] puzzleWorlds;
     public string[] puzzleWorldNames;
     private int puzzleIndex = 0;
+    public GameObject puzzleNext;
+    public GameObject puzzlePrev;
 
     //Sandbox
     public GameObject sandbox;
@@ -104,19 +106,28 @@ public class MainMenu : MonoBehaviour {
     }
     public void puzzleNextWorld()
     {
-        for(int i = 0; i < puzzleWorlds.Length; i++)
+        puzzleNext.SetActive(true);
+        puzzlePrev.SetActive(true);
+        for (int i = 0; i < puzzleWorlds.Length; i++)
         {
             if (puzzleWorlds[i].activeSelf && (i + 1) < puzzleWorlds.Length)
             {
                 puzzleWorlds[i].SetActive(false);
                 puzzleWorlds[i + 1].SetActive(true);
                 puzzleWorldNameObj.text = puzzleWorldNames[i + 1];
-                break;
+                if (i + 1 == puzzleWorlds.Length - 1)
+                {
+                    puzzleNext.SetActive(false);
+                }
+                return;
             }
         }
+        puzzleNext.SetActive(false);
     }
     public void puzzlePrevWorld()
     {
+        puzzlePrev.SetActive(true);
+        puzzleNext.SetActive(true);
         for (int i = 0; i < puzzleWorlds.Length; i++)
         {
             if (puzzleWorlds[i].activeSelf && (i - 1) >= 0)
@@ -124,7 +135,11 @@ public class MainMenu : MonoBehaviour {
                 puzzleWorlds[i].SetActive(false);
                 puzzleWorlds[i - 1].SetActive(true);
                 puzzleWorldNameObj.text = puzzleWorldNames[i - 1];
-                break;
+                if(i - 1 == 0)
+                {
+                    puzzlePrev.SetActive(false);
+                }
+                return;
             }
         }
     }

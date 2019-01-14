@@ -8,7 +8,7 @@ public class EOTP_IOCreator {
     [SerializeField]
     private bool input;
     [SerializeField]
-    private int tileNr;
+    private int spotIndex;
     [SerializeField]
     private int dir;
     [SerializeField]
@@ -18,10 +18,10 @@ public class EOTP_IOCreator {
     [SerializeField]
     private int[] signal;
 
-    public EOTP_IOCreator(bool input, int tileNr, int tileId, int dir, int[] signal)
+    public EOTP_IOCreator(bool input, int spotIndex, int tileId, int dir, int[] signal)
     {
         this.input = input;
-        this.tileNr = tileNr;
+        this.spotIndex = spotIndex;
         this.dir = dir;
         this.tileId = tileId;
         this.signal = signal;
@@ -33,7 +33,7 @@ public class EOTP_IOCreator {
     }
     public int getTileNr()
     {
-        return tileNr;
+        return spotIndex;
     }
     public int getDir()
     {

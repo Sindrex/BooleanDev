@@ -323,6 +323,7 @@
     <Compile Include="Assets\Scripts\Puzzle\PuzzlePlay.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleTutorial.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleVerdict.cs" />
+    <Compile Include="Assets\Scripts\ResourceLoader.cs" />
     <Compile Include="Assets\Scripts\Savefiles\Game.cs" />
     <Compile Include="Assets\Scripts\Savefiles\SaveLoad.cs" />
     <Compile Include="Assets\Scripts\TileHub.cs" />
