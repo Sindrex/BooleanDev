@@ -30,16 +30,16 @@ public class EOTP_PuzzleController : MonoBehaviour {
     {
         print("EOTP_PuzzleController:SetupPuzzle():!");
 
-        for (int i = 0; i < puzzle.getIO().Length; i++)//For each unit in length
+        for (int i = 0; i < puzzle.IO.Length; i++)//For each unit in length
         {
-            GameObject prefab = GC.spawnSingle(puzzle.getIO()[i].getTileId(), puzzle.getIO()[i].getTileNr(), puzzle.getIO()[i].getDir());
+            GameObject prefab = GC.spawnSingle(puzzle.IO[i].tileId, puzzle.IO[i].spotIndex, puzzle.IO[i].dir);
             prefab.GetComponent<TileController>().locked = true;
 
             print("EOTP_PuzzleController:SetupPuzzle():spawning i: " + i + "/" + prefab.name);
-            if(puzzle.getIO()[i].isInput())
+            if(puzzle.IO[i].input)
             {
                 prefab.GetComponent<TileController>().myLabel = TileController.label.IN;
-                inputs.Add(puzzle.getIO()[i]);
+                inputs.Add(puzzle.IO[i]);
                 inputObjs.Add(prefab);
 
                 //For each input, add a list 
@@ -49,7 +49,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
             else
             {
                 prefab.GetComponent<TileController>().myLabel = TileController.label.OUT;
-                outputs.Add(puzzle.getIO()[i]);
+                outputs.Add(puzzle.IO[i]);
                 outputObjs.Add(prefab);
             }
 
@@ -59,7 +59,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
 
         myPuzzle = puzzle;
         PO.setup(puzzle);
-        if(myPuzzle.getID() <= 1)
+        if(myPuzzle.id <= 1)
         {
             PT.setup(puzzle);
         }
@@ -83,7 +83,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
         //bool on = false;
         for (int i = 0; i < outputs.Count; i++)
         {
-            if (outputs[i].getSignal()[EOTPPlayTurn] > 0)
+            if (outputs[i].signal[EOTPPlayTurn] > 0)
             {
                 outputObjs[i].GetComponent<TileController>().beingPowered = true;
                 //on = true;
@@ -102,7 +102,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
         EOTPPlayTurn++;
         print(this.GetType().Name + "puzzlePlay(): PlayTurn: " + EOTPPlayTurn);
 
-        if (EOTPPlayTurn < outputs[0].getSignal().Length)
+        if (EOTPPlayTurn < outputs[0].signal.Length)
         {
             StartCoroutine(EOTPwait());
         }
@@ -148,7 +148,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
                 //print(this.GetType().Name + ":EOTPwaitFinish():li/i: " + li + "/" + i);
                 print(this.GetType().Name + ":EOTPwaitFinish():Input Gotten:" + realInput[li][i]);
                 //print(this.GetType().Name + ":EOTPwaitFinish():Input Wanted:" + inputs[li].getSignal()[i]);
-                if (realInput[li][i] != inputs[li].getSignal()[i])
+                if (realInput[li][i] != inputs[li].signal[i])
                 {
                     ok = false;
                 }
@@ -159,12 +159,12 @@ public class EOTP_PuzzleController : MonoBehaviour {
         if (ok)
         {
             print(this.GetType().Name + ":EOTPwaitFinish(): All inputs OK. Good job!");
-            PV.openVerdict(PuzzleVerdict.verdict.WIN, myPuzzle.getName());
+            PV.openVerdict(PuzzleVerdict.verdict.WIN, myPuzzle.winDesc);
         }
         else
         {
             print(this.GetType().Name + ":EOTPwaitFinish(): Try again dumbo!");
-            PV.openVerdict(PuzzleVerdict.verdict.LOSS, myPuzzle.getName());
+            PV.openVerdict(PuzzleVerdict.verdict.LOSS, myPuzzle.winDesc);
         }
 
     }

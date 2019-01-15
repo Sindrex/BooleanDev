@@ -63,7 +63,7 @@ public class ActionbarController : MonoBehaviour {
                 }
             }
 
-            if (ok)
+            if (ok && !tileHub.actionbarBanned.Contains(i))
             {
                 otherPrefabs[index] = tileHub.getPrefab(i);
                 selectBars[index].transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = otherPrefabs[index].GetComponent<SpriteRenderer>().sprite;

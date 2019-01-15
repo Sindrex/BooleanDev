@@ -332,6 +332,7 @@
     <Compile Include="Assets\Scripts\Tiles\FloorTileController.cs" />
     <Compile Include="Assets\Scripts\Tiles\HopWireController.cs" />
     <Compile Include="Assets\Scripts\Tiles\InputBasedWire.cs" />
+    <Compile Include="Assets\Scripts\Tiles\IOController.cs" />
     <Compile Include="Assets\Scripts\Tiles\NotGateController.cs" />
     <Compile Include="Assets\Scripts\Tiles\RandomizerController.cs" />
     <Compile Include="Assets\Scripts\Tiles\SignController.cs" />

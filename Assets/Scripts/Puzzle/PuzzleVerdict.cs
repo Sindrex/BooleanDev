@@ -16,7 +16,7 @@ public class PuzzleVerdict : MonoBehaviour {
         verdictObject.SetActive(false);
     }
 
-    public void openVerdict(verdict myVerdict, string creation)
+    public void openVerdict(verdict myVerdict, string winDesc)
     {
         verdictObject.SetActive(true);
 
@@ -24,11 +24,11 @@ public class PuzzleVerdict : MonoBehaviour {
         {
             case verdict.WIN:
                 desc.color = Color.green;
-                desc.text = "COMPLETE! \n \n YOU CREATED: \n" + creation;
+                desc.text = "COMPLETE! \n \n" + winDesc;
                 break;
             case verdict.LOSS:
                 desc.color = Color.red;
-                desc.text = "SOMETHING'S NOT QUITE RIGHT...! \n \n YOU CREATED: \n" + creation;
+                desc.text = "SOMETHING'S NOT QUITE RIGHT...! \n \n" + winDesc;
                 break;
         }
     }

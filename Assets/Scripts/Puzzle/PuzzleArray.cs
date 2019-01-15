@@ -58,7 +58,7 @@ public class PuzzleArray : MonoBehaviour {
     private void EOTP_init()
     {
         EOTP_puzzles = ResourceLoader.loadJson<EOTP_Array>("/puzzles.json").puzzles;
-        print(EOTP_puzzles);
+        print(EOTP_puzzles[0].ToString());
 
         /*
         EOTP_IOCreator[] io_0 = new EOTP_IOCreator[]
@@ -97,5 +97,6 @@ public class PuzzleArray : MonoBehaviour {
 [System.Serializable]
 public class EOTP_Array
 {
+    //Wrapper class for json-extraction
     public EOTP_PuzzleCreator[] puzzles;
 }

@@ -15,6 +15,8 @@ public class TileHub : MonoBehaviour {
     [SerializeField]
     private int[] IOPickerExceptions;
 
+    public List<int> actionbarBanned;
+
     private void Start()
     {
         if(tileNames.Length != tilePrefabs.Length)
@@ -43,7 +45,7 @@ public class TileHub : MonoBehaviour {
 
     public int getCount()
     {
-        return tilePrefabs.Length;
+        return tilePrefabs.Length - actionbarBanned.Count;
     }
 
     public bool IOPickerException(int id)

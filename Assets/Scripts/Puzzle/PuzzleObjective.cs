@@ -24,8 +24,8 @@ public class PuzzleObjective : MonoBehaviour {
     }
     public void setup(EOTP_PuzzleCreator puzzle)
     {
-        header.text = puzzle.getName();
-        desc.text = puzzle.getDesc();
+        header.text = puzzle.name;
+        desc.text = puzzle.desc;
     }
 
     private void OnMouseOver()

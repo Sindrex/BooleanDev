@@ -177,16 +177,16 @@ public class GameController : MonoBehaviour {
         }
         else //it is a puzzle
         {
-            print(classTag + myPuzzle.getName());
-            if(myPuzzle.getID() <= 1)
+            print(classTag + myPuzzle.name);
+            if(myPuzzle.id <= 1)
             {
                 //First puzzle
                 puzzlePlay.gameObject.SetActive(false);
                 puzzleObjectve.gameObject.SetActive(false);
             }
-            length = myPuzzle.getLength();
-            height = myPuzzle.getHeight();
-            makeNewFloor(myPuzzle.getLength(), myPuzzle.getHeight());
+            length = myPuzzle.length;
+            height = myPuzzle.height;
+            makeNewFloor(length, height);
             ePC.GC = this;
             ePC.setupPuzzle(myPuzzle);
             ioPicker.gameObject.SetActive(false);
