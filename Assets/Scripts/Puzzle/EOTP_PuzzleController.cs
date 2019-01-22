@@ -160,6 +160,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
         {
             print(this.GetType().Name + ":EOTPwaitFinish(): All inputs OK. Good job!");
             PV.openVerdict(PuzzleVerdict.verdict.WIN, myPuzzle.winDesc);
+            PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + myPuzzle.id, 1);
         }
         else
         {

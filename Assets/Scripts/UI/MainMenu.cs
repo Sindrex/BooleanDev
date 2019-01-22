@@ -17,6 +17,7 @@ public class MainMenu : MonoBehaviour {
     private int puzzleIndex = 0;
     public GameObject puzzleNext;
     public GameObject puzzlePrev;
+    public static readonly string puzzlePrefKey = "puzzleDone";
 
     //Sandbox
     public GameObject sandbox;
@@ -312,5 +313,14 @@ public class MainMenu : MonoBehaviour {
         print("MainMenu: resetDefOptions()");
         PlayerPrefs.SetInt(FIRST_TIMER_KEY, 0);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void resetPuzzles()
+    {
+        for(int i = 0; i < 1000; i++)
+        {
+            PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + i, 0);
+        }
+        SceneManager.LoadScene("Menu");
     }
 }

@@ -39,6 +39,8 @@ public class PuzzleTutorial : MonoBehaviour {
 
     public void finish()
     {
+        print(MainMenu.puzzlePrefKey + "1");
+        PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + "1", 1);
         SceneManager.LoadScene("Menu");
     }
 }
