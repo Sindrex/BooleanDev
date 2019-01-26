@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PausedController : MonoBehaviour {
 
+    public GameObject pausedContainer;
     public GameController GC;
     public GameObject saved;
     public GameObject options;
@@ -65,7 +66,7 @@ public class PausedController : MonoBehaviour {
     {
         UtilBools.pausedBools(Game.current, false);
         UtilBools.paused = false;
-        this.gameObject.SetActive(false);
+        pausedContainer.SetActive(false);
     }
 
     IEnumerator savedOnOff()

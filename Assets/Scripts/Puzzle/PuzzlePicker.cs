@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PuzzlePicker : MonoBehaviour
 {
-    public int index;
+    public int id;
     public MainMenu MM;
 
     //Completed
@@ -14,12 +14,15 @@ public class PuzzlePicker : MonoBehaviour
     public GameObject lockedPrefab;
     private bool locked = true;
 
+    //Hover
+    public Text hoverText;
+    private string myText = "";
+
     private void Start()
     {
         myChecked = Instantiate(myCheckedPrefab, this.transform);
-        //myChecked.transform.position += new Vector3(3, 0, 0);
         myChecked.SetActive(false);
-        int done = PlayerPrefs.GetInt(MainMenu.puzzlePrefKey + index);
+        int done = PlayerPrefs.GetInt(MainMenu.puzzlePrefKey + id);
         //print(MainMenu.puzzlePrefKey + index + ": " + done);
         if(done > 0)
         {
@@ -27,16 +30,30 @@ public class PuzzlePicker : MonoBehaviour
             locked = false;
         }
 
-        int prevDone = PlayerPrefs.GetInt(MainMenu.puzzlePrefKey + (index - 1));
-        if(prevDone > 0 || index == 1)
+        int prevDone = PlayerPrefs.GetInt(MainMenu.puzzlePrefKey + (id - 1));
+        int prev2Done = PlayerPrefs.GetInt(MainMenu.puzzlePrefKey + (id - 2));
+        if (prevDone > 0 || prev2Done > 0 || id == 0 || id == 1 || id == 2)
         {
             locked = false;
+        }
+        if(MM.puzzleArray.EOTP_puzzles.Length - 1 < id)
+        {
+            //print("yo: " + id + " > " + MM.puzzleArray.EOTP_puzzles.Length);
+            //Not implemented
+            locked = true;
+            GetComponent<Image>().color = Color.gray;
+            GetComponent<Button>().interactable = false;
+            return;
         }
 
         if (locked)
         {
             Instantiate(lockedPrefab, transform);
             GetComponent<Image>().color = Color.red;
+        }
+        else
+        {
+            GetComponent<Image>().color = Color.green;
         }
     }
 
@@ -46,7 +63,7 @@ public class PuzzlePicker : MonoBehaviour
         {
             return;
         }
-        MM.puzzlePickLevel(index);
+        MM.puzzlePickLevel(id);
         foreach(GameObject go in GameObject.FindGameObjectsWithTag("PuzzlePicker"))
         {
             if(go.GetComponent<Image>().color == Color.yellow)
@@ -55,5 +72,15 @@ public class PuzzlePicker : MonoBehaviour
             }
         }
         this.GetComponent<Image>().color = Color.yellow;
+    }
+
+    private void OnMouseEnter()
+    {
+        //hoverText.text = myText;
+    }
+
+    private void OnMouseExit()
+    {
+        //hoverText.text = "";
     }
 }

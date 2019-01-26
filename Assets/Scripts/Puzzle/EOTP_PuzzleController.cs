@@ -13,6 +13,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public PuzzleObjective PO;
     public PuzzleVerdict PV;
     public PuzzleTutorial PT;
+    public PuzzleTruthTable PTT;
 
     public float EOTP_WAIT_TIME = 1;
     public float EOTP_MIDDLE_WAIT_TIME_MS = 1;
@@ -59,7 +60,8 @@ public class EOTP_PuzzleController : MonoBehaviour {
 
         myPuzzle = puzzle;
         PO.setup(puzzle);
-        if(myPuzzle.id <= 1)
+        PTT.setup(puzzle);
+        if(myPuzzle.id <= 1) //id 0 and 1
         {
             PT.setup(puzzle);
         }
@@ -159,13 +161,14 @@ public class EOTP_PuzzleController : MonoBehaviour {
         if (ok)
         {
             print(this.GetType().Name + ":EOTPwaitFinish(): All inputs OK. Good job!");
-            PV.openVerdict(PuzzleVerdict.verdict.WIN, myPuzzle.winDesc);
+            PV.openWin(myPuzzle.id, myPuzzle.winDesc);
             PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + myPuzzle.id, 1);
+            print("Sat playerprefs for: " + MainMenu.puzzlePrefKey + myPuzzle.id);
         }
         else
         {
             print(this.GetType().Name + ":EOTPwaitFinish(): Try again dumbo!");
-            PV.openVerdict(PuzzleVerdict.verdict.LOSS, myPuzzle.winDesc);
+            PV.openLoss();
         }
 
     }

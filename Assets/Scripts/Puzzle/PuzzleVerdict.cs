@@ -7,34 +7,68 @@ using UnityEngine.SceneManagement;
 public class PuzzleVerdict : MonoBehaviour {
 
     public GameObject verdictObject;
+    public GameObject solved;
+    public GameObject nextPuzzleButton;
     public Text desc;
 
-    public enum verdict { WIN, LOSS }
+    public int myPuzzleId = -1;
+    public PuzzleArray puzzleArray;
 
 	// Use this for initialization
 	void Start () {
         verdictObject.SetActive(false);
     }
 
-    public void openVerdict(verdict myVerdict, string winDesc)
+    public void openWin(int myPuzzleId, string winDesc)
+    {
+        this.myPuzzleId = myPuzzleId;
+
+        verdictObject.SetActive(true);
+
+        desc.color = Color.green;
+        desc.text = winDesc;
+
+        if ((myPuzzleId + 1) >= puzzleArray.EOTP_puzzles.Length)
+        {
+            print("New Puzz: " + (myPuzzleId + 1) + "/" + (puzzleArray.EOTP_puzzles.Length));
+            nextPuzzleButton.GetComponent<Button>().interactable = false;
+        }
+    }
+    public void openLoss()
     {
         verdictObject.SetActive(true);
 
-        switch (myVerdict)
+        nextPuzzleButton.SetActive(false);
+        solved.SetActive(false);
+
+        desc.color = Color.red;
+        desc.text = "SOMETHING IS NOT QUITE RIGHT... \nTRY AGAIN!";
+    }
+
+    public void nextPuzzle()
+    {
+        print("Going to next puzzle!");
+        if(myPuzzleId >= 0)
         {
-            case verdict.WIN:
-                desc.color = Color.green;
-                desc.text = "COMPLETE! \n \n" + winDesc;
-                break;
-            case verdict.LOSS:
-                desc.color = Color.red;
-                desc.text = "SOMETHING'S NOT QUITE RIGHT...! \n \n" + winDesc;
-                break;
+            if((myPuzzleId + 1) < puzzleArray.EOTP_puzzles.Length)
+            {
+                print("New Puzz 2: " + (myPuzzleId + 1) + "/" + (puzzleArray.EOTP_puzzles.Length) );
+                Game.current = new Game(puzzleArray.EOTP_puzzles[myPuzzleId + 1]);
+                SceneManager.LoadScene("Main");
+            }
         }
+    }
+
+    public void exitMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 
     public void cancel()
     {
+        solved.SetActive(true);
+        nextPuzzleButton.SetActive(true);
+
         verdictObject.SetActive(false);
     }
 }

@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour {
     public Text puzzleWorldNameObj;
     public GameObject[] puzzleWorlds;
     public string[] puzzleWorldNames;
-    private int puzzleIndex = 0;
+    private int puzzleId = 0;
     public GameObject puzzleNext;
     public GameObject puzzlePrev;
     public static readonly string puzzlePrefKey = "puzzleDone";
@@ -77,7 +77,7 @@ public class MainMenu : MonoBehaviour {
     {
         mainMenu.SetActive(false);
         puzzles.SetActive(false);
-        puzzleIndex = 0;
+        puzzleId = 0;
 
         sandbox.SetActive(false);
         newWorld.SetActive(false);
@@ -144,18 +144,18 @@ public class MainMenu : MonoBehaviour {
             }
         }
     }
-    public void puzzlePickLevel(int index)
+    public void puzzlePickLevel(int id)
     {
-        puzzleIndex = index;
+        puzzleId = id;
     }
     public void puzzlePlay()
     {
-        if(puzzleIndex > 0)
+        if(puzzleId > 0)
         {
-            if(puzzleIndex < puzzleArray.EOTP_puzzles.Length + 1)
+            if(puzzleId < puzzleArray.EOTP_puzzles.Length + 1)
             {
                 //  print(PA.EOTP_puzzles.Length + "/" + PA.EOTP_puzzles[puzzleIndex - 1]);
-                Game.current = new Game(puzzleArray.EOTP_puzzles[puzzleIndex - 1]);
+                Game.current = new Game(puzzleArray.EOTP_puzzles[puzzleId]);
                 //print(Game.current.puzzle);
                 SceneManager.LoadScene("Main");
             }

@@ -2,13 +2,23 @@
 	"puzzles":
 	[
 		{
-			"name": "Tutorial",
-			"id": 1,
+			"name": "Tutorial: Controls and Mechanics",
+			"id": 0,
 			"length": 5,
 			"height": 5,
 			"desc": "Time to learn!",
 			"winDesc":"Got it all?",
-			"allowedTiles": [1, 2, 3],
+			"allowedTiles": [1, 2, 3, 4],
+			"IO": []
+		},
+		{
+			"name": "Tutorial: Puzzles",
+			"id": 1,
+			"length": 5,
+			"height": 5,
+			"desc": "Time to learn more!",
+			"winDesc":"Ready to rumble?",
+			"allowedTiles": [1, 2, 3, 4],
 			"IO": []
 		},
 		{
@@ -17,23 +27,23 @@
 			"length": 5,
 			"height": 5,
 			"desc": "Connect A to 1",
-			"winDesc":"Not that hard hard, was it?",
+			"winDesc":"Not that hard now, was it?",
 			"allowedTiles": [1, 2, 3, 4],
 			"IO":
 			[
 				{
-					"input": false, 
-					"tileId": 15, 
-					"spotIndex": 2, 
-					"dir": 3, 
+					"input": false,
+					"tileId": 15,
+					"spotIndex": 2,
+					"dir": 3,
 					"signal": [1, 0],
 					"sign": "A"
-				}, 
+				},
 				{
-					"input": true, 
-					"tileId": 18, 
-					"spotIndex": 22, 
-					"dir": 1, 
+					"input": true,
+					"tileId": 18,
+					"spotIndex": 22,
+					"dir": 1,
 					"signal": [1, 0],
 					"sign": "1"
 				}
@@ -45,23 +55,23 @@
 			"length": 5,
 			"height": 5,
 			"desc": "Connect A to 1",
-			"winDesc":"Not that hard hard, was it?",
+			"winDesc":"Real puzzles have curves",
 			"allowedTiles": [1, 2, 3, 4],
 			"IO":
 			[
 				{
-					"input": false, 
-					"tileId": 15, 
-					"spotIndex": 0, 
-					"dir": 3, 
+					"input": false,
+					"tileId": 15,
+					"spotIndex": 0,
+					"dir": 3,
 					"signal": [1, 0],
 					"sign":"A"
 				},
 				{
-					"input": true, 
+					"input": true,
 					"tileId": 18,
-					"spotIndex": 24, 
-					"dir": 1, 
+					"spotIndex": 24,
+					"dir": 1,
 					"signal": [1, 0],
 					"sign":"1"
 				}
@@ -69,35 +79,35 @@
 		},
 		{
 			"name": "03: One-Two",
-			"id": 3,
+			"id": 4,
 			"length": 5,
 			"height": 5,
 			"desc": "Connect A and B to 1",
-			"winDesc":"It's called an OR-Gate.",
+			"winDesc":"It's called an OR-Gate",
 			"allowedTiles": [1, 2, 3, 4],
 			"IO":
 			[
 				{
-					"input": false, 
-					"tileId": 15, 
-					"spotIndex": 1, 
-					"dir": 3, 
+					"input": false,
+					"tileId": 15,
+					"spotIndex": 1,
+					"dir": 3,
 					"signal": [1, 1, 0, 0],
 					"sign":"A"
 				},
 				{
-					"input": false, 
-					"tileId": 15, 
-					"spotIndex": 3, 
-					"dir": 3, 
+					"input": false,
+					"tileId": 15,
+					"spotIndex": 3,
+					"dir": 3,
 					"signal": [1, 0, 1, 0],
 					"sign":"A"
 				},
 				{
-					"input": true, 
+					"input": true,
 					"tileId": 18,
-					"spotIndex": 22, 
-					"dir": 1, 
+					"spotIndex": 22,
+					"dir": 1,
 					"signal": [1, 1, 1, 0],
 					"sign":"1"
 				}
@@ -105,43 +115,43 @@
 		},
 		{
 			"name": "04: Bridge",
-			"id": 4,
+			"id": 5,
 			"length": 5,
 			"height": 5,
 			"desc": "Connect A to 1 and B to 2",
-			"winDesc":"Useful, right?",
+			"winDesc":"He looked at it: \"It's like the wire just \"hops\" over the other one. I will call it the \"Hopwire\"",
 			"allowedTiles": [1, 2, 3, 4, 7],
 			"IO":
 			[
 				{
-					"input": false, 
-					"tileId": 15, 
-					"spotIndex": 2, 
-					"dir": 3, 
+					"input": false,
+					"tileId": 15,
+					"spotIndex": 2,
+					"dir": 3,
 					"signal": [1, 1, 0, 0],
 					"sign":"A"
 				},
 				{
-					"input": false, 
-					"tileId": 15, 
-					"spotIndex": 10, 
-					"dir": 0, 
+					"input": false,
+					"tileId": 15,
+					"spotIndex": 10,
+					"dir": 0,
 					"signal": [1, 0, 1, 0],
 					"sign":"B"
 				},
 				{
-					"input": true, 
+					"input": true,
 					"tileId": 18,
-					"spotIndex": 22, 
-					"dir": 1, 
+					"spotIndex": 22,
+					"dir": 1,
 					"signal": [1, 1, 0, 0],
 					"sign":"1"
 				},
 				{
-					"input": true, 
+					"input": true,
 					"tileId": 18,
-					"spotIndex": 14, 
-					"dir": 2, 
+					"spotIndex": 14,
+					"dir": 2,
 					"signal": [1, 0, 1, 0],
 					"sign":"2"
 				}
@@ -149,7 +159,7 @@
 		},
 				{
 			"name": "05: Not today",
-			"id": 5,
+			"id": 6,
 			"length": 5,
 			"height": 5,
 			"desc": "1 is only on when A is not",
@@ -158,26 +168,26 @@
 			"IO":
 			[
 				{
-					"input": false, 
-					"tileId": 15, 
-					"spotIndex": 2, 
-					"dir": 3, 
-					"signal": [1, 1, 0, 0],
+					"input": false,
+					"tileId": 15,
+					"spotIndex": 2,
+					"dir": 3,
+					"signal": [1, 0],
 					"sign":"A"
 				},
 				{
-					"input": true, 
+					"input": true,
 					"tileId": 18,
-					"spotIndex": 22, 
-					"dir": 1, 
-					"signal": [0, 0, 1, 1],
+					"spotIndex": 22,
+					"dir": 1,
+					"signal": [0, 1],
 					"sign":"1"
 				}
 			]
 		},
 		{
 			"name": "06: Neither here NOR there",
-			"id": 6,
+			"id": 7,
 			"length": 5,
 			"height": 5,
 			"desc": "1 is only on when neither A nor B is on",
@@ -186,26 +196,26 @@
 			"IO":
 			[
 				{
-					"input": false, 
-					"tileId": 15, 
-					"spotIndex": 1, 
-					"dir": 3, 
+					"input": false,
+					"tileId": 15,
+					"spotIndex": 1,
+					"dir": 3,
 					"signal": [1, 1, 0, 0],
 					"sign":"A"
 				},
 				{
-					"input": false, 
-					"tileId": 15, 
-					"spotIndex": 3, 
-					"dir": 3, 
+					"input": false,
+					"tileId": 15,
+					"spotIndex": 3,
+					"dir": 3,
 					"signal": [1, 0, 1, 0],
 					"sign":"B"
 				},
 				{
-					"input": true, 
+					"input": true,
 					"tileId": 18,
-					"spotIndex": 22, 
-					"dir": 1, 
+					"spotIndex": 22,
+					"dir": 1,
 					"signal": [0, 0, 0, 1],
 					"sign":"1"
 				}

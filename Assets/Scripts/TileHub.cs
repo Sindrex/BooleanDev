@@ -6,22 +6,21 @@ public class TileHub : MonoBehaviour {
 
     public Vector3 tileDimensions;
 
-    [SerializeField]
-    private string[] tileNames;
-
-    [SerializeField]
-    private GameObject[] tilePrefabs;
-
-    [SerializeField]
-    private int[] IOPickerExceptions;
-
+    public string[] tileNames;
+    public GameObject[] tilePrefabs;
+    public int[] IOPickerExceptions; //@Deprecated
     public List<int> actionbarBanned;
+    public int[] allowedTiles;
 
     private void Start()
     {
         if(tileNames.Length != tilePrefabs.Length)
         {
-            throw new System.Exception("TileHub: Prefab-list and names-list is not the same!");
+            throw new System.Exception("TileHub: Prefab-list and names-list is not the same length!");
+        }
+        if(Game.current != null && Game.current.puzzle != null)
+        {
+            allowedTiles = Game.current.puzzle.allowedTiles;
         }
     }
 

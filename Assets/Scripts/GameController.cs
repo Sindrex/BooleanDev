@@ -38,6 +38,7 @@ public class GameController : MonoBehaviour {
 
     //GUI and select
     public GameObject paused;
+    public PausedController pausedController;
     public ActionbarController AC;
     [SerializeField]
     private int startIndex = -1;
@@ -78,10 +79,11 @@ public class GameController : MonoBehaviour {
     public GameObject puzzlePlay;
     public GameObject puzzleObjectve;
     public GameObject ioPicker;
-    public PuzzleController PC;
+    public PuzzleController PC; //@DEPRECATED
 
     //EOTP puzzle
     public EOTP_PuzzleController ePC;
+    public PuzzleTruthTable puzzleTruth;
 
     //Undos
     public UndoController UC;
@@ -172,6 +174,7 @@ public class GameController : MonoBehaviour {
             }
             puzzlePlay.gameObject.SetActive(false);
             puzzleObjectve.gameObject.SetActive(false);
+            puzzleTruth.gameObject.SetActive(false);
             ioPicker.gameObject.SetActive(false);
             ioPicker.GetComponent<IOPicker>().isPuzzle = false;
         }
@@ -192,8 +195,8 @@ public class GameController : MonoBehaviour {
             ioPicker.gameObject.SetActive(false);
             tileIDs = new int[length * height];
             UtilBools.isPuzzle = true;
-            paused.GetComponent<PausedController>().worldOptionsButton.interactable = false;
-            paused.GetComponent<PausedController>().saveButton.interactable = false;
+            pausedController.worldOptionsButton.interactable = false;
+            pausedController.saveButton.interactable = false;
         }
 
         //Create the selectedtiles beforehand and put in cache
@@ -276,7 +279,7 @@ public class GameController : MonoBehaviour {
         {
             //print("GameController:Update(): SelectLock is on");
         }
-        else if (AC.getSelectedA() == 0) // && Input.GetKey(KeyCode.LeftShift))
+        else if (AC.selectedA == 0) // && Input.GetKey(KeyCode.LeftShift))
         {
             if (UtilBools.tileLock)
             {
@@ -1398,20 +1401,20 @@ public class GameController : MonoBehaviour {
 
         if (UtilBools.paused)
         {
-            paused.GetComponent<PausedController>().cancel();
+            pausedController.cancel();
         }
         else
         {
-            if (PC.PV.verdictObject.activeSelf)
+            if (ePC.PV.verdictObject.activeSelf)
             {
-                PC.PV.verdictObject.SetActive(false);
+                ePC.PV.verdictObject.SetActive(false);
             }
             if (compUI.isPlacerOn())
             {
                 return;
             }
             paused.SetActive(true); //Doesn't work first time???
-            AC.setSelectedA(0);
+            AC.selectedA = 0;
 
             UtilBools.pausedBools(Game.current, true);
 

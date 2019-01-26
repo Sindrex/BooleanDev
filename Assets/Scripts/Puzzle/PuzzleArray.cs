@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class PuzzleArray : MonoBehaviour {
 
-    public PuzzleCreator[] puzzles;
+    //public PuzzleCreator[] puzzles;
     public EOTP_PuzzleCreator[] EOTP_puzzles;
 
     // Use this for initialization
-    void Start () {
-        puzzles = new PuzzleCreator[4];
-        EOTP_puzzles = new EOTP_PuzzleCreator[4];
+    void Awake () {
+        //puzzles = new PuzzleCreator[4];
         //puzzleInit();
+
+        EOTP_puzzles = new EOTP_PuzzleCreator[4];
         EOTP_init();
 	}
 	
     //@Deprecated   
     private void puzzleInit()
     {
+        PuzzleCreator[] puzzles = new PuzzleCreator[10];
         int[][] puzzle1 = new int[][] { 
             new int[]{ 1, 15, 3, 0 },
             new int[]{ 3, 15, 3, 0 },
@@ -58,7 +60,7 @@ public class PuzzleArray : MonoBehaviour {
     private void EOTP_init()
     {
         EOTP_puzzles = ResourceLoader.loadJson<EOTP_Array>("/puzzles.json").puzzles;
-        print(EOTP_puzzles[0].ToString());
+        //print(EOTP_puzzles[0].ToString());
 
         /*
         EOTP_IOCreator[] io_0 = new EOTP_IOCreator[]

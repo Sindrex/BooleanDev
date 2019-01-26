@@ -15,6 +15,9 @@ public class PuzzleController : MonoBehaviour {
 
     public PuzzleObjective PO;
     public PuzzleVerdict PV;
+    public PuzzleTruthTable PTT;
+
+    //@DEPRECATED
 
     public void setupPuzzle(PuzzleCreator puzzle)
     {

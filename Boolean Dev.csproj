@@ -312,18 +312,18 @@
     <Compile Include="Assets\Scripts\DupeController.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\InputController.cs" />
+    <Compile Include="Assets\Scripts\Puzzle\DEPRECATED\PuzzleController.cs" />
+    <Compile Include="Assets\Scripts\Puzzle\DEPRECATED\PuzzleCreator.cs" />
     <Compile Include="Assets\Scripts\Puzzle\EOTP_IOCreator.cs" />
     <Compile Include="Assets\Scripts\Puzzle\EOTP_PuzzleController.cs" />
     <Compile Include="Assets\Scripts\Puzzle\EOTP_PuzzleCreator.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleArray.cs" />
-    <Compile Include="Assets\Scripts\Puzzle\PuzzleController.cs" />
-    <Compile Include="Assets\Scripts\Puzzle\PuzzleCreator.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleObjective.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzlePicker.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzlePlay.cs" />
+    <Compile Include="Assets\Scripts\Puzzle\PuzzleTruthTable.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleTutorial.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleVerdict.cs" />
-    <Compile Include="Assets\Scripts\ResourceLoader.cs" />
     <Compile Include="Assets\Scripts\Savefiles\Game.cs" />
     <Compile Include="Assets\Scripts\Savefiles\SaveLoad.cs" />
     <Compile Include="Assets\Scripts\TileHub.cs" />
@@ -363,6 +363,7 @@
     <Compile Include="Assets\Scripts\Undo\SingleTileUndo.cs" />
     <Compile Include="Assets\Scripts\Undo\Undo.cs" />
     <Compile Include="Assets\Scripts\Undo\UndoController.cs" />
+    <Compile Include="Assets\Scripts\Utility\ResourceLoader.cs" />
     <Compile Include="Assets\Scripts\Utility\UtilBools.cs" />
   </ItemGroup>
   <ItemGroup>
