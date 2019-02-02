@@ -59,8 +59,10 @@ public class PuzzlePicker : MonoBehaviour
 
     public void onClick()
     {
+        print("Clicked: " + id);
         if (locked)
         {
+            print("Locked: " + id);
             return;
         }
         MM.puzzlePickLevel(id);

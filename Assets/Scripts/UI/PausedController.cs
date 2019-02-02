@@ -11,6 +11,7 @@ public class PausedController : MonoBehaviour {
     public GameObject saved;
     public GameObject options;
     public GameObject worldOptions;
+    public GameObject exitDialogue;
 
     public Button worldOptionsButton;
     public Button saveButton;
@@ -53,6 +54,14 @@ public class PausedController : MonoBehaviour {
             UtilBools.paused = false;
             UtilBools.worldOptions = true;
         }
+        else
+        {
+            print("is puzzle");
+        }
+    }
+    public void toggleExitDialogue()
+    {
+        exitDialogue.SetActive(!exitDialogue.activeSelf);
     }
     public void exitToMenu()
     {
@@ -74,5 +83,12 @@ public class PausedController : MonoBehaviour {
         saved.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         saved.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if(exitDialogue.activeSelf && InputController.getInput(InputPurpose.UNIVERSAL_BACK)){
+            exitDialogue.SetActive(false);
+        }
     }
 }

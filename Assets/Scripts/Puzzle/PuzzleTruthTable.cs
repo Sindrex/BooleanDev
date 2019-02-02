@@ -8,7 +8,6 @@ public class PuzzleTruthTable : MonoBehaviour {
     public GameController GC;
     public GameObject textFather;
     public Text text;
-    public string displayName;
 
     // Use this for initialization
     void Start () {
@@ -35,12 +34,10 @@ public class PuzzleTruthTable : MonoBehaviour {
     private void OnMouseOver()
     {
         textFather.SetActive(true);
-        GC.changeItemName(displayName);
     }
 
     private void OnMouseExit()
     {
         textFather.SetActive(false);
-        GC.closeItemName();
     }
 }

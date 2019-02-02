@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class SwitchController : TileController{
+public class SwitchController : TileController
+{
 
     // Update is called once per frame
     void Update()

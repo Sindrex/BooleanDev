@@ -8,7 +8,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public GameController GC;
     public GameObject lockPrefab;
 
-    public EOTP_PuzzleCreator myPuzzle;
+    public EOTP_PuzzleCreator myPuzzle = null;
 
     public PuzzleObjective PO;
     public PuzzleVerdict PV;
@@ -31,6 +31,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
     {
         print("EOTP_PuzzleController:SetupPuzzle():!");
 
+        int inputIndex = 0, outputIndex = 0;
         for (int i = 0; i < puzzle.IO.Length; i++)//For each unit in length
         {
             GameObject prefab = GC.spawnSingle(puzzle.IO[i].tileId, puzzle.IO[i].spotIndex, puzzle.IO[i].dir);
@@ -40,6 +41,8 @@ public class EOTP_PuzzleController : MonoBehaviour {
             if(puzzle.IO[i].input)
             {
                 prefab.GetComponent<TileController>().myLabel = TileController.label.IN;
+                prefab.GetComponent<PInputController>().setSprite(inputIndex);
+                inputIndex++;
                 inputs.Add(puzzle.IO[i]);
                 inputObjs.Add(prefab);
 
@@ -50,6 +53,8 @@ public class EOTP_PuzzleController : MonoBehaviour {
             else
             {
                 prefab.GetComponent<TileController>().myLabel = TileController.label.OUT;
+                prefab.GetComponent<POutputController>().setSprite(outputIndex);
+                outputIndex++;
                 outputs.Add(puzzle.IO[i]);
                 outputObjs.Add(prefab);
             }
@@ -69,7 +74,14 @@ public class EOTP_PuzzleController : MonoBehaviour {
 
     public void puzzlePlay()
     {
-        StartCoroutine(puzzlePlayIEnum());
+        if(myPuzzle != null && myPuzzle.id >= 0)
+        {
+            StartCoroutine(puzzlePlayIEnum());
+        }
+        else
+        {
+            print("No puzzle!");
+        }
     }
 
     private IEnumerator puzzlePlayIEnum()

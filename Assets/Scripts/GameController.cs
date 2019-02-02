@@ -78,6 +78,7 @@ public class GameController : MonoBehaviour {
     //Puzzle
     public GameObject puzzlePlay;
     public GameObject puzzleObjectve;
+    public GameObject puzzleHint;
     public GameObject ioPicker;
     public PuzzleController PC; //@DEPRECATED
 
@@ -177,15 +178,17 @@ public class GameController : MonoBehaviour {
             puzzleTruth.gameObject.SetActive(false);
             ioPicker.gameObject.SetActive(false);
             ioPicker.GetComponent<IOPicker>().isPuzzle = false;
+            UtilBools.isPuzzle = false;
         }
         else //it is a puzzle
         {
             print(classTag + myPuzzle.name);
-            if(myPuzzle.id <= 1)
+            if(myPuzzle.id <= 0)
             {
                 //First puzzle
-                puzzlePlay.gameObject.SetActive(false);
-                puzzleObjectve.gameObject.SetActive(false);
+                puzzlePlay.SetActive(false);
+                puzzleObjectve.SetActive(false);
+                puzzleHint.SetActive(false);
             }
             length = myPuzzle.length;
             height = myPuzzle.height;

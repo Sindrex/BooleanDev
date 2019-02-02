@@ -314,13 +314,13 @@
     <Compile Include="Assets\Scripts\InputController.cs" />
     <Compile Include="Assets\Scripts\Puzzle\DEPRECATED\PuzzleController.cs" />
     <Compile Include="Assets\Scripts\Puzzle\DEPRECATED\PuzzleCreator.cs" />
+    <Compile Include="Assets\Scripts\Puzzle\DEPRECATED\PuzzlePlay.cs" />
     <Compile Include="Assets\Scripts\Puzzle\EOTP_IOCreator.cs" />
     <Compile Include="Assets\Scripts\Puzzle\EOTP_PuzzleController.cs" />
     <Compile Include="Assets\Scripts\Puzzle\EOTP_PuzzleCreator.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleArray.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleObjective.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzlePicker.cs" />
-    <Compile Include="Assets\Scripts\Puzzle\PuzzlePlay.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleTruthTable.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleTutorial.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleVerdict.cs" />
@@ -332,8 +332,9 @@
     <Compile Include="Assets\Scripts\Tiles\FloorTileController.cs" />
     <Compile Include="Assets\Scripts\Tiles\HopWireController.cs" />
     <Compile Include="Assets\Scripts\Tiles\InputBasedWire.cs" />
-    <Compile Include="Assets\Scripts\Tiles\IOController.cs" />
     <Compile Include="Assets\Scripts\Tiles\NotGateController.cs" />
+    <Compile Include="Assets\Scripts\Tiles\PInputController.cs" />
+    <Compile Include="Assets\Scripts\Tiles\POutputController.cs" />
     <Compile Include="Assets\Scripts\Tiles\RandomizerController.cs" />
     <Compile Include="Assets\Scripts\Tiles\SignController.cs" />
     <Compile Include="Assets\Scripts\Tiles\SwitchController.cs" />
@@ -342,6 +343,7 @@
     <Compile Include="Assets\Scripts\UI\ActionbarController.cs" />
     <Compile Include="Assets\Scripts\UI\ExpandButton.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
+    <Compile Include="Assets\Scripts\UI\HoverNameScript.cs" />
     <Compile Include="Assets\Scripts\UI\IO.cs" />
     <Compile Include="Assets\Scripts\UI\IOPicker.cs" />
     <Compile Include="Assets\Scripts\UI\MainMenu.cs" />

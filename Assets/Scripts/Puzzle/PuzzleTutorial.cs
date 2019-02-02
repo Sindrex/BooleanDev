@@ -12,6 +12,8 @@ public class PuzzleTutorial : MonoBehaviour {
 
     public string[] hintTexts;
     public Vector2[] hintSpots;
+    public string[] hintTexts2;
+    public Vector2[] hintSpots2;
 
     public EOTP_PuzzleCreator myPuzzle;
     public int tutStep = -1;
@@ -26,21 +28,40 @@ public class PuzzleTutorial : MonoBehaviour {
 
     public void nextHint()
     {
-        tutStep++;
-        print("NextHint: " + tutStep);
-        hintText.text = hintTexts[tutStep];
-        hint.GetComponent<RectTransform>().localPosition = hintSpots[tutStep];
-        if (tutStep >= hintTexts.Length - 1)
+        if(myPuzzle.id == 0)
         {
-            print("Last tutStep");
-            hintNextButton.interactable = false;
+            tutStep++;
+            print("NextHint: " + tutStep);
+            hintText.text = hintTexts[tutStep];
+            hint.GetComponent<RectTransform>().localPosition = hintSpots[tutStep];
+            if (tutStep >= hintTexts.Length - 1)
+            {
+                print("Last tutStep");
+                hintNextButton.interactable = false;
+            }
+        }
+        else
+        {
+            tutStep++;
+            print("NextHint: " + tutStep);
+            hintText.text = hintTexts2[tutStep];
+            hint.GetComponent<RectTransform>().localPosition = hintSpots2[tutStep];
+            if (tutStep >= hintTexts2.Length - 1)
+            {
+                print("Last tutStep");
+                hintNextButton.interactable = false;
+            }
         }
     }
 
     public void finish()
     {
-        print(MainMenu.puzzlePrefKey + "1");
-        PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + "1", 1);
-        SceneManager.LoadScene("Menu");
+        if(myPuzzle.id == 0)
+        {
+            print(MainMenu.puzzlePrefKey + "1");
+            PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + "1", 1);
+            SceneManager.LoadScene("Menu");
+        }
+        hint.SetActive(false);
     }
 }

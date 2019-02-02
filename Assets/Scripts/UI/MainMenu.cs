@@ -150,7 +150,7 @@ public class MainMenu : MonoBehaviour {
     }
     public void puzzlePlay()
     {
-        if(puzzleId > 0)
+        if(puzzleId >= 0)
         {
             if(puzzleId < puzzleArray.EOTP_puzzles.Length + 1)
             {

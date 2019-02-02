@@ -146,6 +146,21 @@ public class ComponentUI : MonoBehaviour {
         createButtons();
     }
 
+    public void toggleCompUI()
+    {
+        if (!scrollParent.activeSelf)
+        {
+            scrollParent.SetActive(true);
+            SaveLoadComp.LoadComp();
+            createButtons();
+        }
+        else
+        {
+            destroyButtons();
+            scrollParent.SetActive(false);
+        }
+    }
+
     public void updateUI()
     {
         destroyButtons();

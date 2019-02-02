@@ -10,7 +10,6 @@ public class PuzzleObjective : MonoBehaviour {
     public GameObject textFather;
     public Text header;
     public Text desc;
-    public string displayName;
 
     private void Start()
     {
@@ -31,12 +30,10 @@ public class PuzzleObjective : MonoBehaviour {
     private void OnMouseOver()
     {
         textFather.SetActive(true);
-        GC.changeItemName(displayName);
     }
 
     private void OnMouseExit()
     {
         textFather.SetActive(false);
-        GC.closeItemName();
     }
 }
