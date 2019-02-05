@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class PuzzleVerdict : MonoBehaviour {
 
+    public GameController GC;
+
     public GameObject verdictObject;
     public GameObject solved;
     public GameObject nextPuzzleButton;
@@ -23,6 +25,7 @@ public class PuzzleVerdict : MonoBehaviour {
     {
         this.myPuzzleId = myPuzzleId;
 
+        UtilBools.actionBarLock = true;
         verdictObject.SetActive(true);
 
         desc.color = Color.green;
@@ -36,6 +39,7 @@ public class PuzzleVerdict : MonoBehaviour {
     }
     public void openLoss()
     {
+        UtilBools.actionBarLock = true;
         verdictObject.SetActive(true);
 
         nextPuzzleButton.SetActive(false);
@@ -47,6 +51,7 @@ public class PuzzleVerdict : MonoBehaviour {
 
     public void nextPuzzle()
     {
+        UtilBools.actionBarLock = false;
         print("Going to next puzzle!");
         if(myPuzzleId >= 0)
         {
@@ -61,6 +66,7 @@ public class PuzzleVerdict : MonoBehaviour {
 
     public void exitMenu()
     {
+        UtilBools.actionBarLock = false;
         SceneManager.LoadScene("Menu");
     }
 
@@ -68,7 +74,9 @@ public class PuzzleVerdict : MonoBehaviour {
     {
         solved.SetActive(true);
         nextPuzzleButton.SetActive(true);
+        UtilBools.actionBarLock = false;
 
         verdictObject.SetActive(false);
     }
+
 }

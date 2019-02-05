@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ActionbarController : MonoBehaviour {
 
@@ -11,24 +12,21 @@ public class ActionbarController : MonoBehaviour {
     public GameObject tileFather;
 
     //Actionbar
-    public GameObject actionbarPrefab;
+    public GameObject selectedTileA;
+    public GameObject selectedTileS;
     public GameObject selectionbarPrefab;
 
     public GameObject actionbar;
     public GameObject[] actionbars;
     public int selectbarMaxItemsPerRow = 10;
     public GameObject selectbar;
-    public GameObject[] selectbars;
+    //public GameObject[] selectbars;
 
-    private GameObject[] activePrefabs;
-    private GameObject[] otherPrefabs;
+    public GameObject[] activePrefabs;
 
-    public int firstUnavailableA = 1;
+    public int firstUnavailableA = 2;
     public int selectedA = 0;
-    public readonly int maxSelectedA = 5;
-
-    public int selectedS = 0;
-    public int maxSelectedS;
+    public readonly int maxSelectedA = 10;
 
     public GameObject tiler;
 
@@ -48,63 +46,96 @@ public class ActionbarController : MonoBehaviour {
 
         activePrefabs = new GameObject[maxSelectedA - firstUnavailableA];
 
-        int rest = tileHub.getCount() - activePrefabs.Length - 1; //minus air
-        otherPrefabs = new GameObject[rest];
-
-        //int index = 0;
-        for(int i = 1; i < tileHub.getCount(); i++)
+        //Fill up actionbar
+        for(int i = 0; i < activePrefabs.Length; i++)
         {
-            bool useAirPuzzle = true;
-            int[] allowedTiles = tileHub.allowedTiles;
-            if (allowedTiles.Length > 0)
-            {
-                //print("yo");
-                for (int k = 0; k < allowedTiles.Length; k++)
-                {
-                    if (tileHub.getPrefab(i).GetComponent<TileController>().ID == allowedTiles[k])
-                    {
-                        useAirPuzzle = false;
-                    }
-                }
-            }
-            else
-            {
-                useAirPuzzle = false;
-            }
+            int tileId = i + 1; //from 1-10 (exclude air)
+            bool useAirPuzzle = puzzleUseAir(tileId);
 
-            bool banned = tileHub.actionbarBanned.Contains(i);
-
-            //NOT DONE 22.01.2019
-            int usePrefabIndex = i;
-            if (useAirPuzzle)
+            bool banned = tileHub.actionbarBanned.Contains(tileId);
+            if (!banned)
             {
-                usePrefabIndex = 0;
-            }
-
-            int b = i - 1;
-            if (b < activePrefabs.Length && !banned)
-            {
+                //print("Actionbar: Adding tileId: " + tileId);
                 //print("b: " + b + ", Length: " + activePrefabs.Length);
-                activePrefabs[b] = tileHub.getPrefab(usePrefabIndex);
-                actionbars[b + 1].transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = activePrefabs[b].GetComponent<SpriteRenderer>().sprite;
-            }
-            else if(!banned)
-            {
-                int selectIndex = b - activePrefabs.Length;
-                //print("i/is: " + i + "/" + selectIndex);
-                otherPrefabs[selectIndex] = tileHub.getPrefab(usePrefabIndex);
-                selectbars[selectIndex].transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = otherPrefabs[selectIndex].GetComponent<SpriteRenderer>().sprite;
+                if(useAirPuzzle)
+                {
+                    activePrefabs[i] = tileHub.getPrefab(0);
+                    actionbars[i + firstUnavailableA].GetComponent<Image>().color = Color.black;
+                    actionbars[i + firstUnavailableA].GetComponent<ActionBarItem>().tileId = 0;
+                }
+                else
+                {
+                    activePrefabs[i] = tileHub.getPrefab(tileId);
+                    actionbars[i + firstUnavailableA].GetComponent<Image>().sprite = activePrefabs[i].GetComponent<SpriteRenderer>().sprite;
+                    actionbars[i + firstUnavailableA].GetComponent<ActionBarItem>().tileId = tileId;
+                }
             }
         }
 
-        maxSelectedS = otherPrefabs.Length;
+        //Create and fill selectionbar for each tile there is (except banned ones)
+        int index = 0;
+        int row = 0;
+        for(int id = 0; id < tileHub.tilePrefabs.Length; id++)
+        {
+            GameObject tile = tileHub.getPrefab(id);
+
+            bool useAirPuzzle = puzzleUseAir(id);
+
+            bool banned = tileHub.actionbarBanned.Contains(id);
+            if (!banned)
+            {
+                GameObject prefab = Instantiate(selectionbarPrefab, selectbar.transform);
+                prefab.GetComponent<SelectbarController>().AC = this;
+                if (useAirPuzzle)
+                {
+                    prefab.GetComponent<SelectbarController>().tileId = 0;
+                    prefab.GetComponent<Image>().color = Color.black;
+                }
+                else
+                {
+                    prefab.GetComponent<SelectbarController>().tileId = id;
+                    prefab.GetComponent<Image>().sprite = tile.GetComponent<SpriteRenderer>().sprite;
+                }
+
+                //position
+                if (index >= selectbarMaxItemsPerRow)
+                {
+                    index = 0;
+                    row++;
+                }
+                prefab.transform.localPosition += new Vector3(50 * index, 50 * row, 0);
+                index++;
+            }
+        }
+        selectbar.SetActive(false);
+        selectedTileS.SetActive(false);
+    }
+
+    private bool puzzleUseAir(int id)
+    {
+        bool ok = true;
+        int[] allowedTiles = tileHub.allowedTiles;
+        if (allowedTiles.Length > 0)
+        {
+            //print("yo");
+            for (int k = 0; k < allowedTiles.Length; k++)
+            {
+                if (id == allowedTiles[k])
+                {
+                    ok = false;
+                }
+            }
+        }
+        else
+        {
+            ok = false;
+        }
+        return ok;
     }
 
     // Update is called once per frame
     void Update () {
         input();
-        actionBarSelect();
-        SelectBarSelect();
         updateTiler();
 	}
 
@@ -120,6 +151,7 @@ public class ActionbarController : MonoBehaviour {
         {
             print(classTag + "Reset");
             selectedA = 0;
+            actionBarSelect();
         }
         if (InputController.getInput(InputPurpose.ACTIONBAR_RIGHT)) //backward
         {
@@ -133,18 +165,10 @@ public class ActionbarController : MonoBehaviour {
                 tiler.transform.rotation = Quaternion.Euler(0, 0, 0);
                 closeTimer = MAX_CLOSE_TIMER;
                 showNameA();
+                actionBarSelect();
             }
         }
-        else if (InputController.tryNumbers() != -1)
-        {
-            if (!UtilBools.actionBarLock)
-            {
-                selectedA = InputController.tryNumbers();
-                closeTimer = MAX_CLOSE_TIMER;
-                showNameA();
-            }
-        }
-        if (InputController.getInput(InputPurpose.ACTIONBAR_LEFT))
+        else if (InputController.getInput(InputPurpose.ACTIONBAR_LEFT))
         {
             if (!UtilBools.actionBarLock)
             {
@@ -156,9 +180,29 @@ public class ActionbarController : MonoBehaviour {
                 tiler.transform.rotation = Quaternion.Euler(0, 0, 0);
                 closeTimer = MAX_CLOSE_TIMER;
                 showNameA();
+                actionBarSelect();
+            }
+        }
+        else if (InputController.tryNumbers() != -1)
+        {
+            if (!UtilBools.actionBarLock)
+            {
+                selectedA = InputController.tryNumbers();
+                closeTimer = MAX_CLOSE_TIMER;
+                showNameA();
+                actionBarSelect();
             }
         }
 
+        if (InputController.getInput(InputPurpose.SELECTIONBAR))
+        {
+            selectbar.SetActive(!selectbar.activeSelf);
+            selectedTileS.SetActive(selectbar.activeSelf);
+            UtilBools.selectLock = selectbar.activeSelf;
+            UtilBools.noPlaceTile = selectbar.activeSelf;
+        }
+
+        /*
         if (InputController.getInput(InputPurpose.SELECTIONBAR) && selectedA != 0)
         {
             selectbar.SetActive(true);
@@ -174,46 +218,14 @@ public class ActionbarController : MonoBehaviour {
             {
                 showNameA();
             }
-        }
-
-        if(InputController.getInput(InputPurpose.SELECTIONBAR_RIGHT) && selectedA != 0)
-        {
-            //print("yo!");
-            selectedS++;
-            if (selectedS >= maxSelectedS)
-            {
-                selectedS = 0;
-            }
-            closeTimer = MAX_CLOSE_TIMER;
-            showNameS();
-        }
-        else if (InputController.getInput(InputPurpose.SELECTIONBAR_LEFT) && selectedA != 0)
-        {
-            //print("yo!");
-            selectedS--;
-            if (selectedS < 0)
-            {
-                selectedS = maxSelectedS - 1;
-            }
-            closeTimer = MAX_CLOSE_TIMER;
-            showNameS();
-        }
-        else if (InputController.getInput(InputPurpose.SELECTIONBAR) && selectedA != 0)
-        {
-            if(InputController.tryNumbers() != -1)
-            {
-                selectedS = InputController.tryNumbers();
-                closeTimer = MAX_CLOSE_TIMER;
-                showNameS();
-            }
-        }
+        }*/
 
         //Rotating tiler
         if (InputController.getInput(InputPurpose.TILE_ROTATE_RIGHT))
         {
             rotate(-1);
         }
-        if (InputController.getInput(InputPurpose.TILE_ROTATE_LEFT))
+        else if (InputController.getInput(InputPurpose.TILE_ROTATE_LEFT))
         {
             rotate(1);
         }
@@ -221,7 +233,6 @@ public class ActionbarController : MonoBehaviour {
         //For placing and deleting
         RaycastHit2D[] hits;
         hits = Physics2D.RaycastAll(tiler.transform.position, new Vector3(0,0,-1), 100.0F);
-
         for (int i = 0; i < hits.Length; i++)
         {
             //print("got a hit");
@@ -273,15 +284,13 @@ public class ActionbarController : MonoBehaviour {
             case 0:
                 GC.changeItemName("Select");
                 break;
+            case 1:
+                GC.changeItemName("Move");
+                break;
             default:
-                GC.changeItemName(tileHub.getName(activePrefabs[selectedA - 1].GetComponent<TileController>().ID));
+                GC.changeItemName(tileHub.getName(activePrefabs[selectedA - firstUnavailableA].GetComponent<TileController>().ID));
                 break;
         }
-    }
-
-    private void showNameS()
-    {
-        GC.changeItemName(tileHub.getName(otherPrefabs[selectedS].GetComponent<TileController>().ID));
     }
 
     private IEnumerator closeDisplayName()
@@ -301,17 +310,17 @@ public class ActionbarController : MonoBehaviour {
     {
         if (tiler.gameObject.activeSelf && hit.GetComponent<FloorTileController>().spotIndex != prevSpotIndex)
         {
-            if (activePrefabs[selectedA - 1].GetComponent<TileController>().ID == 0)
+            if (activePrefabs[selectedA - firstUnavailableA].GetComponent<TileController>().ID == 0)
             {
                 return;
             }
             prevSpotIndex = hit.GetComponent<FloorTileController>().spotIndex;
             audioCon.playTilePlacedSFX();
 
-            GameObject a = Instantiate(activePrefabs[selectedA - 1], tiler.transform.position, Quaternion.identity);
+            GameObject a = Instantiate(activePrefabs[selectedA - firstUnavailableA], tiler.transform.position, Quaternion.identity);
             a.GetComponent<TileController>().place(hit);
 
-            int dir = getDir(actionbars[selectedA].transform.GetChild(0).transform);
+            int dir = getDir(actionbars[selectedA].transform);
             a.GetComponent<TileController>().setDir(dir);
 
             a.transform.parent = tileFather.transform;
@@ -323,47 +332,18 @@ public class ActionbarController : MonoBehaviour {
 
     private void actionBarSelect()
     {
-        actionbars[selectedA].transform.GetChild(1).gameObject.SetActive(true);
-        for (int i = 0; i < maxSelectedA; i++)
+        //Position the select right + reset rotation
+        selectedTileA.transform.position = actionbars[selectedA].transform.position;
+        foreach(GameObject go in actionbars)
         {
-            if(i != selectedA)
-            {
-                actionbars[i].transform.GetChild(0).transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                actionbars[i].transform.GetChild(1).gameObject.SetActive(false);
-            }
-        }
-    }
-
-    private void SelectBarSelect()
-    {
-        if (InputController.getInput(InputPurpose.SELECTIONBAR) && selectedA != 0)
-        {
-            selectbars[selectedS].transform.GetChild(1).gameObject.SetActive(true);
-
-            for (int i = 0; i < maxSelectedS; i++)
-            {
-                if (i != selectedS)
-                {
-                    selectbars[i].transform.GetChild(1).gameObject.SetActive(false);
-                }
-            }
-        }
-        if (InputController.getInput(InputPurpose.SELECTIONBAR_UP) && selectedA != 0 && otherPrefabs[selectedS].GetComponent<TileController>().ID != 0)
-        {
-            Sprite tempSprite = actionbars[selectedA].transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
-            actionbars[selectedA].transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = selectbars[selectedS].transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
-            selectbars[selectedS].transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = tempSprite;
-
-            GameObject temp = otherPrefabs[selectedS];
-            otherPrefabs[selectedS] = activePrefabs[selectedA - 1];
-            activePrefabs[selectedA - 1] = temp;
+            go.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
 
     public void rotate(int val) //val should be -1, 0 or 1
     {
         //print("Rotating!");
-        actionbars[selectedA].transform.GetChild(0).transform.Rotate(0, 0, 90 * val);
+        actionbars[selectedA].transform.Rotate(0, 0, 90 * val);
         tiler.transform.Rotate(0, 0, 90 * val);
     }
 
@@ -375,10 +355,10 @@ public class ActionbarController : MonoBehaviour {
             return;
         }
 
-        if(selectedA != 0)
+        if(selectedA != 0 && selectedA != 1)
         {
             tiler.SetActive(true);
-            tiler.GetComponent<SpriteRenderer>().sprite = actionbars[selectedA].transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+            tiler.GetComponent<SpriteRenderer>().sprite = actionbars[selectedA].GetComponent<Image>().sprite;
         }
         else
         {

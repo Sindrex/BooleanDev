@@ -59,7 +59,11 @@ public class PuzzleArray : MonoBehaviour {
 
     private void EOTP_init()
     {
-        EOTP_puzzles = ResourceLoader.loadJson<EOTP_Array>("/puzzles.json").puzzles;
+        //EOTP_puzzles = ResourceLoader.loadJson<EOTP_Array>("/puzzles.json").puzzles;
+        List<EOTP_PuzzleCreator> temp = ResourceLoader.loadJsonFolder<EOTP_PuzzleCreator>("/Puzzles/");
+        temp.Sort((x, y) => x.id.CompareTo(y.id));
+        EOTP_puzzles = temp.ToArray();
+
         //print(EOTP_puzzles[0].ToString());
 
         /*

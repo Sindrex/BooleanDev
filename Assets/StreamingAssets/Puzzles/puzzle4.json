@@ -1,0 +1,48 @@
+{
+  "name": "04: Bridge",
+  "id": 4,
+  "length": 5,
+  "height": 5,
+  "desc": "Connect A to 1 and B to 2",
+  "winDesc":"He looked at it: \"It's like the wire just \"hops\" over the other one. I will call it the Hop-Wire\"",
+  "allowedTiles": [1, 2, 3, 4, 7],
+  "IO":
+  [
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 2,
+      "heightIndex": 0,
+      "dir": 0,
+      "signal": [1, 1, 0, 0],
+      "sign":"A"
+    },
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 0,
+      "heightIndex": 2,
+      "dir": 1,
+      "signal": [1, 0, 1, 0],
+      "sign":"B"
+    },
+    {
+      "input": true,
+      "tileId": 18,
+      "lengthIndex": 2,
+      "heightIndex": 4,
+      "dir": 0,
+      "signal": [1, 1, 0, 0],
+      "sign":"1"
+    },
+    {
+      "input": true,
+      "tileId": 18,
+      "lengthIndex": 4,
+      "heightIndex": 2,
+      "dir": 1,
+      "signal": [1, 0, 1, 0],
+      "sign":"2"
+    }
+  ]
+}

@@ -34,7 +34,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
         int inputIndex = 0, outputIndex = 0;
         for (int i = 0; i < puzzle.IO.Length; i++)//For each unit in length
         {
-            GameObject prefab = GC.spawnSingle(puzzle.IO[i].tileId, puzzle.IO[i].spotIndex, puzzle.IO[i].dir);
+            GameObject prefab = GC.spawnSingle(puzzle.IO[i].tileId, puzzle.IO[i].getSpotIndex(puzzle.length), puzzle.IO[i].dir);
             prefab.GetComponent<TileController>().locked = true;
 
             print("EOTP_PuzzleController:SetupPuzzle():spawning i: " + i + "/" + prefab.name);

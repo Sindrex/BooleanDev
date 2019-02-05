@@ -8,14 +8,26 @@ public static class ResourceLoader {
 
     public static readonly string path = Application.streamingAssetsPath;
 
-    public static List<T> loadJsonList<T>(string filename)
+    public static List<T> loadJsonFolder<T>(string folderpath)
     {
-        using (StreamReader r = new StreamReader(path + filename))
+        List<T> myList = new List<T>();
+
+        var info = new DirectoryInfo(path + folderpath);
+        var fileInfo = info.GetFiles();
+        foreach(FileInfo file in fileInfo)
         {
-            string json = r.ReadToEnd();
-            List<T> items = JsonUtility.FromJson<List<T>>(json);
-            return items;
+            if (!file.Name.Contains(".meta"))
+            {
+                using (StreamReader r = new StreamReader(file.DirectoryName + "/" + file.Name))
+                {
+
+                    string json = r.ReadToEnd();
+                    T item = JsonUtility.FromJson<T>(json);
+                    myList.Add(item);
+                }
+            }
         }
+        return myList;
     }
 
     public static T loadJson<T>(string filename)

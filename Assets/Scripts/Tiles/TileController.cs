@@ -69,7 +69,7 @@ public abstract class TileController : MonoBehaviour
 
     protected void OnMouseDrag()
     {
-        if (locked || UtilBools.tileLock)
+        if (locked || UtilBools.tileLock || AC.selectedA != 1)
         {
             return;
         }

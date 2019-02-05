@@ -47,8 +47,8 @@ public class ComponentUI : MonoBehaviour {
     {
         nameInput.text = "";
         confirmComponent.SetActive(false);
-        UtilBools.camMoveLock = true;
-        UtilBools.actionBarLock = true;
+        UtilBools.camMoveLock = false;
+        UtilBools.actionBarLock = false;
     }
 
     public void saveComp()
@@ -135,7 +135,6 @@ public class ComponentUI : MonoBehaviour {
         SaveLoadComp.SaveComp(comp);
         closeConfirmComp();
         updateUI();
-        UtilBools.actionBarLock = false;
     }
 
     public void openCompUI()
@@ -172,7 +171,7 @@ public class ComponentUI : MonoBehaviour {
     {
         destroyButtons();
         scrollParent.SetActive(false);
-        openButton.SetActive(true);
+        //openButton.SetActive(true);
     }
 
     private void createButtons()

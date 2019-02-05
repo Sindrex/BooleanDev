@@ -323,4 +323,12 @@ public class MainMenu : MonoBehaviour {
         }
         SceneManager.LoadScene("Menu");
     }
+    public void unlockPuzzles()
+    {
+        for (int i = 0; i < 1000; i++)
+        {
+            PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + i, 1);
+        }
+        SceneManager.LoadScene("Menu");
+    }
 }

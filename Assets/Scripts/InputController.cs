@@ -43,7 +43,7 @@ public static class InputController {
             case InputPurpose.ZOOM_IN:
                 return Input.GetAxis("Mouse ScrollWheel") > 0f && Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.Space);
             case InputPurpose.SELECTIONBAR:
-                return Input.GetKey(parseKeyCode(OptionController.controlsOK[5]));
+                return Input.GetKeyDown(parseKeyCode(OptionController.controlsOK[5]));
             case InputPurpose.SELECTIONBAR_LEFT:
                 return Input.GetAxis("Mouse ScrollWheel") > 0f && Input.GetKey(KeyCode.Space) && !Input.GetKey(KeyCode.LeftShift);
             case InputPurpose.SELECTIONBAR_RIGHT:
