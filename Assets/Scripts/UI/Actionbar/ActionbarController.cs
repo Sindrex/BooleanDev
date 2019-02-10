@@ -15,6 +15,8 @@ public class ActionbarController : MonoBehaviour {
     public GameObject selectedTileA;
     public GameObject selectedTileS;
     public GameObject selectionbarPrefab;
+    public GameObject selectionbarRowPrefab;
+    public float actionTileSize;
 
     public GameObject actionbar;
     public GameObject[] actionbars;
@@ -75,6 +77,7 @@ public class ActionbarController : MonoBehaviour {
         //Create and fill selectionbar for each tile there is (except banned ones)
         int index = 0;
         int row = 0;
+        Instantiate(selectionbarRowPrefab, selectbar.transform);
         for(int id = 0; id < tileHub.tilePrefabs.Length; id++)
         {
             GameObject tile = tileHub.getPrefab(id);
@@ -84,7 +87,19 @@ public class ActionbarController : MonoBehaviour {
             bool banned = tileHub.actionbarBanned.Contains(id);
             if (!banned)
             {
+                //position
+                if (index >= selectbarMaxItemsPerRow)
+                {
+                    index = 0;
+                    row++;
+                    GameObject rowPrefab = Instantiate(selectionbarRowPrefab, selectbar.transform);
+                    rowPrefab.transform.localPosition += new Vector3(0, actionTileSize * row, 0);
+                }
+
                 GameObject prefab = Instantiate(selectionbarPrefab, selectbar.transform);
+                prefab.transform.localPosition += new Vector3(actionTileSize * index, actionTileSize * row, 0);
+                index++;
+
                 prefab.GetComponent<SelectbarController>().AC = this;
                 if (useAirPuzzle)
                 {
@@ -96,15 +111,6 @@ public class ActionbarController : MonoBehaviour {
                     prefab.GetComponent<SelectbarController>().tileId = id;
                     prefab.GetComponent<Image>().sprite = tile.GetComponent<SpriteRenderer>().sprite;
                 }
-
-                //position
-                if (index >= selectbarMaxItemsPerRow)
-                {
-                    index = 0;
-                    row++;
-                }
-                prefab.transform.localPosition += new Vector3(50 * index, 50 * row, 0);
-                index++;
             }
         }
         selectbar.SetActive(false);

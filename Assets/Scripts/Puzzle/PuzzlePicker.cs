@@ -16,7 +16,7 @@ public class PuzzlePicker : MonoBehaviour
 
     //Hover
     public Text hoverText;
-    private string myText = "";
+    //private string myText = "";
 
     private void Start()
     {

@@ -86,21 +86,41 @@ public static class InputController {
         {
             return 0;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             return 1;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             return 2;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             return 3;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             return 4;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            return 5;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            return 6;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            return 7;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            return 8;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            return 9;
         }
         return -1;
     }

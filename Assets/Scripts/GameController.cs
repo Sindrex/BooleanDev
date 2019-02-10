@@ -76,15 +76,15 @@ public class GameController : MonoBehaviour {
     public bool changedLocked;
 
     //Puzzle
-    public GameObject puzzlePlay;
-    public GameObject puzzleObjectve;
-    public GameObject puzzleHint;
+    //public GameObject puzzlePlay;
+    //public GameObject puzzleObjectve;
+    //public GameObject puzzleHint;
     public GameObject ioPicker;
-    public PuzzleController PC; //@DEPRECATED
+    //public PuzzleController PC; //@DEPRECATED
 
     //EOTP puzzle
     public EOTP_PuzzleController ePC;
-    public PuzzleTruthTable puzzleTruth;
+    //public PuzzleTruthTable puzzleTruth;
 
     //Undos
     public UndoController UC;
@@ -173,9 +173,7 @@ public class GameController : MonoBehaviour {
                 //print("GameController:Start():EOTP-testing: Not making new floor this time!");
                 makeNewFloor(length, height);
             }
-            puzzlePlay.gameObject.SetActive(false);
-            puzzleObjectve.gameObject.SetActive(false);
-            puzzleTruth.gameObject.SetActive(false);
+            ePC.close();
             ioPicker.gameObject.SetActive(false);
             ioPicker.GetComponent<IOPicker>().isPuzzle = false;
             UtilBools.isPuzzle = false;
@@ -186,9 +184,7 @@ public class GameController : MonoBehaviour {
             if(myPuzzle.id <= 0)
             {
                 //First puzzle
-                puzzlePlay.SetActive(false);
-                puzzleObjectve.SetActive(false);
-                puzzleHint.SetActive(false);
+                ePC.close();
             }
             length = myPuzzle.length;
             height = myPuzzle.height;
@@ -1102,7 +1098,7 @@ public class GameController : MonoBehaviour {
 
     private void checkExpand()
     {
-        if (puzzlePlay.activeSelf)
+        if (UtilBools.isPuzzle)
         {
             return;
         }

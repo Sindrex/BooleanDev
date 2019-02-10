@@ -1,0 +1,59 @@
+{
+  "name": "15: Comparator",
+  "id": 15,
+  "length": 30,
+  "height": 10,
+  "desc": "Create a full-adder with optional subtraction (A+B and A-B). A and B each represents two 1-bit binary numbers (0, 1). C is the toggle for subtraction. 1 and 2 represents the sum of A and B, which is a 2-bit binary number (0, 1, 2 or 3). See truth table.",
+  "winDesc":"Remember.",
+  "allowedTiles": [1, 2, 3, 4, 6, 7],
+  "IO":
+  [
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 0,
+      "heightIndex": 2,
+      "dir": 1,
+      "signal": [1, 1, 1, 1, 0, 0, 0, 0],
+      "sign":"A"
+    },
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 0,
+      "heightIndex": 3,
+      "dir": 1,
+      "signal": [1, 1, 0, 0, 1, 1, 0, 0],
+      "sign":"B"
+    },
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 0,
+      "heightIndex": 4,
+      "dir": 1,
+      "signal": [1, 0, 1, 0, 1, 0, 1, 0],
+      "sign":"C"
+    },
+    {
+      "input": true,
+      "tileId": 18,
+      "spotIndex": 31,
+      "lengthIndex": 5,
+      "heightIndex": 2,
+      "dir": 1,
+      "signal": [0, 0, 1, 1, 0, 0, 0, 0],
+      "sign":"1"
+    },
+    {
+      "input": true,
+      "tileId": 18,
+      "spotIndex": 34,
+      "lengthIndex": 5,
+      "heightIndex": 3,
+      "dir": 1,
+      "signal": [0, 1, 0, 0, 0, 0, 0, 0],
+      "sign":"2"
+    }
+  ]
+}

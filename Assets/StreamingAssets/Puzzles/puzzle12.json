@@ -1,11 +1,11 @@
 {
   "name": "12: Decoder",
   "id": 12,
-  "length": 8,
-  "height": 5,
-  "desc": "1 + 1 +1 = 3",
-  "winDesc":"A calculator is born!",
-  "allowedTiles": [1, 2, 3, 4, 6, 7],
+  "length": 12,
+  "height": 10,
+  "desc": "1 is on if only A is on. 2 is on if only B is on. 3 is on if both A and B is on.",
+  "winDesc":"Successfully decoded... Hook it up Scotty!",
+  "allowedTiles": [1, 2, 3, 4, 6, 7, 8],
   "IO":
   [
     {
@@ -14,7 +14,7 @@
       "lengthIndex": 0,
       "heightIndex": 0,
       "dir": 1,
-      "signal": [1, 1, 1, 1, 0, 0, 0, 0],
+      "signal": [1, 1, 0, 0],
       "sign":"A"
     },
     {
@@ -23,35 +23,35 @@
       "lengthIndex": 0,
       "heightIndex": 2,
       "dir": 1,
-      "signal": [1, 1, 0, 0, 1, 1, 0, 0],
-      "sign":"B"
-    },
-    {
-      "input": false,
-      "tileId": 19,
-      "lengthIndex": 0,
-      "heightIndex": 4,
-      "dir": 1,
-      "signal": [1, 0, 1, 0, 1, 0, 1, 0],
+      "signal": [1, 0, 1, 0],
       "sign":"B"
     },
     {
       "input": true,
       "tileId": 18,
-      "lengthIndex": 7,
-      "heightIndex": 1,
-      "dir": 1,
-      "signal": [1, 0, 0, 1, 0, 1, 1, 0],
+      "lengthIndex": 3,
+      "heightIndex": 9,
+      "dir": 0,
+      "signal": [0, 1, 0, 0],
       "sign":"1"
     },
     {
       "input": true,
       "tileId": 18,
       "lengthIndex": 7,
-      "heightIndex": 3,
-      "dir": 1,
-      "signal": [1, 1, 1, 0, 1, 0, 0, 0],
+      "heightIndex": 9,
+      "dir": 0,
+      "signal": [0, 0, 1, 0],
       "sign":"2"
+    },
+    {
+      "input": true,
+      "tileId": 18,
+      "lengthIndex": 11,
+      "heightIndex": 9,
+      "dir": 0,
+      "signal": [1, 0, 0, 0],
+      "sign":"3"
     }
   ]
 }

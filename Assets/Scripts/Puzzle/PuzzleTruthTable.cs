@@ -20,7 +20,7 @@ public class PuzzleTruthTable : MonoBehaviour {
         for(int i = 0; i < puzzle.IO.Length; i++)
         {
             EOTP_IOCreator myIO = puzzle.IO[i];
-            string myRes = myIO.sign;
+            string myRes = myIO.sign + ":";
             for(int j = 0; j < myIO.signal.Length; j++)
             {
                 myRes += " | " + myIO.signal[j];

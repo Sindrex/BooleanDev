@@ -15,6 +15,13 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public PuzzleTutorial PT;
     public PuzzleTruthTable PTT;
 
+    //Gameobjects
+    public GameObject puzzleBG;
+    public GameObject puzzleObjectiveButton;
+    public GameObject puzzlePlayButton;
+    public GameObject puzzleTruthButton;
+    public GameObject puzzleHint;
+
     public float EOTP_WAIT_TIME = 1;
     public float EOTP_MIDDLE_WAIT_TIME_MS = 1;
     private int EOTPPlayTurn = 0;
@@ -26,6 +33,15 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public List<EOTP_IOCreator> outputs = new List<EOTP_IOCreator>();
     public List<GameObject> outputObjs = new List<GameObject>();
     private List<List<int>> realInput = new List<List<int>>();
+
+    public void close()
+    {
+        puzzleBG.SetActive(false);
+        puzzleObjectiveButton.SetActive(false);
+        puzzlePlayButton.SetActive(false);
+        puzzleTruthButton.SetActive(false);
+        puzzleHint.SetActive(false);
+    }
 
     public void setupPuzzle(EOTP_PuzzleCreator puzzle)
     {

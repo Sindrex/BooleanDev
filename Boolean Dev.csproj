@@ -359,6 +359,7 @@
     <Compile Include="Assets\Scripts\UI\Options\OptionController.cs" />
     <Compile Include="Assets\Scripts\UI\PausedController.cs" />
     <Compile Include="Assets\Scripts\UI\SignManager.cs" />
+    <Compile Include="Assets\Scripts\UI\SystemController.cs" />
     <Compile Include="Assets\Scripts\UI\WorldOptions\ExpandController.cs" />
     <Compile Include="Assets\Scripts\UI\WorldOptions\MiscController.cs" />
     <Compile Include="Assets\Scripts\UI\WorldOptions\StatsController.cs" />
