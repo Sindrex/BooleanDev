@@ -349,6 +349,7 @@
     <Compile Include="Assets\Scripts\UI\HoverNameScript.cs" />
     <Compile Include="Assets\Scripts\UI\IO.cs" />
     <Compile Include="Assets\Scripts\UI\IOPicker.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\HoverTipMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\MenuButtonController.cs" />
     <Compile Include="Assets\Scripts\UI\MoverController.cs" />
@@ -369,6 +370,7 @@
     <Compile Include="Assets\Scripts\Undo\SingleTileUndo.cs" />
     <Compile Include="Assets\Scripts\Undo\Undo.cs" />
     <Compile Include="Assets\Scripts\Undo\UndoController.cs" />
+    <Compile Include="Assets\Scripts\Utility\RenderLayerPicker.cs" />
     <Compile Include="Assets\Scripts\Utility\ResourceLoader.cs" />
     <Compile Include="Assets\Scripts\Utility\UtilBools.cs" />
   </ItemGroup>

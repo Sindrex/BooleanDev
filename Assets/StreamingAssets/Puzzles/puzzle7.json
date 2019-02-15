@@ -1,8 +1,11 @@
 {
-  "name": "07: Do not work together",
+  "name": "Do not work together",
+  "devName":"07",
   "id": 7,
   "length": 5,
   "height": 5,
+  "minDone": 4,
+  "info":"No additional info",
   "desc": "1 is on always, except when both A and B is",
   "winDesc":"Cannot get anything done around here.",
   "allowedTiles": [1, 2, 3, 4, 6, 7],

@@ -39,16 +39,15 @@ public class ComponentUI : MonoBehaviour {
             return;
         }
         confirmComponent.SetActive(true);
-        UtilBools.camMoveLock = true;
-        UtilBools.actionBarLock = true;
+        GC.AC.toggleSelectionBar(false);
+        UtilBools.playerInteractLock(true);
     }
 
     public void closeConfirmComp()
     {
         nameInput.text = "";
         confirmComponent.SetActive(false);
-        UtilBools.camMoveLock = false;
-        UtilBools.actionBarLock = false;
+        UtilBools.playerInteractLock(false);
     }
 
     public void saveComp()
@@ -60,7 +59,7 @@ public class ComponentUI : MonoBehaviour {
         }
         else if (GC.selectedHeigth <= 0 || GC.selectedLength <= 0)
         {
-            print("No selection");
+            print("No selection: h/l: " + GC.selectedHeigth + "/" + GC.selectedLength);
             return;
         }
 
@@ -69,7 +68,7 @@ public class ComponentUI : MonoBehaviour {
         comp.height = GC.selectedHeigth;
         comp.length = GC.selectedLength + 1;
 
-        //print("H: " + comp.height + ", L: " + comp.length);
+        print("H: " + comp.height + ", L: " + comp.length);
 
         int arraySize = comp.height*comp.length;
         int[] tileIDs = new int[arraySize];
@@ -131,6 +130,7 @@ public class ComponentUI : MonoBehaviour {
         comp.tileSetting = tileSetting;
         comp.signTexts = signTexts;
         comp.tileLabels = tileLabels;
+        comp.date = "" + System.DateTime.Today.Day + "." + System.DateTime.Today.Month + "." + System.DateTime.Today.Year;
 
         SaveLoadComp.SaveComp(comp);
         closeConfirmComp();

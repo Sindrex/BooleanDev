@@ -31,7 +31,15 @@ public class PuzzleVerdict : MonoBehaviour {
         desc.color = Color.green;
         desc.text = winDesc;
 
-        if ((myPuzzleId + 1) >= puzzleArray.EOTP_puzzles.Length)
+        int puzzlesDone = 0;
+        for (int i = 0; i < 1000; i++)
+        {
+            if (PlayerPrefs.GetInt(MainMenu.puzzlePrefKey + i, 0) == 1)
+            {
+                puzzlesDone++;
+            }
+        }
+        if ((myPuzzleId + 1) >= puzzleArray.EOTP_puzzles.Length || puzzlesDone < puzzleArray.EOTP_puzzles[myPuzzleId + 1].minDone)
         {
             print("New Puzz: " + (myPuzzleId + 1) + "/" + (puzzleArray.EOTP_puzzles.Length));
             nextPuzzleButton.GetComponent<Button>().interactable = false;

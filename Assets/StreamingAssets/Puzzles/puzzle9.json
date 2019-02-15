@@ -1,8 +1,11 @@
 {
-  "name": "09: Exclusivity",
+  "name": "Exclusivity",
+  "devName":"09",
   "id": 9,
   "length": 9,
   "height": 5,
+  "minDone": 8,
+  "info":"No additional info",
   "desc": "1 is only on when A or B is on, but not both",
   "winDesc":"Exclusive OR, is it?",
   "allowedTiles": [1, 2, 3, 4, 6, 7],

@@ -58,7 +58,7 @@ public class ComponentSaveUIButtonController : MonoBehaviour {
             CUI.tipStats.text = myComp.length + "\n" +
                                 myComp.height + "\n" +
                                 number + "\n" +
-                                "yyyy.mm.dd";
+                                myComp.date;
         }
     }
 

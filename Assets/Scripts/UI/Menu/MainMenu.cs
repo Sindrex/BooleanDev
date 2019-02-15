@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour {
     public PuzzleArray puzzleArray;
 
     public GameObject mainMenu;
+    public GameObject hoverTip;
 
     //Puzzles
     public GameObject puzzles;
@@ -18,6 +19,9 @@ public class MainMenu : MonoBehaviour {
     public GameObject puzzleNext;
     public GameObject puzzlePrev;
     public static readonly string puzzlePrefKey = "puzzleDone";
+    public int puzzlesDone = 0;
+    public int[] puzzlesDoneNeeded;
+    public Text puzzlesDoneLock;
 
     //Sandbox
     public GameObject sandbox;
@@ -34,14 +38,19 @@ public class MainMenu : MonoBehaviour {
     //Options
     public GameObject options;
     public OptionController optionCon;
-    public Camera cam;
     public Vector3 optionsPos;
+    private bool isOptions;
+    public float optionsCamSize;
+
+    //Credits
+    public Vector3 creditsPos;
+
+    //Cam movement
+    public Camera cam;
     public Vector3 mainPos;
     private bool camLerp;
     private float lerpFactor = 0f;
-    private bool isOptions;
     public float mainCamSize;
-    public float optionsCamSize;
 
     private readonly string FIRST_TIMER_KEY = "firstTimer"; 
 
@@ -71,6 +80,15 @@ public class MainMenu : MonoBehaviour {
         openMainMenu();
         SaveLoad.Load();
         setDefaultOptions();
+
+        puzzlesDone = 0;
+        for (int i = 0; i < 1000; i++)
+        {
+            if (PlayerPrefs.GetInt(puzzlePrefKey + i, 0) == 1)
+            {
+                puzzlesDone++;
+            }
+        }
     }
 
     public void closeAll()
@@ -85,6 +103,7 @@ public class MainMenu : MonoBehaviour {
         deleteWorld.SetActive(false);
 
         options.SetActive(false);
+        hoverTip.SetActive(false);
 
         GameObject[] savedGamesPrefabs = GameObject.FindGameObjectsWithTag("saves");
         for(int i = 0; i < savedGamesPrefabs.Length; i++)
@@ -104,6 +123,12 @@ public class MainMenu : MonoBehaviour {
         closeAll();
         puzzles.SetActive(true);
         puzzleWorldNameObj.text = puzzleWorldNames[0];
+        puzzleDoneLockUpdate(0);
+        for(int i = 0; i < puzzleWorlds.Length; i++)
+        {
+            puzzleWorlds[i].SetActive(false);
+        }
+        puzzleWorlds[0].SetActive(true);
     }
     public void puzzleNextWorld()
     {
@@ -116,6 +141,7 @@ public class MainMenu : MonoBehaviour {
                 puzzleWorlds[i].SetActive(false);
                 puzzleWorlds[i + 1].SetActive(true);
                 puzzleWorldNameObj.text = puzzleWorldNames[i + 1];
+                puzzleDoneLockUpdate(i + 1);
                 if (i + 1 == puzzleWorlds.Length - 1)
                 {
                     puzzleNext.SetActive(false);
@@ -136,6 +162,7 @@ public class MainMenu : MonoBehaviour {
                 puzzleWorlds[i].SetActive(false);
                 puzzleWorlds[i - 1].SetActive(true);
                 puzzleWorldNameObj.text = puzzleWorldNames[i - 1];
+                puzzleDoneLockUpdate(i - 1);
                 if(i - 1 == 0)
                 {
                     puzzlePrev.SetActive(false);
@@ -144,15 +171,24 @@ public class MainMenu : MonoBehaviour {
             }
         }
     }
+    public void puzzleDoneLockUpdate(int i)
+    {
+        puzzlesDoneLock.text = puzzlesDone + "/" + puzzlesDoneNeeded[i];
+        if (puzzlesDone >= puzzlesDoneNeeded[i])
+        {
+            puzzlesDoneLock.color = Color.green;
+        }
+        else
+        {
+            puzzlesDoneLock.color = Color.red;
+        }
+    }
     public void puzzlePickLevel(int id)
     {
         puzzleId = id;
-    }
-    public void puzzlePlay()
-    {
-        if(puzzleId >= 0)
+        if (puzzleId >= 0)
         {
-            if(puzzleId < puzzleArray.EOTP_puzzles.Length + 1)
+            if (puzzleId < puzzleArray.EOTP_puzzles.Length + 1)
             {
                 //  print(PA.EOTP_puzzles.Length + "/" + PA.EOTP_puzzles[puzzleIndex - 1]);
                 Game.current = new Game(puzzleArray.EOTP_puzzles[puzzleId]);
@@ -164,6 +200,10 @@ public class MainMenu : MonoBehaviour {
                 throw new System.Exception("Puzzle not implemented");
             }
         }
+    }
+    public void puzzlePlay()
+    {
+        print("@DEPRECTAED");
     }
 
     public void openSandbox()

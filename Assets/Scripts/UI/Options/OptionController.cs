@@ -88,7 +88,6 @@ public class OptionController : MonoBehaviour {
         closeAll();
 
         UtilBools.options = false;
-        GC.togglePaused();
 
         gameObject.SetActive(false);
     }
@@ -115,7 +114,6 @@ public class OptionController : MonoBehaviour {
         gameObject.SetActive(false);
 
         UtilBools.options = false;
-        GC.togglePaused();
     }
     private void closeAll()
     {

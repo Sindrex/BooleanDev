@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PausedController : MonoBehaviour {
 
+    //@DEPRECATED
+
     public GameObject pausedContainer;
     public GameController GC;
     public GameObject saved;

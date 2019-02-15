@@ -69,7 +69,7 @@ public class WorldOptionsController : MonoBehaviour {
         closeAll();
 
         UtilBools.worldOptions = false;
-        GC.togglePaused();
+        UtilBools.pausedBools(Game.current, false);
 
         gameObject.SetActive(false);
     }
@@ -80,6 +80,5 @@ public class WorldOptionsController : MonoBehaviour {
         gameObject.SetActive(false);
 
         UtilBools.worldOptions = false;
-        GC.togglePaused();
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class UndoController : MonoBehaviour {
 
-    public GameplayOptionsController GOC;
     public Undo root; //Stack: Linked list
     public GameController GC;
 

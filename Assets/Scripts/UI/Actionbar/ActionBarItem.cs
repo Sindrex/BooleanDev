@@ -12,7 +12,16 @@ public class ActionBarItem : MonoBehaviour {
     public int index;
     public int tileId;
 
-    private void OnMouseEnter()
+    private void OnMouseOver()
+    {
+        if (UtilBools.actionBarLock)
+        {
+            return;
+        }
+        AC.GC.changeItemName(AC.tileHub.getName(tileId));
+    }
+
+    void OnMouseDown()
     {
         if (UtilBools.actionBarLock)
         {

@@ -1,8 +1,11 @@
 {
-  "name": "11: Full-Adder",
+  "name": "Full-Adder",
+  "devName":"11",
   "id": 11,
   "length": 20,
   "height": 10,
+  "minDone": 8,
+  "info":"No additional info",
   "desc": "2 is only on if either A and B, A and C or B and C is on. 1 is only on if either A, B or C is on. If A, B and C is on, both 1 and 2 is on.",
   "winDesc":"A calculator is born! A bit of info: C in this case is what's called 'Carry In', and is usually connected to another full-adder so you can add bigger numbers",
   "allowedTiles": [1, 2, 3, 4, 6, 7],

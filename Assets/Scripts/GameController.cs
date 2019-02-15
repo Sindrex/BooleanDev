@@ -37,9 +37,11 @@ public class GameController : MonoBehaviour {
     private bool loaded = false;
 
     //GUI and select
-    public GameObject paused;
-    public PausedController pausedController;
+    //public GameObject paused; //@DEPRECATED
+    //public PausedController pausedController; //@DEPRECATED
+    public SystemController SC;
     public ActionbarController AC;
+
     [SerializeField]
     private int startIndex = -1;
     public List<GameObject> selectedTiles = new List<GameObject>();
@@ -194,8 +196,9 @@ public class GameController : MonoBehaviour {
             ioPicker.gameObject.SetActive(false);
             tileIDs = new int[length * height];
             UtilBools.isPuzzle = true;
-            pausedController.worldOptionsButton.interactable = false;
-            pausedController.saveButton.interactable = false;
+            SC.close();
+            //pausedController.worldOptionsButton.interactable = false;
+            //pausedController.saveButton.interactable = false;
         }
 
         //Create the selectedtiles beforehand and put in cache
@@ -264,10 +267,6 @@ public class GameController : MonoBehaviour {
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            togglePaused();
-        }
         if (InputController.getInput(InputPurpose.UNDO))
         {
             UC.undo();
@@ -849,7 +848,7 @@ public class GameController : MonoBehaviour {
     {
         if(selectedTiles.Count <= 0)
         {
-            print(classTag + "deleteSelected(): selectedTiles.Count <= 0");
+            //print(classTag + "deleteSelected(): selectedTiles.Count <= 0");
             return;
         }
         print(classTag + "deleteSelected(): Deleting selected");
@@ -1388,37 +1387,6 @@ public class GameController : MonoBehaviour {
             //fselectedFather.transform.position += new Vector3(1.6f, 0, 0);
         }
         recentDupe = true;
-    }
-
-    public void togglePaused()
-    {
-        //print("GameController:togglePaused()");
-        if (UtilBools.options || UtilBools.worldOptions)
-        {
-            return;
-        }
-
-        if (UtilBools.paused)
-        {
-            pausedController.cancel();
-        }
-        else
-        {
-            if (ePC.PV.verdictObject.activeSelf)
-            {
-                ePC.PV.verdictObject.SetActive(false);
-            }
-            if (compUI.isPlacerOn())
-            {
-                return;
-            }
-            paused.SetActive(true); //Doesn't work first time???
-            AC.selectedA = 0;
-
-            UtilBools.pausedBools(Game.current, true);
-
-            //print("done pause");
-        }
     }
 
     public void changeItemName(string name)

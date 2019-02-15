@@ -11,7 +11,7 @@ public static class SaveLoad{
     public static string savePath = Application.persistentDataPath + "/savedGames.bool";
     //C:/Users/Sindre/AppData/Locallow/Sindrex/Boolean
 
-    public static void Save()
+    public static bool Save()
     {
         //Gonna overwrite if save file already exists
         Game save = alreadySaved(Game.current.gameName);
@@ -30,18 +30,27 @@ public static class SaveLoad{
             savedGames.Add(Game.current);
         }
 
-        createFile();
+        return createFile();
     }
 
-    private static void createFile()
+    private static bool createFile()
     {
         Debug.Log("Creating new file...");
-        BinaryFormatter bf = new BinaryFormatter();
-        //Application.persistentDataPath is a string, so if you wanted you can put that into debug.log if you want to know where save games are located
-        //Debug.Log("Path: "+ Application.persistentDataPath);
-        FileStream file = File.Create(savePath);
-        bf.Serialize(file, SaveLoad.savedGames);
-        file.Close();
+        try
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            //Application.persistentDataPath is a string, so if you wanted you can put that into debug.log if you want to know where save games are located
+            //Debug.Log("Path: "+ Application.persistentDataPath);
+            FileStream file = File.Create(savePath);
+            bf.Serialize(file, SaveLoad.savedGames);
+            file.Close();
+            return true;
+        }
+        catch(Exception e)
+        {
+            Debug.Log(e.StackTrace);
+        }
+        return false;
     }
 
     public static bool removeSave(string saveName)

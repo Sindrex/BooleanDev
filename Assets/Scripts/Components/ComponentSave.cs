@@ -16,6 +16,7 @@ public class ComponentSave {
     public int height;
 
     public TileController.label[] tileLabels;
+    public string date;
 
     public ComponentSave()
     {
@@ -31,5 +32,7 @@ public class ComponentSave {
         height = 0;
 
         tileLabels = new TileController.label[0];
+
+        date = "" + System.DateTime.Today.Day + "." + System.DateTime.Today.Month + "." + System.DateTime.Today.Year;
     }
 }

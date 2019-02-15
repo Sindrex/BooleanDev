@@ -1,8 +1,11 @@
 {
-  "name": "05: Not today",
+  "name": "NOT today",
+  "devName":"05",
   "id": 5,
   "length": 5,
   "height": 5,
+  "minDone": 4,
+  "info":"No additional info",
   "desc": "1 is only on when A is not",
   "winDesc":"The NOT-Gate is the basis of all other gates in Boolean.",
   "allowedTiles": [1, 2, 3, 4, 6, 7],

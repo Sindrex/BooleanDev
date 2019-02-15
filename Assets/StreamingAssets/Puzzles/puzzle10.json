@@ -1,8 +1,11 @@
 {
-  "name": "10: Half-Adder",
+  "name": "Half-Adder",
+  "devName":"10",
   "id": 10,
   "length": 10,
   "height": 7,
+  "minDone": 8,
+  "info":"No additional info",
   "desc": "2 is only on if both A and B is. 1 is only on if either A or B is on.",
   "winDesc":"Great! Time to expand it.",
   "allowedTiles": [1, 2, 3, 4, 6, 7],

@@ -8,15 +8,14 @@ public class PuzzlePicker : MonoBehaviour
     public int id;
     public MainMenu MM;
 
+    public Text myName;
+
     //Completed
     public GameObject myCheckedPrefab;
     private GameObject myChecked;
     public GameObject lockedPrefab;
     private bool locked = true;
-
-    //Hover
-    public Text hoverText;
-    //private string myText = "";
+    public int minCompleted = 0;
 
     private void Start()
     {
@@ -30,12 +29,6 @@ public class PuzzlePicker : MonoBehaviour
             locked = false;
         }
 
-        int prevDone = PlayerPrefs.GetInt(MainMenu.puzzlePrefKey + (id - 1));
-        int prev2Done = PlayerPrefs.GetInt(MainMenu.puzzlePrefKey + (id - 2));
-        if (prevDone > 0 || prev2Done > 0 || id == 0 || id == 1 || id == 2)
-        {
-            locked = false;
-        }
         if(MM.puzzleArray.EOTP_puzzles.Length - 1 < id)
         {
             //print("yo: " + id + " > " + MM.puzzleArray.EOTP_puzzles.Length);
@@ -45,16 +38,18 @@ public class PuzzlePicker : MonoBehaviour
             GetComponent<Button>().interactable = false;
             return;
         }
+        else if (MM.puzzlesDone >= MM.puzzleArray.EOTP_puzzles[id].minDone)
+        {
+            locked = false;
+        }
 
         if (locked)
         {
             Instantiate(lockedPrefab, transform);
             GetComponent<Image>().color = Color.red;
+            GetComponent<Button>().interactable = false;
         }
-        else
-        {
-            GetComponent<Image>().color = Color.green;
-        }
+        myName.text = MM.puzzleArray.EOTP_puzzles[id].name;
     }
 
     public void onClick()
@@ -66,23 +61,5 @@ public class PuzzlePicker : MonoBehaviour
             return;
         }
         MM.puzzlePickLevel(id);
-        foreach(GameObject go in GameObject.FindGameObjectsWithTag("PuzzlePicker"))
-        {
-            if(go.GetComponent<Image>().color == Color.yellow)
-            {
-                go.GetComponent<Image>().color = Color.green;
-            }
-        }
-        this.GetComponent<Image>().color = Color.yellow;
-    }
-
-    private void OnMouseEnter()
-    {
-        //hoverText.text = myText;
-    }
-
-    private void OnMouseExit()
-    {
-        //hoverText.text = "";
     }
 }

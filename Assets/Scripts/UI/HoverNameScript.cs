@@ -9,6 +9,7 @@ public class HoverNameScript : MonoBehaviour {
     public GameController GC;
     public string displayName;
 
+
     private void OnMouseOver()
     {
         GC.changeItemName(displayName);

@@ -33,9 +33,9 @@ public class ActionbarController : MonoBehaviour {
     public GameObject tiler;
 
     //Showname
-    public readonly double MAX_CLOSE_TIMER = 1.5f;
-    private double closeTimer = 1.5f;
-    private bool runningClose = false;
+    public readonly double MAX_CLOSE_TIMER = 1.0f;
+    private double closeTimer = 1.0f;
+    private bool showName = false;
 
     public AudioController audioCon;
 
@@ -143,16 +143,16 @@ public class ActionbarController : MonoBehaviour {
     void Update () {
         input();
         updateTiler();
-	}
+
+        if (showName)
+        {
+            showName = false;
+            StartCoroutine(closeDisplayName());
+        }
+    }
 
     private void input()
     {
-        if (!runningClose)
-        {
-            runningClose = true;
-            StartCoroutine(closeDisplayName());
-        }
-
         if (InputController.getInput(InputPurpose.RESET_ACTIONBAR))
         {
             print(classTag + "Reset");
@@ -200,31 +200,10 @@ public class ActionbarController : MonoBehaviour {
             }
         }
 
-        if (InputController.getInput(InputPurpose.SELECTIONBAR))
+        if (InputController.getInput(InputPurpose.SELECTIONBAR) && !UtilBools.selectionbarLock)
         {
-            selectbar.SetActive(!selectbar.activeSelf);
-            selectedTileS.SetActive(selectbar.activeSelf);
-            UtilBools.selectLock = selectbar.activeSelf;
-            UtilBools.noPlaceTile = selectbar.activeSelf;
+            toggleSelectionBar(!selectbar.activeSelf);
         }
-
-        /*
-        if (InputController.getInput(InputPurpose.SELECTIONBAR) && selectedA != 0)
-        {
-            selectbar.SetActive(true);
-            if (!runningClose)
-            {
-                showNameS();
-            }
-        }
-        else
-        {
-            selectbar.SetActive(false);
-            if (!runningClose)
-            {
-                showNameA();
-            }
-        }*/
 
         //Rotating tiler
         if (InputController.getInput(InputPurpose.TILE_ROTATE_RIGHT))
@@ -249,7 +228,7 @@ public class ActionbarController : MonoBehaviour {
                 //print("got a hit: " + hit.transform.name);
                 if (InputController.getInput(InputPurpose.DELETE_TILE) && !UtilBools.tileLock)
                 {
-                    print(classTag + "Destroying!");
+                    //print(classTag + "Destroying!");
                     TileController tile = hit.transform.GetComponent<TileController>();
                     int setting = 0;
                     string text = "";
@@ -283,6 +262,14 @@ public class ActionbarController : MonoBehaviour {
         }
     }
 
+    public void toggleSelectionBar(bool state)
+    {
+        selectbar.SetActive(state);
+        selectedTileS.SetActive(state);
+        UtilBools.selectLock = state;
+        UtilBools.noPlaceTile = state;
+    }
+
     private void showNameA()
     {
         switch (selectedA)
@@ -297,6 +284,9 @@ public class ActionbarController : MonoBehaviour {
                 GC.changeItemName(tileHub.getName(activePrefabs[selectedA - firstUnavailableA].GetComponent<TileController>().ID));
                 break;
         }
+        StopAllCoroutines();
+        closeTimer = MAX_CLOSE_TIMER;
+        showName = true;
     }
 
     private IEnumerator closeDisplayName()
@@ -306,10 +296,10 @@ public class ActionbarController : MonoBehaviour {
             yield return new WaitForSeconds(0.1f);
             closeTimer -= 0.1f;
         }
-
+        
         GC.closeItemName();
-        closeTimer = 1;
-        runningClose = false;
+        closeTimer = MAX_CLOSE_TIMER;
+        //print("yo!");
     }
 
     private void spawnTile(GameObject hit)

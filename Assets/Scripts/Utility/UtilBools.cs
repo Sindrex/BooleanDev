@@ -8,10 +8,12 @@ public static class UtilBools {
     public static bool noPlaceTile = false;
     public static bool selectLock = false;
     public static bool camMoveLock = false;
+    public static bool tileLock = false;
+    public static bool selectionbarLock = false;
+
     public static bool paused = false;
     public static bool options = false;
     public static bool worldOptions = false;
-    public static bool tileLock = false;
     public static bool expandLoading = false;
     public static bool isPuzzle = false;
 
@@ -28,6 +30,16 @@ public static class UtilBools {
         {
             setDefaultGame(game);
         }
+    }
+
+    public static void playerInteractLock(bool state)
+    {
+        actionBarLock = state;
+        noPlaceTile = state;
+        tileLock = state;
+        selectLock = state;
+        camMoveLock = state;
+        selectionbarLock = state;
     }
 
     public static void setDefaultGame(Game game)

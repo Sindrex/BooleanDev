@@ -26,14 +26,12 @@ public class ComponentOverlay : MonoBehaviour {
 
         //TileHub hub = GameObject.Find("Manager").GetComponent<TileHub>();
 
-        float x = floorTiles[0].transform.position.x - (myComp.length / 2.0f);
-        float y = floorTiles[0].transform.position.y + (myComp.height / 2.0f);
+        //float x = //floorTiles[0].transform.position.x - (myComp.length / 2.0f);
+        //float y = //floorTiles[0].transform.position.y + (myComp.height / 2.0f);
 
         //print("x/y: " + x + "/" + y);
 
-        transform.position = new Vector3(x, y, -2);
-        transform.localScale = new Vector3(myComp.length, myComp.height, 1);
-
+        List<GameObject> overlayTiles = new List<GameObject>();
         //Create overlaytiles
         foreach (GameObject go in floorTiles)
         {
@@ -42,7 +40,16 @@ public class ComponentOverlay : MonoBehaviour {
             prefab.GetComponent<OverlayTile>().myTile = go;
             prefab.GetComponent<OverlayTile>().pop = pop;
             prefab.GetComponent<OverlayTile>().myOverlay = this;
+            overlayTiles.Add(prefab);
         }
+
+        float x = (overlayTiles[0].transform.localPosition.x + overlayTiles[myComp.length - 1].transform.localPosition.x)/2;//floorTiles[0].transform.position.x - (myComp.length / 2.0f);
+        //float x = overlayTiles[floorTiles.Count - 1].transform.position.x + dx;
+        float y = (overlayTiles[floorTiles.Count - myComp.length].transform.localPosition.y - overlayTiles[0].transform.localPosition.y)/2;//floorTiles[0].transform.position.y + (myComp.height / 2.0f);
+        //float y = overlayTiles[floorTiles.Count - myComp.length].transform.position.y + dy;
+        //print(x +"/"+ y);
+        transform.localPosition = new Vector3(x, y, -2);
+        transform.localScale = new Vector3(myComp.length * 1.6f, myComp.height * 1.6f, 1);
 
         foreach (GameObject go in tiles)
         {
@@ -50,7 +57,7 @@ public class ComponentOverlay : MonoBehaviour {
         }
 
         nameMesh.text = myComp.name;
-        nameMesh.transform.position = new Vector3(x, y, -2);
+        nameMesh.transform.localPosition = new Vector3(x, y, -2);
     }
 
     /*

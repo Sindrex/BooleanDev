@@ -20,7 +20,11 @@ public class EOTP_PuzzleCreator
     public int[] allowedTiles;
 
     [SerializeField]
+    public int minDone;
+    [SerializeField]
     public string desc;
+    [SerializeField]
+    public string info;
     [SerializeField]
     public string winDesc;
 
