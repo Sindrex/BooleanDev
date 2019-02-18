@@ -5,7 +5,7 @@
   "length": 12,
   "height": 10,
   "minDone": 10,
-  "info":"No additional info",
+  "info":"A decoder, in this case a binary-to-decimal decoder, seperates the different combinations of inputs into seperate lines of wire.",
   "desc": "1 is on if only A is on. 2 is on if only B is on. 3 is on if both A and B is on.",
   "winDesc":"Successfully decoded... Hook it up Scotty!",
   "allowedTiles": [1, 2, 3, 4, 6, 7, 8],

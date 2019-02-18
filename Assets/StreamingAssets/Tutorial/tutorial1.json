@@ -1,0 +1,37 @@
+{
+  "devNote":"Get in line",
+  "puzzleId":"1",
+  "exitOnfinish": false,
+  "hints":[
+    {
+      "text":"Welcome to the first real puzzle! First you will be guided through how puzzles work.",
+      "x":0,
+      "y":0
+    },
+    {
+      "text":"At the top of the screen you can see (from left) the Truth Table, Check Logic button and the Objective.",
+      "x":0,
+      "y":0
+    },
+    {
+      "text":"The Truth Table is shown on hover. It shows what input is required for a given output.",
+      "x":0,
+      "y":0
+    },
+    {
+      "text":"The Check Logic (Play) button checks your current creation against the truth table to determine if it satisfies the objective.",
+      "x":0,
+      "y":0
+    },
+    {
+      "text":"The Objective is shown on hover and tells you in plain text what the puzzle requires.",
+      "x":0,
+      "y":0
+    },
+    {
+      "text":"That is it! Give it a try on this puzzle and good luck on your Boolean journey!",
+      "x":0,
+      "y":0
+    }
+  ]
+}

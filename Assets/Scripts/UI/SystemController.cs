@@ -18,9 +18,13 @@ public class SystemController : MonoBehaviour {
     //every frame
     private void Update()
     {
-        if (exitDialogue.activeSelf && InputController.getInput(InputPurpose.UNIVERSAL_BACK))
+        if (!exitDialogue.activeSelf && InputController.getInput(InputPurpose.UNIVERSAL_BACK))
         {
-            exitDialogue.SetActive(false);
+            exitDialogue.SetActive(true);
+        }
+        else if (exitDialogue.activeSelf && InputController.getInput(InputPurpose.UNIVERSAL_BACK))
+        {
+            SceneManager.LoadScene("Menu");
         }
     }
 

@@ -12,6 +12,7 @@ public abstract class TileController : MonoBehaviour
     public static readonly int RIGHT = 3;
 
     public bool locked = false;
+    public bool compLocked = false;
     public int ID = 0;
 
     [SerializeField]
@@ -67,6 +68,7 @@ public abstract class TileController : MonoBehaviour
 
     protected abstract void tryPower(bool state);
 
+    /*
     protected void OnMouseDrag()
     {
         if (locked || UtilBools.tileLock || AC.selectedA != 1)
@@ -76,11 +78,9 @@ public abstract class TileController : MonoBehaviour
         //Set drag true, get this' position based on mouseposition!
         drag = true;
         dragged = true;
-        /*
-         * Old:
-        float z = 7.9f;
-        transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, z));
-        */
+        //Old:
+        //float z = 7.9f;
+        //transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, z));
 
         RaycastHit2D[] hits;
         hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, -10), 100.0F);
@@ -124,7 +124,7 @@ public abstract class TileController : MonoBehaviour
             print("Removing Compoverlay!");
             GC.compUI.removeOverlay(myCompOverlay);
         }
-    }
+    }*/
 
     protected void rotate()
     {
@@ -268,27 +268,24 @@ public abstract class TileController : MonoBehaviour
         return dir;
     }
 
-    public void place(GameObject other)
+    public bool place(GameObject other)
     {
-        //print("Placed!");
-        transform.position = other.transform.position + new Vector3(0, 0, -1);
-        placed = true;
-        homeObj = other;
-        homeObj.GetComponent<FloorTileController>().busy = true;
-
-        Color temp = GetComponent<SpriteRenderer>().color;
-        temp.a = 1f;
-        GetComponent<SpriteRenderer>().color = temp;
-
-        spotIndex = homeObj.GetComponent<FloorTileController>().spotIndex;
+        spotIndex = other.GetComponent<FloorTileController>().spotIndex;
 
         if(GC.tiles[spotIndex] != null)
         {
-            //print("Placing... Destroying: " + GC.tiles[spotIndex].name);
-            if(GC.tiles[spotIndex] != this.gameObject && !GC.tiles[spotIndex].GetComponent<TileController>().locked)
+            print("Placing... Trying to destroy: " + GC.tiles[spotIndex].name);
+            if(GC.tiles[spotIndex] != this.gameObject)
             {
-                Destroy(GC.tiles[spotIndex]);
-                GC.tiles[spotIndex] = this.gameObject;
+                if (GC.tiles[spotIndex].GetComponent<TileController>().destroyMe())
+                {
+                    GC.tiles[spotIndex] = this.gameObject;
+                }
+                else
+                {
+                    destroyMe();
+                    return false;
+                }
             }
         }
         else
@@ -300,13 +297,25 @@ public abstract class TileController : MonoBehaviour
             GC.UC.addUndo(new SingleTileUndo(prevSpotIndex, spotIndex));
             dragged = false;
         }
+
+        //print("Placed!");
+        transform.position = other.transform.position + new Vector3(0, 0, 0);
+        placed = true;
+        homeObj = other;
+        homeObj.GetComponent<FloorTileController>().busy = true;
+
+        Color temp = GetComponent<SpriteRenderer>().color;
+        temp.a = 1f;
+        GetComponent<SpriteRenderer>().color = temp;
+
+        return true;
     }
 
-    public virtual void destroyMe()
+    public virtual bool destroyMe()
     {
         if (locked)
         {
-            return;
+            return false;
         }
 
         //print("DestroyMe: " + this.name + "/" + homeObj.name + "/" + spotIndex);
@@ -326,6 +335,7 @@ public abstract class TileController : MonoBehaviour
         }
 
         Destroy(this.gameObject);
+        return true;
     }
 
     public void dragAsSelected()

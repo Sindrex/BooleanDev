@@ -10,4 +10,12 @@ public class DupeController : MonoBehaviour {
     {
         GC.duplicateSelected();
     }
+
+    private void Update()
+    {
+        if (InputController.getInput(InputPurpose.INTERACT_TILE))
+        {
+            GC.duplicateSelected();
+        }
+    }
 }

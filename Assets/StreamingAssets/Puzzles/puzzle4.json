@@ -5,7 +5,6 @@
   "length": 5,
   "height": 5,
   "minDone": 0,
-  "info":"Crossing wires happen all the time",
   "desc": "When A is on 1 is on, when B is on 2 is on",
   "winDesc":"He looked at it: \"It's like the wire just \"hops\" over the other one. I will call it the Hop-Wire\"",
   "allowedTiles": [1, 2, 3, 4, 7],

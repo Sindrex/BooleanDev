@@ -50,7 +50,7 @@ public class PuzzleVerdict : MonoBehaviour {
         UtilBools.actionBarLock = true;
         verdictObject.SetActive(true);
 
-        nextPuzzleButton.SetActive(false);
+        nextPuzzleButton.GetComponent<Button>().interactable = false;
         solved.SetActive(false);
 
         desc.color = Color.red;

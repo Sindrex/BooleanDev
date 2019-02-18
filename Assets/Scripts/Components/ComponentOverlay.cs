@@ -53,7 +53,10 @@ public class ComponentOverlay : MonoBehaviour {
 
         foreach (GameObject go in tiles)
         {
-            go.GetComponent<TileController>().myCompOverlay = transform.parent.gameObject;
+            if(go != null)
+            {
+                go.GetComponent<TileController>().myCompOverlay = transform.parent.gameObject;
+            }
         }
 
         nameMesh.text = myComp.name;

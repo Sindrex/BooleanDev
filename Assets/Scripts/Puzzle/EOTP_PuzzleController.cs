@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class EOTP_PuzzleController : MonoBehaviour {
@@ -22,6 +23,11 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public GameObject puzzleTruthButton;
     public GameObject puzzleHint;
 
+    //Info
+    public GameObject puzzleInfo;
+    public GameObject infoButton;
+    public Text infoText;
+
     public float EOTP_WAIT_TIME = 1;
     public float EOTP_MIDDLE_WAIT_TIME_MS = 1;
     private int EOTPPlayTurn = 0;
@@ -41,6 +47,9 @@ public class EOTP_PuzzleController : MonoBehaviour {
         puzzlePlayButton.SetActive(false);
         puzzleTruthButton.SetActive(false);
         puzzleHint.SetActive(false);
+        PT.closeAll();
+        puzzleInfo.SetActive(false);
+        infoButton.SetActive(false);
     }
 
     public void setupPuzzle(EOTP_PuzzleCreator puzzle)
@@ -82,10 +91,33 @@ public class EOTP_PuzzleController : MonoBehaviour {
         myPuzzle = puzzle;
         PO.setup(puzzle);
         PTT.setup(puzzle);
-        if(myPuzzle.id <= 1) //id 0 and 1
+
+        infoButton.SetActive(!myPuzzle.info.Trim().Equals(""));
+        infoText.text = myPuzzle.info;
+        puzzleInfo.SetActive(false);
+
+        List<PuzzleTutorialHints> temp = ResourceLoader.loadJsonFolder<PuzzleTutorialHints>("/Tutorial/");
+        PuzzleTutorialHints myHintWrapper = null;
+        foreach (PuzzleTutorialHints hints in temp)
         {
-            PT.setup(puzzle);
+            if (hints.puzzleId == myPuzzle.id)
+            {
+                myHintWrapper = hints;
+            }
         }
+        if (myHintWrapper != null) //Spawn tut on all that have tut from json
+        {
+            PT.setup(puzzle, myHintWrapper);
+        }
+        else
+        {
+            PT.closeAll();
+        }
+    }
+
+    public void toggleInfo()
+    {
+        puzzleInfo.SetActive(!puzzleInfo.activeSelf);
     }
 
     public void puzzlePlay()
@@ -189,9 +221,9 @@ public class EOTP_PuzzleController : MonoBehaviour {
         if (ok)
         {
             print(this.GetType().Name + ":EOTPwaitFinish(): All inputs OK. Good job!");
-            PV.openWin(myPuzzle.id, myPuzzle.winDesc);
             PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + myPuzzle.id, 1);
             print("Sat playerprefs for: " + MainMenu.puzzlePrefKey + myPuzzle.id);
+            PV.openWin(myPuzzle.id, myPuzzle.winDesc);
         }
         else
         {

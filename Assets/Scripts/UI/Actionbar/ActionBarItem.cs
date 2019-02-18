@@ -18,7 +18,7 @@ public class ActionBarItem : MonoBehaviour {
         {
             return;
         }
-        AC.GC.changeItemName(AC.tileHub.getName(tileId));
+        AC.showNameA(index);
     }
 
     void OnMouseDown()
@@ -27,9 +27,10 @@ public class ActionBarItem : MonoBehaviour {
         {
             return;
         }
-        AC.selectedTileA.transform.position = this.transform.position;
         AC.selectedA = index;
-        AC.GC.changeItemName(AC.tileHub.getName(tileId));
+        AC.actionBarSelect();
+        AC.tiler.transform.rotation = Quaternion.Euler(0, 0, 0);
+        AC.showNameA(index);
     }
 
     private void OnMouseExit()
@@ -55,5 +56,6 @@ public class ActionBarItem : MonoBehaviour {
 
         GetComponent<Image>().color = Color.black;
         tileId = 0;
+        AC.activePrefabs[index - AC.firstUnavailableA] = AC.tileHub.getPrefab(0);
     }
 }

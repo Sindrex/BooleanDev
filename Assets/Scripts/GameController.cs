@@ -41,6 +41,7 @@ public class GameController : MonoBehaviour {
     //public PausedController pausedController; //@DEPRECATED
     public SystemController SC;
     public ActionbarController AC;
+    public GameObject cam;
 
     [SerializeField]
     private int startIndex = -1;
@@ -129,6 +130,8 @@ public class GameController : MonoBehaviour {
             print(classTag + "Start():Game.current is null, creating temp");
             newSave = true;
             Game.current = new Game(null);
+            Game.current.length = length;
+            Game.current.height = height;
         }
 
         cacheList = new List<GameObject>();
@@ -168,7 +171,7 @@ public class GameController : MonoBehaviour {
             {
                 if (Game.current != null)
                 {
-                    print(classTag + "NewSave is false");
+                    print(classTag + "NewSave is now false");
                     Game.current.newSave = false;
                 }
 
@@ -205,6 +208,8 @@ public class GameController : MonoBehaviour {
         createSelectedTiles(startCachedSelectedTiles);
 
         itemName.gameObject.SetActive(false);
+        //Cam in middle
+        cam.transform.position = new Vector3(1.6f*(length / 2), -1.6f * (height/2), -10);
     }
 
     private void setWorldSettings()
@@ -227,6 +232,7 @@ public class GameController : MonoBehaviour {
             {
                 GameObject floor = Instantiate(floorTilePrefab, current, Quaternion.identity);
                 floor.transform.parent = floorFather.transform;
+                //floor.transform.position += new Vector3(0, 0, 0);
                 floor.GetComponent<FloorTileController>().spotIndex = index;
                 if(j % 2 == 0)
                 {
@@ -273,11 +279,7 @@ public class GameController : MonoBehaviour {
         }
 
         //Select
-        if (UtilBools.selectLock)
-        {
-            //print("GameController:Update(): SelectLock is on");
-        }
-        else if (AC.selectedA == 0) // && Input.GetKey(KeyCode.LeftShift))
+        if (AC.selectedA == 0 && !UtilBools.selectLock) // && Input.GetKey(KeyCode.LeftShift))
         {
             if (UtilBools.tileLock)
             {
@@ -962,22 +964,29 @@ public class GameController : MonoBehaviour {
 
     public GameObject spawnSingle(int index, int id, int dir, bool power, int setting, string signText, TileController.label myLabel) //for comp
     {
-        GameObject prefab = Instantiate(tileHub.getPrefab(id), floorList[index].transform.position + new Vector3(0, 0, -1), Quaternion.identity);
-        prefab.transform.parent = tileFather.transform;
-        prefab.GetComponent<TileController>().spotIndex = index;
-        prefab.GetComponent<TileController>().setDir(dir);
-        prefab.GetComponent<TileController>().beingPowered = power;
-        prefab.GetComponent<TileController>().myLabel = myLabel;
-        tiles[index] = prefab;
-        if(prefab.GetComponent<DelayerController>() != null)
+        GameObject prefab = Instantiate(tileHub.getPrefab(id), floorList[index].transform.position, Quaternion.identity);
+        if (prefab.GetComponent<TileController>().place(floorList[index]))
         {
-            prefab.GetComponent<DelayerController>().setSetting(setting);
+            prefab.transform.parent = tileFather.transform;
+            prefab.GetComponent<TileController>().spotIndex = index;
+            prefab.GetComponent<TileController>().setDir(dir);
+            prefab.GetComponent<TileController>().beingPowered = power;
+            prefab.GetComponent<TileController>().myLabel = myLabel;
+            tiles[index] = prefab;
+            if (prefab.GetComponent<DelayerController>() != null)
+            {
+                prefab.GetComponent<DelayerController>().setSetting(setting);
+            }
+            else if (prefab.GetComponent<SignController>() != null)
+            {
+                prefab.GetComponent<SignController>().text = signText;
+            }
+            return prefab;
         }
-        else if(prefab.GetComponent<SignController>() != null)
+        else
         {
-            prefab.GetComponent<SignController>().text = signText;
+            return null;
         }
-        return prefab;
     }
 
     public void deleteSingle(int spotIndex)

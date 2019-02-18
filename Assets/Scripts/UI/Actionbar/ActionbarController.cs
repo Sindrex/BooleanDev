@@ -153,6 +153,10 @@ public class ActionbarController : MonoBehaviour {
 
     private void input()
     {
+        if (Input.GetMouseButtonUp(0))
+        {
+            prevSpotIndex = -1;
+        }
         if (InputController.getInput(InputPurpose.RESET_ACTIONBAR))
         {
             print(classTag + "Reset");
@@ -289,6 +293,25 @@ public class ActionbarController : MonoBehaviour {
         showName = true;
     }
 
+    public void showNameA(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                GC.changeItemName("Select");
+                break;
+            case 1:
+                GC.changeItemName("Move");
+                break;
+            default:
+                GC.changeItemName(tileHub.getName(activePrefabs[index - firstUnavailableA].GetComponent<TileController>().ID));
+                break;
+        }
+        StopAllCoroutines();
+        closeTimer = MAX_CLOSE_TIMER;
+        showName = true;
+    }
+
     private IEnumerator closeDisplayName()
     {
         while(closeTimer > 0)
@@ -311,22 +334,24 @@ public class ActionbarController : MonoBehaviour {
                 return;
             }
             prevSpotIndex = hit.GetComponent<FloorTileController>().spotIndex;
-            audioCon.playTilePlacedSFX();
 
             GameObject a = Instantiate(activePrefabs[selectedA - firstUnavailableA], tiler.transform.position, Quaternion.identity);
-            a.GetComponent<TileController>().place(hit);
+            if (a.GetComponent<TileController>().place(hit))
+            {
+                audioCon.playTilePlacedSFX();
 
-            int dir = getDir(actionbars[selectedA].transform);
-            a.GetComponent<TileController>().setDir(dir);
+                int dir = getDir(actionbars[selectedA].transform);
+                a.GetComponent<TileController>().setDir(dir);
 
-            a.transform.parent = tileFather.transform;
+                a.transform.parent = tileFather.transform;
 
-            GC.UC.addUndo(new SingleTileUndo(a.GetComponent<TileController>().spotIndex));
-            //print(GC.UC.stringifyRoot());
+                GC.UC.addUndo(new SingleTileUndo(a.GetComponent<TileController>().spotIndex));
+                //print(GC.UC.stringifyRoot());
+            }
         }
     }
 
-    private void actionBarSelect()
+    public void actionBarSelect()
     {
         //Position the select right + reset rotation
         selectedTileA.transform.position = actionbars[selectedA].transform.position;
@@ -353,6 +378,11 @@ public class ActionbarController : MonoBehaviour {
 
         if(selectedA != 0 && selectedA != 1)
         {
+            if (activePrefabs[selectedA - firstUnavailableA].GetComponent<TileController>().ID == 0)
+            {
+                tiler.SetActive(false);
+                return;
+            }
             tiler.SetActive(true);
             tiler.GetComponent<SpriteRenderer>().sprite = actionbars[selectedA].GetComponent<Image>().sprite;
         }
@@ -368,6 +398,15 @@ public class ActionbarController : MonoBehaviour {
         {
             tiler.SetActive(false);
             return;
+        }
+
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (!hit.transform.CompareTag("FloorTile") && !hit.transform.CompareTag("Tile"))
+            {
+                tiler.SetActive(false);
+                return;
+            }
         }
 
         for (int i = 0; i < hits.Length; i++)

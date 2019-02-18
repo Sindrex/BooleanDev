@@ -309,7 +309,8 @@
     <Compile Include="Assets\Scripts\Components\ComponentUI.cs" />
     <Compile Include="Assets\Scripts\Components\OverlayTile.cs" />
     <Compile Include="Assets\Scripts\Components\SaveLoadComp.cs" />
-    <Compile Include="Assets\Scripts\DupeController.cs" />
+    <Compile Include="Assets\Scripts\Dupe\DupeController.cs" />
+    <Compile Include="Assets\Scripts\Dupe\DupePlacer.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\InputController.cs" />
     <Compile Include="Assets\Scripts\Puzzle\DEPRECATED\PuzzleController.cs" />
@@ -370,6 +371,7 @@
     <Compile Include="Assets\Scripts\Undo\SingleTileUndo.cs" />
     <Compile Include="Assets\Scripts\Undo\Undo.cs" />
     <Compile Include="Assets\Scripts\Undo\UndoController.cs" />
+    <Compile Include="Assets\Scripts\Utility\HoverDisplay.cs" />
     <Compile Include="Assets\Scripts\Utility\RenderLayerPicker.cs" />
     <Compile Include="Assets\Scripts\Utility\ResourceLoader.cs" />
     <Compile Include="Assets\Scripts\Utility\UtilBools.cs" />

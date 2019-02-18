@@ -5,8 +5,8 @@
   "length": 30,
   "height": 10,
   "minDone": 8,
-  "info":"No additional info",
-  "desc": "A and B each represents a 1-bit binary number (0, 1). C is the toggle for subtraction. 1 and 2 represents the sum of A and B, which is a 2-bit binary number (0, 1, 2 or 3). Create a full-adder with optional subtraction (A+B and A-B). This is done using Two's Complement on B. Two's Complement is a system to sign numbers, which also makes addition with negative numbers the same as with positive ones (in binary). In practice, this is done by inverting B's input and adding 1 to the calculation (usually using the carry in). See truth table.",
+  "info":"Two's Complement is a system to sign numbers, which also makes addition with negative numbers the same as with positive ones (in binary). In practice, this is done by inverting B's input and adding 1 to the calculation (using the CARRY IN).",
+  "desc": "A and B each represents a number (1 bit). C is the toggle for subtraction. 1 and 2 represents the sum of A and B (2 bits). Create a full-adder with optional subtraction (A+B and A-B). This is done using Two's Complement on B. See truth table.",
   "winDesc":"Remember.",
   "allowedTiles": [1, 2, 3, 4, 6, 7],
   "IO":

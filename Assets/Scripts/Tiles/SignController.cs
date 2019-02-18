@@ -63,11 +63,11 @@ public class SignController : TileController {
     }
 
     override
-    public void destroyMe()
+    public bool destroyMe()
     {
         if (locked)
         {
-            return;
+            return false;
         }
 
         //print("DestroyMe: " + this.name);
@@ -83,6 +83,7 @@ public class SignController : TileController {
         Destroy(this.gameObject);
         ui.closeSign();
         StartCoroutine(waitClose());
+        return true;
     }
 
     override

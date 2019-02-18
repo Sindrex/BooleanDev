@@ -231,7 +231,10 @@ public class ComponentUI : MonoBehaviour {
             {
                 foreach(GameObject obj in go.transform.GetChild(0).GetComponent<ComponentOverlay>().tiles)
                 {
-                    obj.GetComponent<TileController>().locked = false;
+                    if(obj != null)
+                    {
+                        obj.GetComponent<TileController>().compLocked = false;
+                    }
                 }
             }
         }
@@ -242,7 +245,10 @@ public class ComponentUI : MonoBehaviour {
             {
                 foreach (GameObject obj in go.transform.GetChild(0).GetComponent<ComponentOverlay>().tiles)
                 {
-                    obj.GetComponent<TileController>().locked = true;
+                    if(obj != null)
+                    {
+                        obj.GetComponent<TileController>().compLocked = true;
+                    }
                 }
             }
         }
@@ -252,7 +258,10 @@ public class ComponentUI : MonoBehaviour {
     {
         foreach (GameObject obj in overlay.transform.GetChild(0).GetComponent<ComponentOverlay>().tiles)
         {
-            obj.GetComponent<TileController>().locked = false;
+            if(obj != null)
+            {
+                obj.GetComponent<TileController>().compLocked = false;
+            }
         }
         overlays.Remove(overlay);
         Destroy(overlay);

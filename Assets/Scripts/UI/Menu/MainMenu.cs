@@ -16,8 +16,8 @@ public class MainMenu : MonoBehaviour {
     public GameObject[] puzzleWorlds;
     public string[] puzzleWorldNames;
     private int puzzleId = 0;
-    public GameObject puzzleNext;
-    public GameObject puzzlePrev;
+    public Button puzzleNext;
+    public Button puzzlePrev;
     public static readonly string puzzlePrefKey = "puzzleDone";
     public int puzzlesDone = 0;
     public int[] puzzlesDoneNeeded;
@@ -129,11 +129,13 @@ public class MainMenu : MonoBehaviour {
             puzzleWorlds[i].SetActive(false);
         }
         puzzleWorlds[0].SetActive(true);
+        puzzlePrev.interactable = false;
+        puzzleNext.interactable = true;
     }
     public void puzzleNextWorld()
     {
-        puzzleNext.SetActive(true);
-        puzzlePrev.SetActive(true);
+        puzzleNext.interactable = true;
+        puzzlePrev.interactable = true;
         for (int i = 0; i < puzzleWorlds.Length; i++)
         {
             if (puzzleWorlds[i].activeSelf && (i + 1) < puzzleWorlds.Length)
@@ -144,17 +146,16 @@ public class MainMenu : MonoBehaviour {
                 puzzleDoneLockUpdate(i + 1);
                 if (i + 1 == puzzleWorlds.Length - 1)
                 {
-                    puzzleNext.SetActive(false);
+                    puzzleNext.interactable = false;
                 }
                 return;
             }
         }
-        puzzleNext.SetActive(false);
     }
     public void puzzlePrevWorld()
     {
-        puzzlePrev.SetActive(true);
-        puzzleNext.SetActive(true);
+        puzzleNext.interactable = true;
+        puzzlePrev.interactable = true;
         for (int i = 0; i < puzzleWorlds.Length; i++)
         {
             if (puzzleWorlds[i].activeSelf && (i - 1) >= 0)
@@ -165,7 +166,7 @@ public class MainMenu : MonoBehaviour {
                 puzzleDoneLockUpdate(i - 1);
                 if(i - 1 == 0)
                 {
-                    puzzlePrev.SetActive(false);
+                    puzzlePrev.interactable = false;
                 }
                 return;
             }
@@ -200,10 +201,6 @@ public class MainMenu : MonoBehaviour {
                 throw new System.Exception("Puzzle not implemented");
             }
         }
-    }
-    public void puzzlePlay()
-    {
-        print("@DEPRECTAED");
     }
 
     public void openSandbox()

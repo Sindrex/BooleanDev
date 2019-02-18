@@ -5,7 +5,7 @@
   "length": 5,
   "height": 5,
   "minDone": 0,
-  "info":"No additional info",
+  "info":"",
   "desc": "Time to learn!",
   "winDesc":"Got it all?",
   "allowedTiles": [1, 2, 3, 4],

@@ -11,7 +11,7 @@ public enum InputKey
 public enum InputPurpose
 {
     DELETE_TILE, PLACE_TILE, INTERACT_TILE, TILE_ROTATE_LEFT, TILE_ROTATE_RIGHT,
-    CAM_MOVEMENT_HORIZ, CAM_MOVEMENT_VERT, ZOOM_IN, ZOOM_OUT,
+    CAM_MOVEMENT_HORIZ, CAM_MOVEMENT_VERT, CAM_MOVEMENT_DRAG, ZOOM_IN, ZOOM_OUT,
     SELECTIONBAR, SELECTIONBAR_LEFT, SELECTIONBAR_RIGHT, SELECTIONBAR_UP,
     PAUSE_MENU,
     ACTIONBAR_LEFT, ACTIONBAR_RIGHT, RESET_ACTIONBAR,
@@ -64,6 +64,10 @@ public static class InputController {
                 return Input.GetKeyDown(parseKeyCode(OptionController.controlsOK[8]));
             case InputPurpose.UNDO:
                 return Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Z);
+            case InputPurpose.DUPLICATE:
+                return Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.D);
+            case InputPurpose.CAM_MOVEMENT_DRAG:
+                return Input.GetMouseButton(2);
         }
         return false;
     }

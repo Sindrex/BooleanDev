@@ -3,65 +3,103 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class PuzzleTutorial : MonoBehaviour {
 
     public GameObject hint;
     public Text hintText;
     public Button hintNextButton;
+    public Text hintNextButtonText;
 
-    public string[] hintTexts;
-    public Vector2[] hintSpots;
-    public string[] hintTexts2;
-    public Vector2[] hintSpots2;
+    //json
+    public PuzzleTutorialHints myHintWrapper;
+    public PuzzleTutorialHint[] myHints;
 
     public EOTP_PuzzleCreator myPuzzle;
     public int tutStep = -1;
 
-    public void setup(EOTP_PuzzleCreator puzzle)
+    public void setup(EOTP_PuzzleCreator puzzle, PuzzleTutorialHints hintsWrapper)
     {
-        hint.SetActive(true);
         myPuzzle = puzzle;
         tutStep = -1;
-        nextHint();
+
+        myHintWrapper = hintsWrapper;
+        myHints = hintsWrapper.hints;
+
+        if (myHints.Length > 0)
+        {
+            hint.SetActive(true);
+            nextHint();
+        }
+        else
+        {
+            hint.SetActive(false);
+        }
     }
 
     public void nextHint()
     {
-        if(myPuzzle.id == 0)
+        tutStep++;
+        if (tutStep < myHints.Length - 1)
         {
-            tutStep++;
-            print("NextHint: " + tutStep);
-            hintText.text = hintTexts[tutStep];
-            hint.GetComponent<RectTransform>().localPosition = hintSpots[tutStep];
-            if (tutStep >= hintTexts.Length - 1)
+            //print("NextHint: " + tutStep);
+            hintText.text = myHints[tutStep].text;
+            hint.GetComponent<RectTransform>().localPosition = new Vector3(myHints[tutStep].x, myHints[tutStep].y, 0);
+        }
+        else if (tutStep == myHints.Length - 1)
+        {
+            print("Last tutStep");
+            hintText.text = myHints[tutStep].text;
+            hint.GetComponent<RectTransform>().localPosition = new Vector3(myHints[tutStep].x, myHints[tutStep].y, 0);
+            if (myHintWrapper.exitOnfinish)
             {
-                print("Last tutStep");
-                hintNextButton.interactable = false;
+                hintNextButtonText.text = "Finish";
+            }
+            else
+            {
+                hintNextButton.gameObject.SetActive(false);
             }
         }
         else
         {
-            tutStep++;
-            print("NextHint: " + tutStep);
-            hintText.text = hintTexts2[tutStep];
-            hint.GetComponent<RectTransform>().localPosition = hintSpots2[tutStep];
-            if (tutStep >= hintTexts2.Length - 1)
+            if (myHintWrapper.exitOnfinish)
             {
-                print("Last tutStep");
-                hintNextButton.interactable = false;
+                print(MainMenu.puzzlePrefKey + myPuzzle.id);
+                PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + myPuzzle.id, 1);
+                SceneManager.LoadScene("Menu");
+            }
+            else
+            {
+                hint.SetActive(false);
             }
         }
     }
 
-    public void finish()
+    public void closeAll()
     {
-        if(myPuzzle.id == 0)
-        {
-            print(MainMenu.puzzlePrefKey + "1");
-            PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + "1", 1);
-            SceneManager.LoadScene("Menu");
-        }
         hint.SetActive(false);
     }
+
+    public void closeHint()
+    {
+        hint.SetActive(false);
+    }
+}
+
+[System.Serializable]
+public class PuzzleTutorialHints
+{
+    //Wrapper class for json-extraction
+    public int puzzleId;
+    public bool exitOnfinish;
+    public PuzzleTutorialHint[] hints;
+}
+
+[System.Serializable]
+public class PuzzleTutorialHint
+{
+    public string text;
+    public int x;
+    public int y;
 }

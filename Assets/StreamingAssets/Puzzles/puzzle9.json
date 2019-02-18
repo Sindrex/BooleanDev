@@ -8,7 +8,7 @@
   "info":"No additional info",
   "desc": "1 is only on when A or B is on, but not both",
   "winDesc":"Exclusive OR, is it?",
-  "allowedTiles": [1, 2, 3, 4, 6, 7],
+  "allowedTiles": [1, 2, 3, 4, 6, 7, 8],
   "IO":
   [
     {
