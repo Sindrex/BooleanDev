@@ -15,7 +15,6 @@ public class PuzzlePicker : MonoBehaviour
     private GameObject myChecked;
     public GameObject lockedPrefab;
     private bool locked = true;
-    public int minCompleted = 0;
 
     private void Start()
     {

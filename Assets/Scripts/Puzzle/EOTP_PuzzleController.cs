@@ -28,6 +28,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public GameObject infoButton;
     public Text infoText;
 
+    //logic
     public float EOTP_WAIT_TIME = 1;
     public float EOTP_MIDDLE_WAIT_TIME_MS = 1;
     private int EOTPPlayTurn = 0;
@@ -40,6 +41,10 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public List<GameObject> outputObjs = new List<GameObject>();
     private List<List<int>> realInput = new List<List<int>>();
 
+    public bool stepping = false;
+    public GameObject stepButton;
+    public Text stepText;
+
     public void close()
     {
         puzzleBG.SetActive(false);
@@ -50,12 +55,15 @@ public class EOTP_PuzzleController : MonoBehaviour {
         PT.closeAll();
         puzzleInfo.SetActive(false);
         infoButton.SetActive(false);
+        stepText.gameObject.SetActive(false);
+        stepButton.SetActive(false);
     }
 
     public void setupPuzzle(EOTP_PuzzleCreator puzzle)
     {
         print("EOTP_PuzzleController:SetupPuzzle():!");
 
+        //spawn tiles
         int inputIndex = 0, outputIndex = 0;
         for (int i = 0; i < puzzle.IO.Length; i++)//For each unit in length
         {
@@ -92,10 +100,20 @@ public class EOTP_PuzzleController : MonoBehaviour {
         PO.setup(puzzle);
         PTT.setup(puzzle);
 
-        infoButton.SetActive(!myPuzzle.info.Trim().Equals(""));
-        infoText.text = myPuzzle.info;
+        //Info
+        if(myPuzzle.info != null)
+        {
+            infoButton.SetActive(!myPuzzle.info.Trim().Equals(""));
+            infoText.text = myPuzzle.info;
+        }
+        else
+        {
+            infoButton.SetActive(false);
+        }
         puzzleInfo.SetActive(false);
+        stepText.gameObject.SetActive(false);
 
+        //Tutorial
         List<PuzzleTutorialHints> temp = ResourceLoader.loadJsonFolder<PuzzleTutorialHints>("/Tutorial/");
         PuzzleTutorialHints myHintWrapper = null;
         foreach (PuzzleTutorialHints hints in temp)
@@ -120,10 +138,13 @@ public class EOTP_PuzzleController : MonoBehaviour {
         puzzleInfo.SetActive(!puzzleInfo.activeSelf);
     }
 
-    public void puzzlePlay()
+    public void puzzlePlay(bool stepping)
     {
+        this.stepping = stepping;
         if(myPuzzle != null && myPuzzle.id >= 0)
         {
+            stepText.gameObject.SetActive(true);
+            stepText.text = EOTPPlayTurn + "/" + (outputs[0].signal.Length + 1);
             StartCoroutine(puzzlePlayIEnum());
         }
         else
@@ -162,7 +183,9 @@ public class EOTP_PuzzleController : MonoBehaviour {
 
         EOTP_waitforinput = true;
         EOTPPlayTurn++;
-        print(this.GetType().Name + "puzzlePlay(): PlayTurn: " + EOTPPlayTurn);
+        print(this.GetType().Name + ": puzzlePlay(): PlayTurn: " + EOTPPlayTurn);
+
+        stepText.text = EOTPPlayTurn + "/" + (outputs[0].signal.Length + 1);
 
         if (EOTPPlayTurn < outputs[0].signal.Length)
         {
@@ -192,16 +215,28 @@ public class EOTP_PuzzleController : MonoBehaviour {
     {
         yield return new WaitForSeconds(EOTP_WAIT_TIME);
         EOTP_waitforinput = false;
-        puzzlePlay();
+        if (!stepping)
+        {
+            puzzlePlay(false);
+        }
     }
 
     private IEnumerator EOTPwaitFinish()
     {
+        print("EOTPwaitFinish");
         yield return new WaitForSeconds(EOTP_WAIT_TIME);
         EOTP_waitforinput = false;
         addActualToReal();
-        EOTPPlayTurn = 0; //reset
 
+        if (!stepping)
+        {
+            checkResult();
+        }
+    }
+
+    private void checkResult()
+    {
+        EOTPPlayTurn = 0; //reset
         bool ok = true;
         for (int li = 0; li < realInput.Count; li++)
         {
@@ -215,7 +250,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
                     ok = false;
                 }
             }
-            //reset each list
+            //reset each list for next check logic
             realInput[li] = new List<int>();
         }
         if (ok)
@@ -230,7 +265,8 @@ public class EOTP_PuzzleController : MonoBehaviour {
             print(this.GetType().Name + ":EOTPwaitFinish(): Try again dumbo!");
             PV.openLoss();
         }
-
+        stepping = false;
+        stepText.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -246,5 +282,21 @@ public class EOTP_PuzzleController : MonoBehaviour {
                 }
             }
         }
+    }
+
+    //stepping logic
+    public void stepPlay()
+    {
+        stepping = true;
+        if (EOTPPlayTurn < outputs[0].signal.Length)
+        {
+            puzzlePlay(true);
+        }
+        else
+        {
+            checkResult();
+            //print(this.GetType().Name + ":puzzlePlay(): finished");
+        }
+
     }
 }

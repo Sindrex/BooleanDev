@@ -30,6 +30,6 @@ public class PuzzlePlay : MonoBehaviour {
     {
         print(this.GetType().Name + ":" + System.Reflection.MethodBase.GetCurrentMethod().Name + ": EOTP: Play");
         //PC.pathfinder();
-        ePC.puzzlePlay();
+        ePC.puzzlePlay(false);
     }
 }

@@ -25,7 +25,7 @@ public class ComponentPlacerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (InputController.getInput(InputPurpose.PLACE_TILE) || InputController.getInput(InputPurpose.INTERACT_TILE))
+        if (InputController.getInput(InputPurpose.INTERACT_TILE))
         {
             closePlacer();
         }

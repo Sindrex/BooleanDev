@@ -6,14 +6,33 @@ using UnityEngine.SceneManagement;
 
 public class MenuButtonController : MonoBehaviour {
 
-    public MainMenu MM;
+    public SandboxController SC;
+    public Text myName;
+    public Text myDateCreated;
+    public Text myDatePlayed;
+    public Text myVersion;
     public Game myGame;
+
+    public Sprite regularSprite;
+    public Sprite selectedSprite;
 
     public void setText()
     {
-        transform.GetChild(0).GetComponent<Text>().text = myGame.gameName;
+        myName.text = myGame.gameName;
+        myDateCreated.text = myGame.dateCreated;
+        myDatePlayed.text = myGame.dateLastPlayed;
+        myVersion.text = myGame.version;
     }
-
+    public void selectGame()
+    {
+        SC.selectGame(myGame);
+        GetComponent<Image>().sprite = selectedSprite;
+    }
+    public void unSelect()
+    {
+        GetComponent<Image>().sprite = regularSprite;
+    }
+    /*
     public void loadSave()
     {
         Game.current = myGame;
@@ -33,5 +52,5 @@ public class MenuButtonController : MonoBehaviour {
     public void cancel()
     {
         MM.openSandbox();
-    }
+    }*/
 }

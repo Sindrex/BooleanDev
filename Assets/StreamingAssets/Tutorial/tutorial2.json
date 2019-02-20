@@ -1,12 +1,15 @@
 {
   "devNote":"XOR",
-  "puzzleId":"9",
+  "puzzleId":"13",
   "exitOnfinish": false,
   "hints":[
     {
-      "text":"Components are a feature in Boolean that allow you to save a selection of tiles to be used later in other puzzles or projects. To access this feature click the Components button to the right.",
+      "text":"Components are a feature in Boolean that allow you to save a selection of tiles to be used later in other puzzles or projects.",
       "x":-150,
-      "y":0
+      "y":0,
+      "ax":-300,
+      "ay":130,
+      "rotz":45
     },
     {
       "text":"To create a new component, create a selection of floortiles and click on CREATE in the components window.",
@@ -14,7 +17,7 @@
       "y":0
     },
     {
-      "text":"To spawn in a saved component, simply click LEFT MOUSE CLICK its name in the component window and click LEFT MOUSE CLICK again where you want to spawn it.",
+      "text":"To spawn in a saved component, simply click LEFT MOUSE BUTTON on its name in the component window and click LEFT MOUSE BUTTON again where you want to spawn it.",
       "x":-150,
       "y":0
     },
@@ -26,7 +29,10 @@
     {
       "text":"Components come with a simple overlay which shows its name. To show overlays, check the Overlay checkbox in the top corner.",
       "x":-150,
-      "y":0
+      "y":0,
+      "ax":-280,
+      "ay":200,
+      "rotz":90
     }
   ]
 }

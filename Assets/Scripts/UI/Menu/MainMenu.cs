@@ -24,16 +24,12 @@ public class MainMenu : MonoBehaviour {
     public Text puzzlesDoneLock;
 
     //Sandbox
+    public SandboxController SC;
     public GameObject sandbox;
     public GameObject newWorld;
     public InputField worldNameInput;
-    public GameObject loadWorld;
-    public GameObject deleteWorld;
-    public GameObject cancelPrefab;
-    public GameObject savedGamesPrefab;
-    public GameObject deleteSavedGamesPrefab;
-    public GameObject scrollContent;
-    public GameObject scrollContentDelete;
+    public InputField worldLengthInput;
+    public InputField worldHeightInput;
 
     //Options
     public GameObject options;
@@ -64,17 +60,6 @@ public class MainMenu : MonoBehaviour {
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
     }*/
 
-    public enum Menu {
-		MainMenu,
-        Sandbox,
-        Puzzles,
-		NewGame,
-		Continue,
-        DeleteGame
-	}
-
-	public Menu currentMenu;
-
     private void Start()
     {
         openMainMenu();
@@ -99,8 +84,6 @@ public class MainMenu : MonoBehaviour {
 
         sandbox.SetActive(false);
         newWorld.SetActive(false);
-        loadWorld.SetActive(false);
-        deleteWorld.SetActive(false);
 
         options.SetActive(false);
         hoverTip.SetActive(false);
@@ -207,6 +190,7 @@ public class MainMenu : MonoBehaviour {
     {
         closeAll();
         sandbox.SetActive(true);
+        SC.open();
     }
     public void openSandboxNewWorld()
     {
@@ -216,45 +200,43 @@ public class MainMenu : MonoBehaviour {
     }
     public void createSandbox()
     {
-        if(worldNameInput.text.Length > 0)
+        worldNameInput.gameObject.GetComponent<Image>().color = Color.white;
+        worldLengthInput.gameObject.GetComponent<Image>().color = Color.white;
+        worldHeightInput.gameObject.GetComponent<Image>().color = Color.white;
+
+        string worldName = worldNameInput.text;
+        int worldLength = 0;
+        int.TryParse(worldLengthInput.text, out worldLength);
+        int worldHeight = 0;
+        int.TryParse(worldHeightInput.text, out worldHeight);
+
+        bool ok = true;
+        if (worldName.Length <= 0)
+        {
+            ok = false;
+            worldNameInput.gameObject.GetComponent<Image>().color = Color.red;
+        }
+        if(worldLength <= 0)
+        {
+            ok = false;
+            worldLengthInput.gameObject.GetComponent<Image>().color = Color.red;
+        }
+        if (worldHeight <= 0)
+        {
+            ok = false;
+            worldHeightInput.gameObject.GetComponent<Image>().color = Color.red;
+        }
+
+
+        if (ok)
         {
             Game.current.gameName = worldNameInput.text;
+            Game.current.length = worldLength;
+            Game.current.height = worldHeight;
             //Save the current Game as a new saved Game
             SaveLoad.Save();
             //Move on to game...
             SceneManager.LoadScene("Main");
-        }
-    }
-    public void openSandboxLoadWorld()
-    {
-        closeAll();
-        loadWorld.SetActive(true);
-        destroyButtons(scrollContent);
-        createButtons(savedGamesPrefab, scrollContent);
-    }
-    public void openSandboxDeleteWorld()
-    {
-        closeAll();
-        deleteWorld.SetActive(true);
-        destroyButtons(scrollContentDelete);
-        createButtons(deleteSavedGamesPrefab, scrollContentDelete);
-    }
-    private void createButtons(GameObject buttonPrefab, GameObject scroller)
-    {
-        //Create buttons
-        foreach (Game g in SaveLoad.savedGames)
-        {
-            GameObject prefab = Instantiate(buttonPrefab, scroller.transform);
-            prefab.GetComponent<MenuButtonController>().MM = this;
-            prefab.GetComponent<MenuButtonController>().myGame = g;
-            prefab.GetComponent<MenuButtonController>().setText();
-        }
-    }
-    private void destroyButtons(GameObject scroller)
-    {
-        for(int i = 0; i < scroller.transform.childCount; i++)
-        {
-            Destroy(scroller.transform.GetChild(i).gameObject);
         }
     }
 

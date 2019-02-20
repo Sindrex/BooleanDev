@@ -1,0 +1,51 @@
+{
+  "name": "Unanimous",
+  "devName":"3-1",
+  "id": 9,
+  "length": 9,
+  "height": 5,
+  "minDone": 8,
+  "info":"",
+  "desc": "1 is on if A, B and C is on.",
+  "winDesc":"Logic gates does not need to be contained to only 2 inputs.",
+  "allowedTiles": [1, 2, 3, 4, 6, 7, 8],
+  "IO":
+  [
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 0,
+      "heightIndex": 0,
+      "dir": 1,
+      "signal": [1, 1, 1, 1, 0, 0, 0, 0],
+      "sign":"A"
+    },
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 0,
+      "heightIndex": 2,
+      "dir": 1,
+      "signal": [1, 0, 1, 0, 1, 0, 1, 0],
+      "sign":"B"
+    },
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 0,
+      "heightIndex": 4,
+      "dir": 1,
+      "signal": [1, 1, 0, 0, 1, 1, 0, 0],
+      "sign":"C"
+    },
+    {
+      "input": true,
+      "tileId": 18,
+      "lengthIndex": 8,
+      "heightIndex": 2,
+      "dir": 1,
+      "signal": [1, 0, 0, 0, 0, 0, 0, 0],
+      "sign":"1"
+    }
+  ]
+}

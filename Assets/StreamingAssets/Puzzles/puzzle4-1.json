@@ -1,0 +1,42 @@
+{
+  "name": "Exclusivity",
+  "devName":"13",
+  "id": 13,
+  "length": 9,
+  "height": 5,
+  "minDone": 10,
+  "info":"No additional info",
+  "desc": "1 is only on when A or B is on, but not both",
+  "winDesc":"Exclusive OR, is it?",
+  "allowedTiles": [1, 2, 3, 4, 6, 7, 8],
+  "IO":
+  [
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 0,
+      "heightIndex": 0,
+      "dir": 1,
+      "signal": [1, 1, 0, 0],
+      "sign":"A"
+    },
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 0,
+      "heightIndex": 3,
+      "dir": 1,
+      "signal": [1, 0, 1, 0],
+      "sign":"B"
+    },
+    {
+      "input": true,
+      "tileId": 18,
+      "lengthIndex": 8,
+      "heightIndex": 2,
+      "dir": 1,
+      "signal": [0, 1, 1, 0],
+      "sign":"1"
+    }
+  ]
+}

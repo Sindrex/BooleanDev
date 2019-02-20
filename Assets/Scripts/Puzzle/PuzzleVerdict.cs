@@ -27,6 +27,7 @@ public class PuzzleVerdict : MonoBehaviour {
 
         UtilBools.actionBarLock = true;
         verdictObject.SetActive(true);
+        nextPuzzleButton.GetComponent<Button>().interactable = true;
 
         desc.color = Color.green;
         desc.text = winDesc;
@@ -39,9 +40,11 @@ public class PuzzleVerdict : MonoBehaviour {
                 puzzlesDone++;
             }
         }
+        //print("New Puzz: " + (myPuzzleId + 1) + "/" + (puzzleArray.EOTP_puzzles.Length));
+        //print("PuzzlesDone: " + puzzlesDone + " vs " + puzzleArray.EOTP_puzzles[myPuzzleId + 1].minDone);
         if ((myPuzzleId + 1) >= puzzleArray.EOTP_puzzles.Length || puzzlesDone < puzzleArray.EOTP_puzzles[myPuzzleId + 1].minDone)
         {
-            print("New Puzz: " + (myPuzzleId + 1) + "/" + (puzzleArray.EOTP_puzzles.Length));
+            print("shoo shoo");
             nextPuzzleButton.GetComponent<Button>().interactable = false;
         }
     }

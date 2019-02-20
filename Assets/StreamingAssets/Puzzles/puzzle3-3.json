@@ -1,0 +1,51 @@
+{
+  "name": "That or that",
+  "devName":"3-3",
+  "id": 11,
+  "length": 9,
+  "height": 5,
+  "minDone": 8,
+  "info":"",
+  "desc": "1 is on if A and B is on, or if B and C is on.",
+  "winDesc":"Getting the gist of it now, are we?",
+  "allowedTiles": [1, 2, 3, 4, 6, 7, 8],
+  "IO":
+  [
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 0,
+      "heightIndex": 0,
+      "dir": 1,
+      "signal": [1, 1, 1, 1, 0, 0, 0, 0],
+      "sign":"A"
+    },
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 0,
+      "heightIndex": 2,
+      "dir": 1,
+      "signal": [1, 0, 1, 0, 1, 0, 1, 0],
+      "sign":"B"
+    },
+    {
+      "input": false,
+      "tileId": 19,
+      "lengthIndex": 0,
+      "heightIndex": 4,
+      "dir": 1,
+      "signal": [1, 1, 0, 0, 1, 1, 0, 0],
+      "sign":"C"
+    },
+    {
+      "input": true,
+      "tileId": 18,
+      "lengthIndex": 8,
+      "heightIndex": 2,
+      "dir": 1,
+      "signal": [1, 0, 1, 0, 1, 0, 0, 0],
+      "sign":"1"
+    }
+  ]
+}

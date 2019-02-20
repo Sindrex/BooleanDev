@@ -30,7 +30,7 @@ public class Game {
     //History
     public string dateCreated;
     public string dateLastPlayed;
-    public string version = "Alpha 2";
+    public string version = "Alpha 3";
 
     public Game(EOTP_PuzzleCreator puzzle)
     {

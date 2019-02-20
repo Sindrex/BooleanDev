@@ -6,77 +6,122 @@
     {
       "text":"Welcome to Boolean! This is a game about sending signals. This tutorial will go through what you need to succeed. Good luck! ",
       "x":0,
-      "y":0
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     },
     {
       "text":"Move around with WASD or arrow buttons.",
       "x":0,
-      "y":0
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     },
     {
       "text":"Zoom in and out with SHIFT + MOUSE SCROLL.",
       "x":0,
-      "y":0
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     },
     {
       "text":"Use MOUSE SCROLL to change which tile you place.",
       "x":0,
-      "y":-90
+      "y":-90,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     },
     {
       "text":"Try placing some tiles by using LEFT MOUSE BUTTON on the grid.",
       "x":0,
-      "y":-90
+      "y":-90,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     },
     {
       "text":"Change the direction of the tile you want to place by using Q and E.",
       "x":0,
-      "y":-90
+      "y":-90,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     },
     {
-      "text":"Press SPACE to open up the inventory. Drag what tiles you want from the inventory onto the actionbar by holding LEFT MOUSE BUTTON.",
+      "text":"Press SPACE to open up the inventory. DRAG what tiles you want from the inventory onto the actionbar by holding LEFT MOUSE BUTTON.",
       "x":0,
-      "y":50
+      "y":50,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     },
     {
       "text":"Delete a placed tile by hovering over it and pressing R.",
       "x":230,
-      "y":0
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     },
     {
       "text":"You can undo most changes by using SHIFT + Z.",
       "x":230,
-      "y":0
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     },
     {
       "text":"You can move placed tiles by selecting the Move symbol on the actionbar and dragging the tile.",
       "x":230,
-      "y":0
+      "y":0,
+      "ax":-134,
+      "ay":-130,
+      "rotz":180
     },
     {
-      "text":"You can select multiple tiles by selecting the Select symbol (green square) on the actionbar and dragging LEFT MOUSE BUTTON over the grid.",
+      "text":"You can select multiple tiles by selecting the Select symbol on the actionbar and dragging LEFT MOUSE BUTTON over the grid.",
       "x":230,
-      "y":0
+      "y":0,
+      "ax":-175,
+      "ay":-130,
+      "rotz":180
     },
     {
       "text":"You can delete the tiles in a selection by pressing R when you have a selection up.",
       "x":230,
-      "y":0
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     },
     {
       "text":"You can move a selection by holding LEFT MOUSE BUTTON on the blue move symbol on the selection.",
       "x":230,
-      "y":0
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     },
     {
       "text":"You can duplicate a selection by pressing LEFT MOUSE BUTTON on the blue dupe symbol on the selection. Then use the move symbol to move the new dupe.",
       "x":230,
-      "y":0
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     },
     {
       "text":"That concludes the basic tutorial. Next up is the first puzzle!",
       "x":0,
-      "y":0
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
     }
   ]
 }
