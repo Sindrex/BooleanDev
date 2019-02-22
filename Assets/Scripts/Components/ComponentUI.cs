@@ -57,20 +57,20 @@ public class ComponentUI : MonoBehaviour {
             print("Error");
             return;
         }
-        else if (GC.selectedHeigth <= 0 || GC.selectedLength <= 0)
+        else if (GC.selectedHeight <= 0 || GC.selectedLength <= 0)
         {
-            print("No selection: h/l: " + GC.selectedHeigth + "/" + GC.selectedLength);
+            print("No selection: h/l: " + GC.selectedHeight + "/" + GC.selectedLength);
             return;
         }
 
         ComponentSave comp = new ComponentSave();
         comp.name = nameInput.text;
-        comp.height = GC.selectedHeigth;
-        comp.length = GC.selectedLength + 1;
+        comp.height = GC.selectedHeight;
+        comp.length = GC.selectedLength;
 
-        print("H: " + comp.height + ", L: " + comp.length);
+        print("saveComp(): H: " + comp.height + ", L: " + comp.length);
 
-        int arraySize = comp.height*comp.length;
+        int arraySize = comp.height * comp.length;
         int[] tileIDs = new int[arraySize];
         int[] tileDIRs = new int[arraySize];
         bool[] tilePower = new bool[arraySize];
@@ -90,7 +90,7 @@ public class ComponentUI : MonoBehaviour {
                     ok = true;
                 }
             }
-
+            print("saveComp(): i: " + i + ", index: " + index + ", ok: " + ok);
             if (ok)
             {
                 TileController TC = GC.selectedTiles[index].GetComponent<TileController>();

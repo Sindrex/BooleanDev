@@ -10,6 +10,8 @@ public class MainMenu : MonoBehaviour {
     public GameObject mainMenu;
     public GameObject hoverTip;
 
+    public static readonly string openAtStartPrefKey = "openAtStart";
+
     //Puzzles
     public GameObject puzzles;
     public Text puzzleWorldNameObj;
@@ -35,7 +37,6 @@ public class MainMenu : MonoBehaviour {
     public GameObject options;
     public OptionController optionCon;
     public Vector3 optionsPos;
-    private bool isOptions;
     public float optionsCamSize;
 
     //Credits
@@ -47,6 +48,9 @@ public class MainMenu : MonoBehaviour {
     private bool camLerp;
     private float lerpFactor = 0f;
     public float mainCamSize;
+    private bool forwards;
+    public Vector3 currentTarget;
+    public float currentTargetCamSize;
 
     private readonly string FIRST_TIMER_KEY = "firstTimer"; 
 
@@ -62,7 +66,6 @@ public class MainMenu : MonoBehaviour {
 
     private void Start()
     {
-        openMainMenu();
         SaveLoad.Load();
         setDefaultOptions();
 
@@ -73,6 +76,21 @@ public class MainMenu : MonoBehaviour {
             {
                 puzzlesDone++;
             }
+        }
+        switch (PlayerPrefs.GetString(MainMenu.openAtStartPrefKey, "menu"))
+        {
+            case "sandbox":
+                openSandbox();
+                break;
+            case "puzzle":
+                puzzleOpen();
+                break;
+            case "menu":
+                openMainMenu();
+                break;
+            default:
+                openMainMenu();
+                break;
         }
     }
 
@@ -246,59 +264,65 @@ public class MainMenu : MonoBehaviour {
         options.SetActive(true);
 
         camLerp = true;
-        isOptions = false;
+        forwards = true;
+        currentTarget = optionsPos;
+        currentTargetCamSize = optionsCamSize;
         optionCon.gameObject.SetActive(true);
         optionCon.loadSettingsUI();
+    }
+    public void saveExitOptions()
+    {
+        optionCon.saveExitMenu();
+        camLerp = true;
+        forwards = false;
     }
 
     private void Update()
     {
         if (camLerp)
         {
-            if (!isOptions)
+            //print("yo");
+            if (forwards)
             {
-                float x = cam.transform.position.x;
-                float y = cam.transform.position.y;
-                float z = cam.transform.position.z;
-                Vector3 lerpPos = new Vector3(Mathf.Lerp(x, optionsPos.x, lerpFactor), Mathf.Lerp(y, optionsPos.y, lerpFactor), z);
-                cam.transform.position = lerpPos;
-
-                cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, optionsCamSize, lerpFactor);
-                lerpFactor += 0.5f * Time.deltaTime;
-
-                if (cam.transform.position == optionsPos)
-                {
-                    camLerp = false;
-                    isOptions = true;
-                    lerpFactor = 0;
-                }
+                doLerp(currentTarget, currentTargetCamSize);
             }
             else
             {
-                float x = cam.transform.position.x;
-                float y = cam.transform.position.y;
-                float z = cam.transform.position.z;
-                Vector3 lerpPos = new Vector3(Mathf.Lerp(x, mainPos.x, lerpFactor), Mathf.Lerp(y, mainPos.y, lerpFactor), z);
-                cam.transform.position = lerpPos;
-
-                cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, mainCamSize, lerpFactor);
-                lerpFactor += 0.3f * Time.deltaTime;
-
-                if (cam.transform.position == mainPos)
-                {
-                    camLerp = false;
-                    isOptions = false;
-                    lerpFactor = 0;
-                }
+                doLerp(mainPos, mainCamSize);
             }
         }
     }
 
-    public void saveExitOptions()
+    public void doLerp(Vector3 target, float camSize)
     {
-        optionCon.saveExitMenu();
+        //print("yo2");
+        float x = cam.transform.position.x;
+        float y = cam.transform.position.y;
+        float z = cam.transform.position.z;
+        Vector3 lerpPos = new Vector3(Mathf.Lerp(x, target.x, lerpFactor), Mathf.Lerp(y, target.y, lerpFactor), z);
+        cam.transform.position = lerpPos;
+
+        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, camSize, lerpFactor);
+        lerpFactor += 0.5f * Time.deltaTime;
+
+        if (cam.transform.position == target)
+        {
+            camLerp = false;
+            lerpFactor = 0;
+        }
+    }
+
+    public void openCredits()
+    {
         camLerp = true;
-        isOptions = true;
+        forwards = true;
+        currentTarget = creditsPos;
+        currentTargetCamSize = mainCamSize;
+    }
+    public void closeCredits()
+    {
+        camLerp = true;
+        forwards = false;
     }
 
     public void website()
@@ -326,7 +350,6 @@ public class MainMenu : MonoBehaviour {
             print("MainMenu: setDefaultOptions(): Not first timer");
         }
     }
-
     public void resetDefOptions()
     {
         print("MainMenu: resetDefOptions()");

@@ -37,7 +37,7 @@ public static class UtilBools {
         actionBarLock = state;
         noPlaceTile = state;
         tileLock = state;
-        selectLock = state;
+        //selectLock = state;
         camMoveLock = state;
         selectionbarLock = state;
     }

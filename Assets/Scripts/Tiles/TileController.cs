@@ -68,7 +68,6 @@ public abstract class TileController : MonoBehaviour
 
     protected abstract void tryPower(bool state);
 
-    /*
     protected void OnMouseDrag()
     {
         if (locked || UtilBools.tileLock || AC.selectedA != 1)
@@ -124,7 +123,7 @@ public abstract class TileController : MonoBehaviour
             print("Removing Compoverlay!");
             GC.compUI.removeOverlay(myCompOverlay);
         }
-    }*/
+    }
 
     protected void rotate()
     {
@@ -201,6 +200,11 @@ public abstract class TileController : MonoBehaviour
         //print("triggering: " + drag + "/" + placed);
         if (!drag && !placed)
         {
+            if(other.gameObject == homeObj)
+            {
+                print("returning!");
+                return;
+            }
             //print(this.gameObject.name + ": Need home!");
             if (other.GetComponent<FloorTileController>() != null)
             {
@@ -299,7 +303,7 @@ public abstract class TileController : MonoBehaviour
         }
 
         //print("Placed!");
-        transform.position = other.transform.position + new Vector3(0, 0, 0);
+        transform.position = other.transform.position + new Vector3(0, 0, -1);
         placed = true;
         homeObj = other;
         homeObj.GetComponent<FloorTileController>().busy = true;

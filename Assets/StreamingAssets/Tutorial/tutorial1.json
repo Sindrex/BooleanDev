@@ -9,7 +9,7 @@
       "y":0
     },
     {
-      "text":"At the top of the screen you can see (from left) the Truth Table, Check Logic button and the Objective.",
+      "text":"At the top of the screen you can see the Info, Objective, Check Logic button, Step Logic button and Truth Table.",
       "x":0,
       "y":0,
       "ax":0,
@@ -17,31 +17,63 @@
       "rotz":0
     },
     {
-      "text":"The Truth Table is shown on hover. It shows what input is required for a given output.",
+      "text":"The Info is shown on hover and opens up a window with additional info that can be helpful for solving the puzzle. It is only available on some puzzles.",
       "x":0,
       "y":0,
-      "ax":-35,
-      "ay":130,
-      "rotz":0
-    },
-    {
-      "text":"The Check Logic (Play) button checks your current creation against the truth table to determine if it satisfies the objective.",
-      "x":0,
-      "y":0,
-      "ax":0,
-      "ay":130,
-      "rotz":0
+      "ax":130,
+      "ay":195,
+      "rotz":90
     },
     {
       "text":"The Objective is shown on hover and tells you in plain text what the puzzle requires.",
       "x":0,
       "y":0,
-      "ax":35,
-      "ay":130,
+      "ax":55,
+      "ay":135,
       "rotz":0
     },
     {
-      "text":"That is it! Give it a try on this puzzle and good luck on your Boolean journey!",
+      "text":"The Check Logic button checks your current creation against the Truth Table to determine if it satisfies the objective.",
+      "x":0,
+      "y":0,
+      "ax":20,
+      "ay":135,
+      "rotz":0
+    },
+    {
+      "text":"The Step Logic button does as the Check Logic button, but in increments. Which means you can see how your creation interacts with all the different combination of inputs on a step by step basis.",
+      "x":0,
+      "y":0,
+      "ax":-20,
+      "ay":135,
+      "rotz":0
+    },
+    {
+      "text":"The Truth Table is shown on hover. It shows what input is required for a given output.",
+      "x":0,
+      "y":0,
+      "ax":-55,
+      "ay":135,
+      "rotz":0
+    },
+    {
+      "text":"Now, in this game you will place wires and other tiles which can either be POWERED (green) or NOT POWERED (red).",
+      "x":0,
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
+    },
+    {
+      "text":"Powered wires will send its signal to wires you have connected to them.",
+      "x":0,
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
+    },
+    {
+      "text":"That is all you need to get started! Give it a try on this puzzle and good luck on your Boolean journey!",
       "x":0,
       "y":0
     }

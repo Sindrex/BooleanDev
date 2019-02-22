@@ -52,7 +52,7 @@ public class GameController : MonoBehaviour {
     public GameObject selectorBackdrop;
     private GameObject mover;
     public int selectedLength;
-    public int selectedHeigth;
+    public int selectedHeight;
     private int prevSelectedIndex;
     public List<int> selectedTileIndex = new List<int>();
 
@@ -532,7 +532,7 @@ public class GameController : MonoBehaviour {
 
         //print("Start/Current: " + startIndex + "/" + currentIndex);
 
-        int boxHeigth = 0;
+        int boxHeight = 0;
 
         //dragging downwards
         if (startIndex - currentIndex < 0)
@@ -549,9 +549,9 @@ public class GameController : MonoBehaviour {
             while (indexDown < currentIndex)
             {
                 indexDown += length;
-                boxHeigth++;
+                boxHeight++;
             }
-            selectedHeigth = boxHeigth;
+            selectedHeight = boxHeight;
 
             //print("indexDown: " + indexDown + ", StartIndex/CurrentIndex: " + startIndex + "/" + currentIndex);
 
@@ -561,7 +561,7 @@ public class GameController : MonoBehaviour {
                 selectedLength = boxLength;
 
                 //print("Down right! BoxLength: " + boxLength + ", boxHeigthR: " + boxHeigthR + ", boxHeigthL: " + boxHeigthL);
-                for (int k = 0; k < boxHeigth; k++)
+                for (int k = 0; k < boxHeight; k++)
                 {
                     for (int n = 0; n <= boxLength; n++) //horizontal
                     {
@@ -577,7 +577,7 @@ public class GameController : MonoBehaviour {
 
                 //print("Down left!");
                 //print("Down left: StartIndex/CurrentIndex: " + startIndex + "/" + currentIndex + " | TIT/TID: " + timesIndexTop + "/" + timesIndexDown + " | indexTop / IndexDown: " + indexTop + " / " + indexDown);
-                for (int k = 0; k <= boxHeigth; k++)
+                for (int k = 0; k <= boxHeight; k++)
                 {
                     for (int n = 0; n <= boxLength; n++) //horizontal
                     {
@@ -602,9 +602,9 @@ public class GameController : MonoBehaviour {
             while (indexDown < startIndex)
             {
                 indexDown += length;
-                boxHeigth++;
+                boxHeight++;
             }
-            selectedHeigth = boxHeigth;
+            selectedHeight = boxHeight;
 
             //print("indexDown: " + indexDown + ", StartIndex/CurrentIndex: " + startIndex + "/" + currentIndex);
 
@@ -614,7 +614,7 @@ public class GameController : MonoBehaviour {
                 selectedLength = boxLength;
 
                 //print("Up right!");
-                for (int k = 0; k <= boxHeigth; k++)
+                for (int k = 0; k <= boxHeight; k++)
                 {
                     for (int n = 0; n <= boxLength; n++) //horizontal
                     {
@@ -629,7 +629,7 @@ public class GameController : MonoBehaviour {
                 selectedLength = boxLength;
 
                 //print("Up left!");
-                for (int k = 0; k < boxHeigth; k++)
+                for (int k = 0; k < boxHeight; k++)
                 {
                     for (int n = 0; n <= boxLength; n++) //horizontal
                     {
@@ -707,21 +707,22 @@ public class GameController : MonoBehaviour {
                 cornerPos.Add(go.transform.position);
             }
         }
-
+        selectedLength++;
+        print("sH: " + selectedHeight + ", sL: " + selectedLength);
         //backdrop
-        if(cornerPos.Count > 0)
+        if (cornerPos.Count > 0)
         {
             if(cornerPos.Count < 3)
             {
                 if(cornerPos[0].x != cornerPos[1].x)
                 {
                     selectorBackdrop.transform.position = new Vector3((cornerPos[0].x + cornerPos[1].x) / 2, cornerPos[0].y, 0);
-                    selectorBackdrop.transform.localScale = new Vector3(selectedLength + 1, selectedHeigth, 1);
+                    selectorBackdrop.transform.localScale = new Vector3(selectedLength, selectedHeight, 1);
                 }
                 else
                 {
                     selectorBackdrop.transform.position = new Vector3(cornerPos[0].x, (cornerPos[0].y + cornerPos[1].y) / 2, 0);
-                    selectorBackdrop.transform.localScale = new Vector3(selectedLength + 1, selectedHeigth + 1, 1);
+                    selectorBackdrop.transform.localScale = new Vector3(selectedLength, selectedHeight + 1, 1);
                 }
 
             }
@@ -731,17 +732,17 @@ public class GameController : MonoBehaviour {
                 if (cornerPos[0].x < cornerPos[1].x && cornerPos[0].y < cornerPos[2].y)
                 {
                     //print("here1");
-                    selectorBackdrop.transform.localScale = new Vector3(selectedLength + 1, selectedHeigth + 1, 1);
+                    selectorBackdrop.transform.localScale = new Vector3(selectedLength, selectedHeight + 1, 1);
                 }
                 else if(cornerPos[0].x > cornerPos[1].x && cornerPos[0].y > cornerPos[2].y)
                 {
                     //print("here2");
-                    selectorBackdrop.transform.localScale = new Vector3(selectedLength + 1, selectedHeigth + 1, 1);
+                    selectorBackdrop.transform.localScale = new Vector3(selectedLength, selectedHeight + 1, 1);
                 }
                 else
                 {
                     //print("here3");
-                    selectorBackdrop.transform.localScale = new Vector3(selectedLength + 1, selectedHeigth, 1);
+                    selectorBackdrop.transform.localScale = new Vector3(selectedLength, selectedHeight, 1);
                 }
             }
             selectorBackdrop.SetActive(true);
@@ -1060,8 +1061,8 @@ public class GameController : MonoBehaviour {
 
                 print(classTag + "Trying to rotate, wish me luck");
 
-                int tempInt = selectedHeigth - 1;
-                selectedHeigth = selectedLength + 1;
+                int tempInt = selectedHeight - 1;
+                selectedHeight = selectedLength + 1;
                 selectedLength = tempInt;
 
                 //move selection tiles

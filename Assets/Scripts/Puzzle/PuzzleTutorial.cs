@@ -16,6 +16,7 @@ public class PuzzleTutorial : MonoBehaviour {
     public PuzzleTutorialHints myHintWrapper;
     public PuzzleTutorialHint[] myHints;
 
+    public PuzzleArray puzzleArray;
     public EOTP_PuzzleCreator myPuzzle;
     public int tutStep = -1;
 
@@ -85,9 +86,37 @@ public class PuzzleTutorial : MonoBehaviour {
             print("Last tutStep");
             hintText.text = myHints[tutStep].text;
             hint.GetComponent<RectTransform>().localPosition = new Vector3(myHints[tutStep].x, myHints[tutStep].y, 0);
+            //Arrow
+            if (myHints[tutStep].ax != 0 || myHints[tutStep].ay != 0)
+            {
+                arrow.SetActive(true);
+                arrow.transform.localPosition = new Vector3(myHints[tutStep].ax - myHints[tutStep].x, myHints[tutStep].ay - myHints[tutStep].y, 0);
+                arrow.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                arrow.transform.Rotate(new Vector3(0, 0, myHints[tutStep].rotz));
+                arrow.GetComponent<Image>().sprite = arrowDirSprites[0];
+                if (myHints[tutStep].rotz >= 45 && myHints[tutStep].rotz < 135)
+                {
+                    arrow.GetComponent<Image>().sprite = arrowDirSprites[3];
+                    arrow.transform.Rotate(new Vector3(0, 0, -90));
+                }
+                else if (myHints[tutStep].rotz >= 135 && myHints[tutStep].rotz <= 225)
+                {
+                    arrow.GetComponent<Image>().sprite = arrowDirSprites[2];
+                    arrow.transform.Rotate(new Vector3(0, 0, -180));
+                }
+                else if (myHints[tutStep].rotz >= -135 && myHints[tutStep].rotz <= -45)
+                {
+                    arrow.GetComponent<Image>().sprite = arrowDirSprites[2];
+                    arrow.transform.Rotate(new Vector3(0, 0, 90));
+                }
+            }
+            else
+            {
+                arrow.SetActive(false);
+            }
             if (myHintWrapper.exitOnfinish)
             {
-                hintNextButtonText.text = "Finish";
+                hintNextButtonText.text = "Next Puzzle";
             }
             else
             {
@@ -100,7 +129,20 @@ public class PuzzleTutorial : MonoBehaviour {
             {
                 print(MainMenu.puzzlePrefKey + myPuzzle.id);
                 PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + myPuzzle.id, 1);
-                SceneManager.LoadScene("Menu");
+                PlayerPrefs.SetString(MainMenu.openAtStartPrefKey, "puzzle");
+                //SceneManager.LoadScene("Menu");
+                UtilBools.actionBarLock = false;
+                print("Going to next puzzle!");
+                int myPuzzleId = myPuzzle.id;
+                if (myPuzzleId >= 0)
+                {
+                    if ((myPuzzleId + 1) < puzzleArray.EOTP_puzzles.Length)
+                    {
+                        print("New Puzz: " + (myPuzzleId + 1) + "/" + (puzzleArray.EOTP_puzzles.Length));
+                        Game.current = new Game(puzzleArray.EOTP_puzzles[myPuzzleId + 1]);
+                        SceneManager.LoadScene("Main");
+                    }
+                }
             }
             else
             {

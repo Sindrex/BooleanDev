@@ -11,8 +11,29 @@ public class MoverController : MonoBehaviour {
     public GameObject selectedFather;
     public GameController GC;
 
+    public Sprite regular;
+    public Sprite hover;
+    public string displayName;
+
+    private void OnMouseEnter()
+    {
+        this.GetComponent<SpriteRenderer>().sprite = hover;
+    }
+
+    private void OnMouseOver()
+    {
+        GC.changeItemName(displayName);
+    }
+
+    private void OnMouseExit()
+    {
+        this.GetComponent<SpriteRenderer>().sprite = regular;
+        GC.closeItemName();
+    }
+
     private void OnMouseDrag()
     {
+        this.GetComponent<SpriteRenderer>().sprite = regular;
         prevPos = currentPos;
 
         RaycastHit2D[] hits;

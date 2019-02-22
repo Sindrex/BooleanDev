@@ -24,7 +24,7 @@ public class SystemController : MonoBehaviour {
         }
         else if (exitDialogue.activeSelf && InputController.getInput(InputPurpose.UNIVERSAL_BACK))
         {
-            SceneManager.LoadScene("Menu");
+            exitToMenu();
         }
     }
 
@@ -79,6 +79,14 @@ public class SystemController : MonoBehaviour {
     }
     public void exitToMenu()
     {
+        if (UtilBools.isPuzzle)
+        {
+            PlayerPrefs.SetString(MainMenu.openAtStartPrefKey, "puzzle");
+        }
+        else
+        {
+            PlayerPrefs.SetString(MainMenu.openAtStartPrefKey, "sandbox");
+        }
         SceneManager.LoadScene("Menu");
     }
     public void exitToDesk()
