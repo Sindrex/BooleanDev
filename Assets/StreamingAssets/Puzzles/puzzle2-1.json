@@ -7,7 +7,7 @@
   "minDone": 4,
   "info":"The Notgate/Inverter tile will invert it's given input. This is very useful.",
   "desc": "1 is only on when A is not",
-  "winDesc":"The NOT-Gate is the basis of all other gates in Boolean.",
+  "winDesc":"The NOT-Gate is the basis of most logical gates in Boolean.",
   "allowedTiles": [1, 2, 3, 4, 6, 7],
   "IO":
   [

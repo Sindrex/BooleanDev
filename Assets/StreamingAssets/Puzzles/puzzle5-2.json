@@ -8,14 +8,14 @@
   "info":"Info",
   "desc": "A and B, and C and D each represents one two-bit binary number. Compare the two numbers. If A and B are higher, 1 is on. If C and D is higher, 2 is on. If both are identical, 3 is on.",
   "winDesc":"It compares.",
-  "allowedTiles": [1, 2, 3, 4, 6, 7],
+  "allowedTiles": [1, 2, 3, 4, 6, 7, 8],
   "IO":
   [
     {
       "input": false,
       "tileId": 19,
       "lengthIndex": 0,
-      "heightIndex": 10,
+      "heightIndex": 9,
       "dir": 1,
       "signal": [1, 1, 1, 0, 0, 1, 0, 0],
       "sign":"A"
@@ -42,7 +42,7 @@
       "input": false,
       "tileId": 19,
       "lengthIndex": 0,
-      "heightIndex": 19,
+      "heightIndex": 20,
       "dir": 1,
       "signal": [1, 0, 0, 0, 0, 1, 1, 0],
       "sign":"D"

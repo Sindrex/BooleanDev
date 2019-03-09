@@ -4,7 +4,7 @@
   "exitOnfinish": false,
   "hints":[
     {
-      "text":"In Boolean you have a set of tools to make building more efficient. These revolve around the Selection and is akin to selections in image editing softwares, like paint.",
+      "text":"In Boolean you have a set of tools to make building more efficient. These revolve around the Selection and are like selections in image editing softwares, like paint.",
       "x":0,
       "y":0,
       "ax":0,
@@ -13,7 +13,7 @@
     },
     {
       "text":"You can create a selection by selecting the Select symbol on the actionbar and dragging LEFT MOUSE BUTTON over the grid.",
-      "x":230,
+      "x":-230,
       "y":0,
       "ax":-175,
       "ay":-130,
@@ -21,7 +21,7 @@
     },
     {
       "text":"You can delete the tiles in a selection by pressing R when you have a selection up.",
-      "x":230,
+      "x":-230,
       "y":0,
       "ax":0,
       "ay":0,
@@ -29,7 +29,7 @@
     },
     {
       "text":"You can move a selection by holding LEFT MOUSE BUTTON on the Move Symbol on the selection.",
-      "x":230,
+      "x":-230,
       "y":0,
       "ax":0,
       "ay":0,
@@ -37,7 +37,7 @@
     },
     {
       "text":"You can duplicate a selection by pressing LEFT MOUSE BUTTON on the Duplicate Symbol on the selection. Then use the Move Symbol to move the duplication.",
-      "x":230,
+      "x":-230,
       "y":0,
       "ax":0,
       "ay":0,

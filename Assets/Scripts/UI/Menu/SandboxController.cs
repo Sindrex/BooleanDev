@@ -28,8 +28,8 @@ public class SandboxController : MonoBehaviour {
     {
         //Create buttons
         List<Game> games = SaveLoad.savedGames;
-        games.Sort((x, y) => x.dateLastPlayed.CompareTo(y.dateLastPlayed));
-        games.Reverse();
+        games.Sort((x, y) => x.dateLastPlayed.CompareTo(y.dateLastPlayed) == 0 ? x.gameName.CompareTo(y.gameName) : x.dateLastPlayed.CompareTo(y.dateLastPlayed));
+        //games.Reverse();
         foreach (Game g in games)
         {
             GameObject prefab = Instantiate(buttonPrefab, scrollContent.transform);

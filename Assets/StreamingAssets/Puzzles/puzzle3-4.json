@@ -6,7 +6,7 @@
   "height": 5,
   "minDone": 8,
   "info":"",
-  "desc": "1 is on if A and B is on. 2 is only on if B is on.",
+  "desc": "1 is on if A and B is on. 2 is on if only B is on.",
   "winDesc":"Getting the gist of it now, are we?",
   "allowedTiles": [1, 2, 3, 4, 6, 7, 8],
   "IO":

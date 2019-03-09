@@ -24,7 +24,7 @@
       "input": false,
       "tileId": 19,
       "lengthIndex": 0,
-      "heightIndex": 3,
+      "heightIndex": 4,
       "dir": 1,
       "signal": [1, 0, 1, 0],
       "sign":"B"

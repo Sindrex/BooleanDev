@@ -5,10 +5,10 @@
   "length": 10,
   "height": 7,
   "minDone": 10,
-  "info":"A half-adder is comprised of an XOR-gate and an AND gate.",
+  "info":"A half-adder is comprised of an XOR-gate and an AND-gate.",
   "desc": "1 is only on if either A or B is on. 2 is only on if both A and B is.",
   "winDesc":"Great! Time to expand it.",
-  "allowedTiles": [1, 2, 3, 4, 6, 7],
+  "allowedTiles": [1, 2, 3, 4, 6, 7, 8],
   "IO":
   [
     {

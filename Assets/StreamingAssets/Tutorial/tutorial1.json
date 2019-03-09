@@ -9,7 +9,7 @@
       "y":0
     },
     {
-      "text":"At the top of the screen you can see the Info, Objective, Check Logic button, Step Logic button and Truth Table.",
+      "text":"At the top of the screen you can see a set of puzzle related buttons.",
       "x":0,
       "y":0,
       "ax":0,
@@ -57,7 +57,7 @@
       "rotz":0
     },
     {
-      "text":"Now, in this game you will place wires and other tiles which can either be POWERED (green) or NOT POWERED (red).",
+      "text":"Now, in this game you will place tiles (for example wires) which can either be POWERED (green) or NOT POWERED (red).",
       "x":0,
       "y":0,
       "ax":0,
@@ -65,7 +65,7 @@
       "rotz":0
     },
     {
-      "text":"Powered wires will send its signal to wires you have connected to them.",
+      "text":"Powered tiles will send its signal to other tiles you have connected to them.",
       "x":0,
       "y":0,
       "ax":0,

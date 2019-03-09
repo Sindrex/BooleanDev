@@ -41,9 +41,11 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public List<GameObject> outputObjs = new List<GameObject>();
     private List<List<int>> realInput = new List<List<int>>();
 
+    //stepping
     public bool stepping = false;
     public GameObject stepButton;
     public Text stepText;
+    public GameObject stopStepButton;
 
     public void close()
     {
@@ -57,6 +59,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
         infoButton.SetActive(false);
         stepText.gameObject.SetActive(false);
         stepButton.SetActive(false);
+        stopStepButton.SetActive(false);
     }
 
     public void setupPuzzle(EOTP_PuzzleCreator puzzle)
@@ -111,7 +114,10 @@ public class EOTP_PuzzleController : MonoBehaviour {
             infoButton.SetActive(false);
         }
         puzzleInfo.SetActive(false);
+
+        //Step
         stepText.gameObject.SetActive(false);
+        stopStepButton.SetActive(false);
 
         //Tutorial
         List<PuzzleTutorialHints> temp = ResourceLoader.loadJsonFolder<PuzzleTutorialHints>("/Tutorial/");
@@ -136,6 +142,12 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public void toggleInfo()
     {
         puzzleInfo.SetActive(!puzzleInfo.activeSelf);
+    }
+
+    public void autoPlay()
+    {
+        resetPuzzle();
+        puzzlePlay(false);
     }
 
     public void puzzlePlay(bool stepping)
@@ -236,6 +248,23 @@ public class EOTP_PuzzleController : MonoBehaviour {
 
     private void checkResult()
     {
+        bool ok = resetPuzzle();
+        if (ok)
+        {
+            print(this.GetType().Name + ":EOTPwaitFinish(): All inputs OK. Good job!");
+            PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + myPuzzle.id, 1);
+            print("Sat playerprefs for: " + MainMenu.puzzlePrefKey + myPuzzle.id);
+            PV.openWin(myPuzzle.id, myPuzzle.winDesc);
+        }
+        else
+        {
+            print(this.GetType().Name + ":EOTPwaitFinish(): Try again dumbo!");
+            PV.openLoss();
+        }
+    }
+
+    public bool resetPuzzle()
+    {
         EOTPPlayTurn = 0; //reset
         bool ok = true;
         for (int li = 0; li < realInput.Count; li++)
@@ -253,20 +282,15 @@ public class EOTP_PuzzleController : MonoBehaviour {
             //reset each list for next check logic
             realInput[li] = new List<int>();
         }
-        if (ok)
-        {
-            print(this.GetType().Name + ":EOTPwaitFinish(): All inputs OK. Good job!");
-            PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + myPuzzle.id, 1);
-            print("Sat playerprefs for: " + MainMenu.puzzlePrefKey + myPuzzle.id);
-            PV.openWin(myPuzzle.id, myPuzzle.winDesc);
-        }
-        else
-        {
-            print(this.GetType().Name + ":EOTPwaitFinish(): Try again dumbo!");
-            PV.openLoss();
-        }
         stepping = false;
         stepText.gameObject.SetActive(false);
+        stopStepButton.SetActive(false);
+        //reset powered
+        for (int i = 0; i < outputs.Count; i++)
+        {
+            outputObjs[i].GetComponent<TileController>().beingPowered = false;
+        }
+        return ok;
     }
 
     private void Update()
@@ -287,6 +311,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
     //stepping logic
     public void stepPlay()
     {
+        stopStepButton.SetActive(true);
         stepping = true;
         if (EOTPPlayTurn < outputs[0].signal.Length)
         {
@@ -295,8 +320,14 @@ public class EOTP_PuzzleController : MonoBehaviour {
         else
         {
             checkResult();
+            stopStepButton.SetActive(false);
             //print(this.GetType().Name + ":puzzlePlay(): finished");
         }
+    }
 
+    public void stopStep()
+    {
+        resetPuzzle();
+        stopStepButton.SetActive(false);
     }
 }

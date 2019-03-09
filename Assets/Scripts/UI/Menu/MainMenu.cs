@@ -11,6 +11,7 @@ public class MainMenu : MonoBehaviour {
     public GameObject hoverTip;
 
     public static readonly string openAtStartPrefKey = "openAtStart";
+    public static readonly string justOpenedGame = "justOpened";
 
     //Puzzles
     public GameObject puzzles;
@@ -77,6 +78,16 @@ public class MainMenu : MonoBehaviour {
                 puzzlesDone++;
             }
         }
+
+        /*
+        int start = PlayerPrefs.GetInt(MainMenu.justOpenedGame, 0);
+        PlayerPrefs.SetInt(MainMenu.justOpenedGame, 1);
+
+        if (start == 0)
+        {
+            openMainMenu();
+        }
+
         switch (PlayerPrefs.GetString(MainMenu.openAtStartPrefKey, "menu"))
         {
             case "sandbox":
@@ -91,7 +102,7 @@ public class MainMenu : MonoBehaviour {
             default:
                 openMainMenu();
                 break;
-        }
+        }*/
     }
 
     public void closeAll()
@@ -333,6 +344,8 @@ public class MainMenu : MonoBehaviour {
 
     public void quit()
     {
+        //PlayerPrefs.SetInt(MainMenu.justOpenedGame, 0);
+        //print("setting justOpenedGame");
         Application.Quit();
     }
 

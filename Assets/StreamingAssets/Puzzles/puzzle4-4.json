@@ -8,7 +8,7 @@
   "info":"Two's Complement is a system to sign numbers, which also makes addition with negative numbers the same as with positive ones (in binary). In practice, this is done by inverting B's input and adding 1 to the calculation (using the CARRY IN).",
   "desc": "A and B each represents a number (1 bit). C is the toggle for subtraction. 1 and 2 represents the sum of A and B (2 bits). Create a full-adder with optional subtraction (A+B and A-B). This is done using Two's Complement on B. See truth table.",
   "winDesc":"Remember.",
-  "allowedTiles": [1, 2, 3, 4, 6, 7],
+  "allowedTiles": [1, 2, 3, 4, 6, 7, 8],
   "IO":
   [
     {
@@ -53,7 +53,7 @@
       "lengthIndex": 15,
       "heightIndex": 9,
       "dir": 0,
-      "signal": [0, 1, 0, 0, 0, 0, 1, 0],
+      "signal": [1, 1, 1, 0, 0, 0, 1, 0],
       "sign":"2"
     }
   ]

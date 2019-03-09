@@ -79,6 +79,8 @@ public class SystemController : MonoBehaviour {
     }
     public void exitToMenu()
     {
+        /*
+        print("isPuzzle: " + UtilBools.isPuzzle);
         if (UtilBools.isPuzzle)
         {
             PlayerPrefs.SetString(MainMenu.openAtStartPrefKey, "puzzle");
@@ -86,11 +88,12 @@ public class SystemController : MonoBehaviour {
         else
         {
             PlayerPrefs.SetString(MainMenu.openAtStartPrefKey, "sandbox");
-        }
+        }*/
         SceneManager.LoadScene("Menu");
     }
     public void exitToDesk()
     {
+        //PlayerPrefs.SetInt(MainMenu.justOpenedGame, 0);
         Application.Quit();
     }
 }
