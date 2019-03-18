@@ -9,53 +9,76 @@ public class SignManager : MonoBehaviour {
     public CamController CC;
 
     //Tile: Sign
-    public GameObject signHover;
+    public GameObject signObj;
     public Text signText;
     public InputField signInput;
-    public Button signButton;
-    public SignController currentSign;
+    public GameObject editSignButton;
+    public GameObject saveSignButton;
+    public SignController currentSignTile;
     public Vector3 startPos;
-    public bool pinned;
+    public Vector3 offset;
+    public bool editing;
 
     private void Start()
     {
         signInput.gameObject.SetActive(false);
-        signHover.SetActive(false);
-        signHover.transform.position = startPos;
+        signObj.SetActive(false);
+        editSignButton.SetActive(true);
+        saveSignButton.SetActive(false);
+        signObj.transform.position = startPos;
+    }
+
+    private void Update()
+    {
+        if(currentSignTile == null || !signObj.activeSelf)
+        {
+            return;
+        }
+        if (signObj.transform.position != currentSignTile.transform.position)
+        {
+            //print(currentSign.transform.localPosition);
+            signObj.transform.position = currentSignTile.transform.localPosition + offset;
+        }
     }
 
     public void editSign()
     {
-        if (!pinned)
+        if (!editing)
         {
-            signButton.transform.GetChild(0).GetComponent<Text>().text = "Confirm";
+            editSignButton.SetActive(false);
+            saveSignButton.SetActive(true);
             signInput.text = signText.text;
             signText.gameObject.SetActive(false);
             signInput.gameObject.SetActive(true);
-            pinned = true;
-            UtilBools.camMoveLock = true;
+            editing = true;
+            UtilBools.playerInteractLock(true);
         }
         else
         {
-            signButton.transform.GetChild(0).GetComponent<Text>().text = "Edit";
+            editSignButton.SetActive(true);
+            saveSignButton.SetActive(false);
             signText.text = signInput.text;
             signText.gameObject.SetActive(true);
             signInput.gameObject.SetActive(false);
-            currentSign.text = signText.text;
-            pinned = false;
-            UtilBools.camMoveLock = false;
+            currentSignTile.text = signText.text;
+            editing = false;
+            UtilBools.playerInteractLock(false);
         }
     }
 
     public void closeSign()
     {
-        signButton.transform.GetChild(0).GetComponent<Text>().text = "Edit";
+        print("Clicked close sign!");
+        editSignButton.SetActive(true);
+        saveSignButton.SetActive(false);
         signText.text = signInput.text;
         signText.gameObject.SetActive(true);
         signInput.gameObject.SetActive(false);
-        currentSign.text = signText.text;
-        pinned = false;
-        UtilBools.camMoveLock = false;
-        signHover.transform.position = startPos;
+        currentSignTile.text = signText.text;
+        currentSignTile = null;
+        editing = false;
+        signObj.transform.position = startPos;
+        signObj.SetActive(false);
+        UtilBools.playerInteractLock(false);
     }
 }

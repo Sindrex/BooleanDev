@@ -60,6 +60,11 @@ public class WorldOptionsController : MonoBehaviour {
         stats.GetComponent<StatsController>().createStats();
     }
 
+    public void justSave()
+    {
+        miscCon.saveSettings();
+    }
+
     public void saveExit()
     {
         openAll();

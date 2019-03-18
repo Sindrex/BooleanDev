@@ -6,6 +6,7 @@ public class SignController : TileController {
 
     public string text = "";
     public SignManager ui;
+    public Vector3 offset;
 
     override
     protected void Start()
@@ -15,20 +16,32 @@ public class SignController : TileController {
 
     private void OnMouseOver()
     {
-        if (!ui.pinned)
+        //print("Clicked ma boi sign");
+        if (!ui.editing)
         {
-            if (InputController.getInput(InputPurpose.INTERACT_TILE) && !ui.signHover.activeSelf)
+            //print("Clicked ma boi sign 2");
+            if (InputController.getInput(InputPurpose.INTERACT_TILE))
             {
-                ui.signHover.SetActive(true);
-                ui.signText.text = text;
-                ui.signHover.transform.position = new Vector3(transform.position.x, transform.position.y + 2.5f, ui.signHover.transform.position.z);
-                ui.currentSign = this;
-            }
-            else if(InputController.getInput(InputPurpose.INTERACT_TILE) && ui.signHover.activeSelf)
-            {
-                ui.signHover.SetActive(false);
-                ui.signText.text = "";
-                ui.signHover.transform.position = ui.startPos;
+                print("Clicked sign: " + this.gameObject.name);
+                if (!ui.signObj.activeSelf)
+                {
+                    ui.signObj.SetActive(true);
+                    ui.signText.text = text;
+                    //ui.signHover.transform.position = new Vector3(transform.position.x, transform.position.y + 2.5f, ui.signHover.transform.position.z);
+                    ui.currentSignTile = this;
+                }
+                else if(ui.currentSignTile != null)
+                {
+                    ui.signText.text = text;
+                    ui.currentSignTile = this;
+                }
+                else
+                {
+                    ui.signObj.SetActive(false);
+                    ui.signText.text = "";
+                    ui.signObj.transform.position = ui.startPos;
+                    ui.currentSignTile = null;
+                }
             }
         }
 
@@ -54,11 +67,11 @@ public class SignController : TileController {
     private IEnumerator waitClose()
     {
         yield return new WaitForSeconds(0.75f);
-        if(!ui.pinned)
+        if(!ui.editing)
         {
-            ui.signHover.SetActive(false);
+            ui.signObj.SetActive(false);
             ui.signText.text = "";
-            ui.signHover.transform.position = ui.startPos;
+            ui.signObj.transform.position = ui.startPos;
         }
     }
 

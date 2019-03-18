@@ -6,8 +6,9 @@ using UnityEngine;
 public class ButtonController : TileController
 {
     private bool buttonWait = false;
-
     public float waitTime = 0.5f;
+
+    public GameObject hover;
 
     // Update is called once per frame
     void Update()
@@ -68,6 +69,7 @@ public class ButtonController : TileController
 
     private void OnMouseOver()
     {
+        //hover.SetActive(true);
         //print("yo");
         if (InputController.getInput(InputPurpose.INTERACT_TILE) && placed)
         {
@@ -79,7 +81,12 @@ public class ButtonController : TileController
             }
         }
     }
-    
+
+    private void OnMouseExit()
+    {
+        //hover.SetActive(false);
+    }
+
     IEnumerator buttonWaiter()
     {
         buttonWait = true;

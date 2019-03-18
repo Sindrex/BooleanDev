@@ -708,7 +708,7 @@ public class GameController : MonoBehaviour {
             }
         }
         selectedLength++;
-        print("sH: " + selectedHeight + ", sL: " + selectedLength);
+        //print("sH: " + selectedHeight + ", sL: " + selectedLength);
         //backdrop
         if (cornerPos.Count > 0)
         {
@@ -1053,7 +1053,7 @@ public class GameController : MonoBehaviour {
 
     private void rotateSelected()
     {
-        if (!signManager.pinned)
+        if (!signManager.editing)
         {
             if(selectedTiles.Count > 0)
             {
