@@ -43,6 +43,8 @@ public class ActionbarController : MonoBehaviour {
 
     private void Start()
     {
+        audioCon = GameObject.Find("AudioMixer").GetComponent<AudioController>();
+
         closeTimer = MAX_CLOSE_TIMER;
         showNameA();
 
@@ -172,7 +174,6 @@ public class ActionbarController : MonoBehaviour {
                 {
                     selectedA = 0;
                 }
-                tiler.transform.rotation = Quaternion.Euler(0, 0, 0);
                 closeTimer = MAX_CLOSE_TIMER;
                 showNameA();
                 actionBarSelect();
@@ -187,7 +188,6 @@ public class ActionbarController : MonoBehaviour {
                 {
                     selectedA = maxSelectedA - 1;
                 }
-                tiler.transform.rotation = Quaternion.Euler(0, 0, 0);
                 closeTimer = MAX_CLOSE_TIMER;
                 showNameA();
                 actionBarSelect();
@@ -354,6 +354,7 @@ public class ActionbarController : MonoBehaviour {
     public void actionBarSelect()
     {
         //Position the select right + reset rotation
+        tiler.transform.rotation = Quaternion.Euler(0, 0, 0);
         selectedTileA.transform.position = actionbars[selectedA].transform.position;
         foreach(GameObject go in actionbars)
         {

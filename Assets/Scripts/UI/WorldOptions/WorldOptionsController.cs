@@ -14,6 +14,8 @@ public class WorldOptionsController : MonoBehaviour {
     public GameObject misc;
     public GameObject stats;
 
+    public GameObject appliedText;
+
     private void Update()
     {
         if (InputController.getInput(InputPurpose.UNIVERSAL_BACK))
@@ -35,6 +37,7 @@ public class WorldOptionsController : MonoBehaviour {
         expand.SetActive(false);
         misc.SetActive(false);
         stats.SetActive(false);
+        appliedText.SetActive(false);
     }
     public void openAll()
     {
@@ -63,9 +66,25 @@ public class WorldOptionsController : MonoBehaviour {
     public void justSave()
     {
         miscCon.saveSettings();
+        savedFeedback();
     }
 
     public void saveExit()
+    {
+        openAll();
+
+        //Saving goes here
+        miscCon.saveSettings();
+        closeAll();
+        savedFeedback();
+
+        UtilBools.worldOptions = false;
+        UtilBools.pausedBools(Game.current, false);
+
+        gameObject.SetActive(false);
+    }
+
+    public void justExit()
     {
         openAll();
 
@@ -79,11 +98,15 @@ public class WorldOptionsController : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public void justExit()
+    private void savedFeedback()
     {
-        closeAll();
-        gameObject.SetActive(false);
+        appliedText.SetActive(true);
+        StartCoroutine(waitSavedFeedback());
+    }
 
-        UtilBools.worldOptions = false;
+    IEnumerator waitSavedFeedback()
+    {
+        yield return new WaitForSeconds(0.5f);
+        appliedText.SetActive(false);
     }
 }

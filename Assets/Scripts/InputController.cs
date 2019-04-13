@@ -50,8 +50,6 @@ public static class InputController {
                 return Input.GetAxis("Mouse ScrollWheel") < 0f && Input.GetKey(KeyCode.Space) && !Input.GetKey(KeyCode.LeftShift);
             case InputPurpose.SELECTIONBAR_UP:
                 return Input.GetKeyUp(parseKeyCode(OptionController.controlsOK[5]));
-            case InputPurpose.PAUSE_MENU:
-                return Input.GetKeyDown(parseKeyCode(OptionController.controlsOK[6]));
             case InputPurpose.ACTIONBAR_LEFT:
                 return Input.GetAxis("Mouse ScrollWheel") > 0f && !Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.Space);
             case InputPurpose.ACTIONBAR_RIGHT:
@@ -59,9 +57,9 @@ public static class InputController {
             case InputPurpose.RESET_ACTIONBAR:
                 return Input.GetKeyDown(KeyCode.C);
             case InputPurpose.SELECTOR:
-                return Input.GetKeyDown(parseKeyCode(OptionController.controlsOK[7]));
+                return Input.GetKeyDown(parseKeyCode(OptionController.controlsOK[6]));
             case InputPurpose.DELETE_SELECTED:
-                return Input.GetKeyDown(parseKeyCode(OptionController.controlsOK[8]));
+                return Input.GetKeyDown(parseKeyCode(OptionController.controlsOK[7]));
             case InputPurpose.UNDO:
                 return Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Z);
             case InputPurpose.DUPLICATE:

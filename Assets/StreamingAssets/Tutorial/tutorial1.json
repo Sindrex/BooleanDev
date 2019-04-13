@@ -4,7 +4,7 @@
   "exitOnfinish": false,
   "hints":[
     {
-      "text":"Welcome to the first real puzzle! First you will be guided through how puzzles work.",
+      "text":"Welcome to the first real puzzle! You will be guided through how puzzles work.",
       "x":0,
       "y":0
     },
@@ -41,7 +41,7 @@
       "rotz":0
     },
     {
-      "text":"The Step Logic button does as the Check Logic button, but in increments. Which means you can see how your creation interacts with all the different combination of inputs on a step by step basis.",
+      "text":"The Step Logic button goes through each input-combination in increments. Which means you can see how your creation interacts with input on a step by step basis.",
       "x":0,
       "y":0,
       "ax":-20,

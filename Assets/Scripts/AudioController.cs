@@ -10,6 +10,19 @@ public class AudioController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        GameObject dupeMixer = GameObject.Find("AudioMixer");
+        if(dupeMixer != null && dupeMixer != this.gameObject)
+        {
+            Destroy(this.gameObject);
+        }
+        loadAudioPref();
+
+        //playTilePlacedSFX();
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    public void loadAudioPref()
+    {
         float master = PlayerPrefs.GetFloat(OptionController.audioOK[0]);
         float music = PlayerPrefs.GetFloat(OptionController.audioOK[1]);
         float SFX = PlayerPrefs.GetFloat(OptionController.audioOK[2]);
@@ -17,8 +30,6 @@ public class AudioController : MonoBehaviour {
         audioMixer.SetFloat("masterVolume", AudioOptionsController.volFunction(master));
         audioMixer.SetFloat("musicVolume", AudioOptionsController.volFunction(music));
         audioMixer.SetFloat("SFXVolume", AudioOptionsController.volFunction(SFX));
-
-        playTilePlacedSFX();
     }
 
     public void playTilePlacedSFX()

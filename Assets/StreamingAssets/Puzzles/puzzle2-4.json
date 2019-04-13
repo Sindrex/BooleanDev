@@ -5,7 +5,7 @@
   "length": 7,
   "height": 7,
   "minDone": 4,
-  "info":"",
+  "info":"Use what you have learned on the two previous problems, they will guide the way.",
   "desc": "1 is only on when both A and B is on",
   "winDesc":"This one is pretty useful.",
   "allowedTiles": [1, 2, 3, 4, 6, 7],

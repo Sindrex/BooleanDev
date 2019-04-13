@@ -7,11 +7,13 @@ using UnityEngine.SceneManagement;
 public class PuzzleVerdict : MonoBehaviour {
 
     public GameController GC;
+    public EOTP_PuzzleController PC;
 
     public GameObject verdictObject;
     public GameObject solved;
     public GameObject nextPuzzleButton;
     public Text desc;
+    public Text tilesUsed;
 
     public int myPuzzleId = -1;
     public PuzzleArray puzzleArray;
@@ -28,6 +30,7 @@ public class PuzzleVerdict : MonoBehaviour {
         UtilBools.actionBarLock = true;
         verdictObject.SetActive(true);
         nextPuzzleButton.GetComponent<Button>().interactable = true;
+        setTilesUsed();
 
         desc.color = Color.green;
         desc.text = winDesc;
@@ -52,12 +55,34 @@ public class PuzzleVerdict : MonoBehaviour {
     {
         UtilBools.actionBarLock = true;
         verdictObject.SetActive(true);
+        setTilesUsed();
 
         nextPuzzleButton.GetComponent<Button>().interactable = false;
         solved.SetActive(false);
 
         desc.color = Color.red;
-        desc.text = "SOMETHING IS NOT QUITE RIGHT... \nTRY AGAIN!";
+        desc.text = "Something is not quite right... \nTry again!";
+    }
+
+    public void setTilesUsed()
+    {
+        int count = 0;
+        foreach(GameObject go in GC.tiles)
+        {
+            if(go != null)
+            {
+                count++;
+            }
+        }
+        foreach (GameObject go in PC.inputObjs)
+        {
+            count--;
+        }
+        foreach(GameObject go in PC.outputObjs)
+        {
+            count--;
+        }
+        tilesUsed.text = "You used " + count + " tiles.";
     }
 
     public void nextPuzzle()

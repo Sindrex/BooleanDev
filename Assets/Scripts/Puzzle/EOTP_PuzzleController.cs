@@ -29,8 +29,9 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public Text infoText;
 
     //logic
-    public float EOTP_WAIT_TIME = 1;
-    public float EOTP_MIDDLE_WAIT_TIME_MS = 1;
+    public float EOTP_WAIT_TIME = 0.5f;
+    public float DEFAULT_MIDDLE_WAIT_TIME = 0.5f;
+    private float EOTP_MIDDLE_WAIT_TIME_MS = 0.5f;
     private int EOTPPlayTurn = 0;
     private bool EOTP_waitforinput = false;
     [SerializeField]
@@ -137,6 +138,17 @@ public class EOTP_PuzzleController : MonoBehaviour {
         {
             PT.closeAll();
         }
+
+        //middleWaitTime
+        print("Puzzle Middle Time: " + puzzle.middleWaitTime);
+        if(puzzle.middleWaitTime > 0)
+        {
+            EOTP_MIDDLE_WAIT_TIME_MS = puzzle.middleWaitTime;
+        }
+        else
+        {
+            EOTP_MIDDLE_WAIT_TIME_MS = DEFAULT_MIDDLE_WAIT_TIME;
+        }
     }
 
     public void toggleInfo()
@@ -147,6 +159,8 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public void autoPlay()
     {
         resetPuzzle();
+        print(this.GetType().Name + ": Starting autoplay puzzle!");
+        UtilBools.puzzleInteractLock(true);
         puzzlePlay(false);
     }
 
@@ -190,7 +204,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
             //print(this.GetType().Name + ":puzzlePlay():" + outputs[i].getSignal()[EOTPPlayTurn]);
         }
 
-        print("Waiting for " + EOTP_MIDDLE_WAIT_TIME_MS + "sec!");
+        print("Waiting for middle: " + EOTP_MIDDLE_WAIT_TIME_MS + "sec!");
         yield return new WaitForSeconds(EOTP_MIDDLE_WAIT_TIME_MS);
 
         EOTP_waitforinput = true;
@@ -225,6 +239,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
 
     private IEnumerator EOTPwait()
     {
+        //print("Samling puzzle results...");
         yield return new WaitForSeconds(EOTP_WAIT_TIME);
         EOTP_waitforinput = false;
         if (!stepping)
@@ -265,15 +280,17 @@ public class EOTP_PuzzleController : MonoBehaviour {
 
     public bool resetPuzzle()
     {
+        print(this.GetType().Name + ": reseting puzzle");
+        UtilBools.puzzleInteractLock(false);
         EOTPPlayTurn = 0; //reset
         bool ok = true;
         for (int li = 0; li < realInput.Count; li++)
         {
             for (int i = 0; i < realInput[li].Count; i++)
             {
-                //print(this.GetType().Name + ":EOTPwaitFinish():li/i: " + li + "/" + i);
+                print(this.GetType().Name + ":EOTPwaitFinish():li/i: " + li + "/" + i);
                 print(this.GetType().Name + ":EOTPwaitFinish():Input Gotten:" + realInput[li][i]);
-                //print(this.GetType().Name + ":EOTPwaitFinish():Input Wanted:" + inputs[li].getSignal()[i]);
+                print(this.GetType().Name + ":EOTPwaitFinish():Input Wanted:" + inputs[li].signal[i]);
                 if (realInput[li][i] != inputs[li].signal[i])
                 {
                     ok = false;
@@ -301,8 +318,8 @@ public class EOTP_PuzzleController : MonoBehaviour {
             {
                 if (inputObjs[i].GetComponent<TileController>().beingPowered)
                 {
+                    //print(Time.time + ": i= " + i + ": acutalInput=1");
                     actualInput[i] = 1;
-                    //print(Time.time + ": acutalInput=1");
                 }
             }
         }
@@ -313,6 +330,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
     {
         stopStepButton.SetActive(true);
         stepping = true;
+        UtilBools.puzzleInteractLock(true);
         if (EOTPPlayTurn < outputs[0].signal.Length)
         {
             puzzlePlay(true);

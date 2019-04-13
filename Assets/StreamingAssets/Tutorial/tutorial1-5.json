@@ -36,7 +36,15 @@
       "rotz":0
     },
     {
-      "text":"You can duplicate a selection by pressing LEFT MOUSE BUTTON on the Duplicate Symbol on the selection. Then use the Move Symbol to move the duplication.",
+      "text":"You can duplicate a selection by pressing LEFT MOUSE BUTTON on the Duplicate Symbol on the selection.",
+      "x":-230,
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
+    },
+    {
+      "text":"Then move the mouse around and click LEFT MOUSE BUTTON to place the dupelicated. Click RIGHT MOUSE BUTTON to discard the dupelicated before placing it.",
       "x":-230,
       "y":0,
       "ax":0,

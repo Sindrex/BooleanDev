@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameplayOptionsController : MonoBehaviour {
 
-    public CamController camController;
+    //public CamController camController;
 
     public Slider mouseSlider;
     public Slider moveSlider;
@@ -36,7 +36,7 @@ public class GameplayOptionsController : MonoBehaviour {
     }
     public void setMoveSense(float vol)
     {
-        camController.speed = vol; //10-30?
+        //camController.speed = vol; //10-30?
     }
 
     public float getMouseSense()

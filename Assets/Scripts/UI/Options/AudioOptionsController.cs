@@ -6,12 +6,20 @@ using UnityEngine.Audio;
 
 public class AudioOptionsController : MonoBehaviour {
 
+    public AudioController audioCon;
     public AudioMixer audioMixer;
 
     //for getting when we save
     public Slider masterSlider;
     public Slider musicSlider;
     public Slider SFXSlider;
+
+    public void Start()
+    {
+        audioCon = GameObject.Find("AudioMixer").GetComponent<AudioController>();
+        print(audioCon);
+        audioMixer = audioCon.audioMixer;
+    }
 
     public void setMasterVol(float vol)
     {
@@ -42,6 +50,10 @@ public class AudioOptionsController : MonoBehaviour {
         masterSlider.value = master;
         musicSlider.value = music;
         SFXSlider.value = SFX;
+
+        setMasterVol(master);
+        setMusicVol(music);
+        setSFXVol(SFX);
     }
 
     public float getMaster()

@@ -8,15 +8,15 @@ public class OptionController : MonoBehaviour {
     public static readonly string[] graphicsOK = new string[] { "ScreenSize", "GraphicsQuality", "WindowedOption" };
     public static readonly string[] gameplayOK = new string[] { "MouseSensitivity", "MovementSensitivity", "UndoLimit" };
     public static readonly string[] controlsOK = new string[] { "K_DeleteTile", "K_PlaceTile", "K_InteractTile", "K_RotateLeftTile",
-                                                                "K_RotateRightTile", "K_OpenSelectionBar", "K_OpenPause", "K_Selector",
+                                                                "K_RotateRightTile", "K_OpenSelectionBar", "K_Selector",
                                                                 "K_DeleteSelected" };
     public static readonly string[] audioOK = new string[] { "MasterVolume", "MusicVolume", "SFXVolume" };
 
     //Default
     public static readonly int[] defaultAudioSettings = new int[] { 0, -40, -40 };
-    public static readonly int[] defaultGameplaySettings = new int[] { 20, 20, 10 };
+    public static readonly int[] defaultGameplaySettings = new int[] { 20, 20, 20 };
     public static readonly int[] defaultGraphicsSettings = new int[] { -1 , 4 , 0 };
-    public static readonly string[] defaultControlsSettings = { "R", "Mouse0", "Mouse1", "Q", "E", "Space", "Escape", "Mouse0", "R"};
+    public static readonly string[] defaultControlsSettings = { "R", "Mouse0", "Mouse1", "Q", "E", "Space", "Mouse0", "R"};
 
     public GameObject graphics;
     public GameObject gameplay;
@@ -27,6 +27,8 @@ public class OptionController : MonoBehaviour {
     public GameplayOptionsController gameplayCon;
     public ControlsOptionsController controlsCon;
     public AudioOptionsController audioCon;
+
+    public GameObject appliedText;
 
     public GameController GC;
 
@@ -46,8 +48,6 @@ public class OptionController : MonoBehaviour {
         graphicalCon.loadGraphicalSettingsUI();
         gameplayCon.loadGameplaySettingsUI();
         audioCon.loadAudioSettingsUI();
-
-        openGraphics();
     }
 
     public void openGraphics()
@@ -80,6 +80,7 @@ public class OptionController : MonoBehaviour {
         graphicalCon.saveGraphicalSettings();
         gameplayCon.saveGameplaySettings();
         audioCon.saveAudioSettings();
+        savedFeedback();
 
         //controlsCon.saveControlsSettings(); (are saved continuisly)
 
@@ -100,6 +101,7 @@ public class OptionController : MonoBehaviour {
         graphicalCon.saveGraphicalSettings();
         gameplayCon.saveGameplaySettings();
         audioCon.saveAudioSettings();
+        savedFeedback();
 
         //controlsCon.saveControlsSettings();
 
@@ -108,19 +110,52 @@ public class OptionController : MonoBehaviour {
         openGraphics();
         //loadSettings();
     }
+    public void justSave()
+    {
+        //save all settings in PlayerPrefs
+        graphicalCon.saveGraphicalSettings();
+        gameplayCon.saveGameplaySettings();
+        audioCon.saveAudioSettings();
+        savedFeedback();
+
+        //controlsCon.saveControlsSettings();
+
+        PlayerPrefs.Save();
+    }
     public void justExit()
     {
-        closeAll();
-        gameObject.SetActive(false);
+        loadSettingsUI();
+        if(audioCon.audioCon != null)
+        {
+            audioCon.audioCon.loadAudioPref();
+        }
+        GraphicalOptionsController.loadSettings();
+
+        //closeAll();
+        //gameObject.SetActive(false);
 
         UtilBools.options = false;
     }
+
+    private void savedFeedback()
+    {
+        appliedText.SetActive(true);
+        StartCoroutine(waitSavedFeedback());
+    }
+
+    IEnumerator waitSavedFeedback()
+    {
+        yield return new WaitForSeconds(0.5f);
+        appliedText.SetActive(false);
+    }
+
     private void closeAll()
     {
         graphics.SetActive(false);
         gameplay.SetActive(false);
         controls.SetActive(false);
         audioObj.SetActive(false);
+        appliedText.SetActive(false);
     }
     private void openAll()
     {

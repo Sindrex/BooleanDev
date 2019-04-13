@@ -65,6 +65,11 @@ public class GameController : MonoBehaviour {
     public GameObject selectedCache;
     public List<GameObject> cacheList;
 
+    //Duplicating
+    public bool duplicating;
+    public Vector3 prevPos;
+    public Vector3 currentPos;
+
     //For expanding
     public int[] doExpand = new int[4];
     private bool[] doneExpanding = new bool[4];
@@ -82,7 +87,7 @@ public class GameController : MonoBehaviour {
     //public GameObject puzzlePlay;
     //public GameObject puzzleObjectve;
     //public GameObject puzzleHint;
-    public GameObject ioPicker;
+    public GameObject ioPicker; //@DEPRECATED
     //public PuzzleController PC; //@DEPRECATED
 
     //EOTP puzzle
@@ -102,6 +107,8 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+        cam.GetComponent<CamController>().speed = PlayerPrefs.GetFloat(OptionController.gameplayOK[1]);
 
         length = 15;
         height = 10;
@@ -278,6 +285,58 @@ public class GameController : MonoBehaviour {
             UC.undo();
         }
 
+        //duplicate
+        if (duplicating)
+        {
+            //print("Dupe-movin");
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                unDragSelected();
+                duplicating = false;
+                //print("Dupe exit 1");
+                prevPos = new Vector3(0, 0, 0);
+                startIndex = -1;
+                return;
+            }
+            else if (Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Escape))
+            {
+                for(int i = selectedTiles.Count - 1; i >= 0; i--)
+                {
+                    Destroy(selectedTiles[i]);
+                }
+                duplicating = false;
+                //print("Dupe exit 2");
+                prevPos = new Vector3(0, 0, 0);
+                startIndex = -1;
+                resetSelect();
+                return;
+            }
+
+            prevPos = currentPos;
+            RaycastHit2D[] hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, -10), 100.0F);
+            if (hits.Length > 0)
+            {
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    RaycastHit2D hit = hits[i];
+                    if (hit.transform.GetComponent<FloorTileController>() != null)
+                    {
+                        currentPos = hit.transform.position;
+                    }
+                }
+                if (prevPos.Equals(new Vector3(0, 0, 0)))
+                {
+                    prevPos = currentPos;
+                }
+                if (prevPos != currentPos && currentPos != new Vector3(0,0,0))
+                {
+                    //print("Prevpos != currentpos");
+                    selectedFather.transform.position += (currentPos - prevPos);
+                    //print("Fatherpos: " + selectedFather.transform.position + ", cPos: " + currentPos + ", pPos: " + prevPos);
+                }
+            }
+        }
+
         //Select
         if (AC.selectedA == 0 && !UtilBools.selectLock) // && Input.GetKey(KeyCode.LeftShift))
         {
@@ -355,6 +414,8 @@ public class GameController : MonoBehaviour {
 
         checkExpand();
 
+        //Lock tiles while tileLocked + unlock
+        /*
         if(UtilBools.tileLock && !changedLocked)
         {
             foreach(GameObject g in tiles)
@@ -376,7 +437,7 @@ public class GameController : MonoBehaviour {
                 }
             }
             changedLocked = false;
-        }
+        }*/
     }
 
     public void updateData()
@@ -1376,6 +1437,10 @@ public class GameController : MonoBehaviour {
 
     public void duplicateSelected()
     {
+        if (duplicating)
+        {
+            return;
+        }
         //print(classTag + "Trying to dupe");
         if(selectedTiles.Count > 0)
         {
@@ -1393,10 +1458,18 @@ public class GameController : MonoBehaviour {
                     go.GetComponent<TileController>().beingPowered = false;
                 }
             }
+            StartCoroutine(waitForDupe());
+            currentPos = new Vector3(0, 0, 0);
             dragSelected();
             //fselectedFather.transform.position += new Vector3(1.6f, 0, 0);
         }
         recentDupe = true;
+    }
+
+    IEnumerator waitForDupe()
+    {
+        yield return new WaitForSeconds(0.1f);
+        duplicating = true;
     }
 
     public void changeItemName(string name)

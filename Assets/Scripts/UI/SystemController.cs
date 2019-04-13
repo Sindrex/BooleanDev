@@ -24,7 +24,8 @@ public class SystemController : MonoBehaviour {
         }
         else if (exitDialogue.activeSelf && InputController.getInput(InputPurpose.UNIVERSAL_BACK))
         {
-            exitToMenu();
+            //exitToMenu();
+            exitDialogue.SetActive(false);
         }
     }
 

@@ -5,6 +5,7 @@
   "length": 30,
   "height": 30,
   "minDone": 12,
+  "middleWaitTime": 1,
   "info":"Info",
   "desc": "A and B, and C and D each represents one two-bit binary number. Compare the two numbers. If A and B are higher, 1 is on. If C and D is higher, 2 is on. If both are identical, 3 is on.",
   "winDesc":"It compares.",

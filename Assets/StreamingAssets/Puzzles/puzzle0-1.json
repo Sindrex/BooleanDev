@@ -5,6 +5,7 @@
   "length": 8,
   "height": 8,
   "minDone": 0,
+  "middleWaitTime": 0.5,
   "info":"",
   "desc": "Time to learn!",
   "winDesc":"Got it all?",

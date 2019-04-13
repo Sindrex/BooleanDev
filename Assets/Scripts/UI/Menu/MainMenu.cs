@@ -280,10 +280,21 @@ public class MainMenu : MonoBehaviour {
         currentTargetCamSize = optionsCamSize;
         optionCon.gameObject.SetActive(true);
         optionCon.loadSettingsUI();
+        optionCon.openGraphics();
     }
     public void saveExitOptions()
     {
         optionCon.saveExitMenu();
+        camLerp = true;
+        forwards = false;
+    }
+    public void justSaveOptions()
+    {
+        optionCon.justSave();
+    }
+    public void justExitOptions()
+    {
+        optionCon.justExit();
         camLerp = true;
         forwards = false;
     }

@@ -11,6 +11,7 @@ public abstract class TileController : MonoBehaviour
     public static readonly int DOWN = 2;
     public static readonly int RIGHT = 3;
 
+    public bool infLocked = false;
     public bool locked = false;
     public bool compLocked = false;
     public int ID = 0;
@@ -284,6 +285,7 @@ public abstract class TileController : MonoBehaviour
                 if (GC.tiles[spotIndex].GetComponent<TileController>().destroyMe())
                 {
                     GC.tiles[spotIndex] = this.gameObject;
+                    AC.audioCon.playTilePlacedSFX();
                 }
                 else
                 {

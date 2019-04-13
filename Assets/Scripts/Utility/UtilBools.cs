@@ -42,6 +42,13 @@ public static class UtilBools {
         selectionbarLock = state;
     }
 
+    public static void puzzleInteractLock(bool state)
+    {
+        Debug.Log("Utilbools: Setting puzzleInteract: " + state);
+        noPlaceTile = state;
+        tileLock = state;
+    }
+
     public static void setDefaultGame(Game game)
     {
         if(game != null)
