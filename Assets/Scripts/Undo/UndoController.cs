@@ -15,7 +15,7 @@ public class UndoController : MonoBehaviour {
             newUndo.child = root;
         }
         root = newUndo;
-        root.checkLength(PlayerPrefs.GetInt(OptionController.gameplayOK[2]), 1);
+        root.checkLength(PlayerPrefs.GetInt(OptionController.genericsOK[3]), 1);
     }
 
     public void undo()
@@ -23,7 +23,7 @@ public class UndoController : MonoBehaviour {
         if(root != null)
         {
             GC.AC.prevSpotIndex = -1;
-            //print("Undo-ing!");
+            print("Undo-ing: " + root.stringify());
             root.undoMe(GC);
             if(root.child != null)
             {

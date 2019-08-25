@@ -31,7 +31,7 @@ public class PausedController : MonoBehaviour {
         Game.current.tilePower = GC.tilePower;
         Game.current.tileSetting = GC.tileSetting;
         Game.current.signTexts = GC.signTexts;
-        SaveLoad.Save();
+        SaveLoad.save();
         StartCoroutine("savedOnOff");
     }
     public void openOptions()

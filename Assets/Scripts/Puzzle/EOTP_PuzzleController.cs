@@ -8,8 +8,9 @@ public class EOTP_PuzzleController : MonoBehaviour {
 
     public GameController GC;
     public GameObject lockPrefab;
-
+    
     public EOTP_PuzzleCreator myPuzzle = null;
+    public bool isPuzzle = false;
 
     public PuzzleObjective PO;
     public PuzzleVerdict PV;
@@ -22,6 +23,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public GameObject puzzlePlayButton;
     public GameObject puzzleTruthButton;
     public GameObject puzzleHint;
+    public GameObject puzzleSaveSlots;
 
     //Info
     public GameObject puzzleInfo;
@@ -61,11 +63,13 @@ public class EOTP_PuzzleController : MonoBehaviour {
         stepText.gameObject.SetActive(false);
         stepButton.SetActive(false);
         stopStepButton.SetActive(false);
+        puzzleSaveSlots.SetActive(false);
     }
 
     public void setupPuzzle(EOTP_PuzzleCreator puzzle)
     {
         print("EOTP_PuzzleController:SetupPuzzle():!");
+        isPuzzle = true;
 
         //spawn tiles
         int inputIndex = 0, outputIndex = 0;
@@ -269,6 +273,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
             print(this.GetType().Name + ":EOTPwaitFinish(): All inputs OK. Good job!");
             PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + myPuzzle.id, 1);
             print("Sat playerprefs for: " + MainMenu.puzzlePrefKey + myPuzzle.id);
+            GC.SC.save();
             PV.openWin(myPuzzle.id, myPuzzle.winDesc);
         }
         else

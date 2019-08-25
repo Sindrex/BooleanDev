@@ -129,7 +129,6 @@ public class PuzzleTutorial : MonoBehaviour {
             {
                 print(MainMenu.puzzlePrefKey + myPuzzle.id);
                 PlayerPrefs.SetInt(MainMenu.puzzlePrefKey + myPuzzle.id, 1);
-                PlayerPrefs.SetString(MainMenu.openAtStartPrefKey, "puzzle");
                 //SceneManager.LoadScene("Menu");
                 UtilBools.actionBarLock = false;
                 print("Going to next puzzle!");

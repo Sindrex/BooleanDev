@@ -28,14 +28,9 @@ public class DupeController : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        this.GetComponent<SpriteRenderer>().sprite = regular;
-        GC.duplicateSelected();
-    }
-
-    private void Update()
-    {
-        if (InputController.getInput(InputPurpose.INTERACT_TILE))
+        if (!UtilBools.tileLock)
         {
+            this.GetComponent<SpriteRenderer>().sprite = regular;
             GC.duplicateSelected();
         }
     }

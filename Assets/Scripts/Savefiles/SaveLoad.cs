@@ -7,89 +7,170 @@ using System;
 
 public static class SaveLoad{
 
-    public static List<Game> savedGames = new List<Game>();
-    public static string savePath = Application.persistentDataPath + "/savedGames.bool";
-    //C:/Users/Sindre/AppData/Locallow/Sindrex/Boolean
+    public static string postfix = ".save";
+    public static string puzzlePrefix = "puzzle_";
+    public static string puzzleSlotDefaultInfix = "_0";
 
-    public static bool Save()
+    public static string savePath = Application.persistentDataPath + "/saves/";
+    public static string puzzleSavePath = Application.persistentDataPath + "/puzzle_saves/";
+    
+    public static bool save()
     {
-        //Gonna overwrite if save file already exists
-        Game save = alreadySaved(Game.current.gameName);
-        //Debug.Log("Save: " + save.gameName);
-
-        if (save != null)
-        {
-            Debug.Log("Overwriting...");
-            int index = savedGames.IndexOf(save);
-            savedGames.RemoveAt(index);
-            savedGames.Insert(index, Game.current);
-        }
-        else
-        {
-            Debug.Log("Adding new save to savedGames!");
-            savedGames.Add(Game.current);
-        }
-
-        return createFile();
+        Debug.Log("Saving...!");
+        return createFile(Game.current, savePath);
+    }
+    public static bool savePuzzle(EOTP_PuzzleCreator puzzle) //default
+    {
+        Debug.Log("Saving puzzle...!");
+        Game.current.gameName = puzzlePrefix + puzzle.id + puzzleSlotDefaultInfix;
+        return createFile(Game.current, puzzleSavePath);
+    }
+    public static bool savePuzzle(EOTP_PuzzleCreator puzzle, int slot) //specific
+    {
+        Debug.Log("Saving puzzle...! Even picked a slot!");
+        Game.current.gameName = puzzlePrefix + puzzle.id + "_" + slot;
+        return createFile(Game.current, puzzleSavePath);
     }
 
-    private static bool createFile()
+    public static List<Game> loadSaves()
     {
-        Debug.Log("Creating new file...");
+        return loadAll(savePath);
+    }
+    public static List<Game> loadPuzzleSaves()
+    {
+        return loadAll(puzzleSavePath);
+    }
+
+    public static Game loadSave(string saveName)
+    {
+        return loadOne(saveName, savePath);
+    }
+    public static Game loadPuzzleSave(int puzzleId) //default
+    {
+        return loadOne(puzzlePrefix + puzzleId + puzzleSlotDefaultInfix, puzzleSavePath);
+    }
+    public static Game loadPuzzleSave(int puzzleId, int slot) //specific
+    {
+        return loadOne(puzzlePrefix + puzzleId + "_" + slot, puzzleSavePath);
+    }
+
+    public static bool removeSave(Game save)
+    {
+        return removeFile(save, savePath);
+    }
+    public static bool removePuzzleSave(Game save)
+    {
+        return removeFile(save, puzzleSavePath);
+    }
+
+    public static bool puzzleSaveExists(int puzzleId, int slot)
+    {
+        return File.Exists(puzzleSavePath + puzzlePrefix + puzzleId + "_" + slot + postfix);
+    }
+    public static bool saveExists(string saveName)
+    {
+        return File.Exists(savePath + saveName + postfix);
+    }
+
+    //private methods
+    private static bool createFile(Game save, string path) //Save 1 savefile
+    {
+        Debug.Log("Creating new file: " + save.gameName);
         try
         {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             BinaryFormatter bf = new BinaryFormatter();
-            //Application.persistentDataPath is a string, so if you wanted you can put that into debug.log if you want to know where save games are located
-            //Debug.Log("Path: "+ Application.persistentDataPath);
-            FileStream file = File.Create(savePath);
-            bf.Serialize(file, SaveLoad.savedGames);
+            FileStream file = File.Create(path + save.gameName + postfix);
+            bf.Serialize(file, save);
             file.Close();
             return true;
         }
-        catch(Exception e)
+        catch (Exception e)
+        {
+            Debug.Log(e.StackTrace);
+            return false;
+        }
+    }
+
+    private static bool removeFile(Game save, string path)
+    {
+        try
+        {
+            Debug.Log("Removing save...");
+            if (File.Exists(path + save.gameName + postfix))
+            {
+                File.Delete(path + save.gameName + postfix);
+            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.StackTrace);
+            return false;
+        }
+    }
+
+    private static List<Game> loadAll(string path)
+    {
+        List<Game> savedGames = new List<Game>();
+        try
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            Directory.CreateDirectory(path);
+            DirectoryInfo di = new DirectoryInfo(path);
+            FileInfo[] files = di.GetFiles("*" + postfix);
+            foreach (FileInfo fi in files)
+            {
+                FileStream file = fi.Open(FileMode.Open);
+                savedGames.Add((Game)bf.Deserialize(file));
+            }
+        }
+        catch (Exception e)
         {
             Debug.Log(e.StackTrace);
         }
-        return false;
-    }
+        return savedGames;
 
-    public static bool removeSave(string saveName)
-    {
-        Game save = alreadySaved(saveName);
-
-        if (savedGames.Contains(save))
+        /*
+        BinaryFormatter bf = new BinaryFormatter();
+        Directory.CreateDirectory(savePath);
+        DirectoryInfo di = new DirectoryInfo(savePath);
+        FileInfo[] files = di.GetFiles("*.save");
+        foreach (FileInfo fi in files)
         {
-            Debug.Log("Removing save...");
-            savedGames.Remove(save);
-            createFile();
-            return true;
+            FileStream file = fi.Open(FileMode.Open);
+            savedGames.Add((Game)bf.Deserialize(file));
         }
-        return false;
-    }
-
-    public static void Load()
-    {
+        ---
         if (File.Exists(Application.persistentDataPath + "/savedGames.bool"))
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(savePath, FileMode.Open);
             SaveLoad.savedGames = (List<Game>) bf.Deserialize(file);
             file.Close();
-        }
+        }*/
     }
 
-    private static Game alreadySaved(string saveName)
+    private static Game loadOne(string saveName, string path)
     {
-        Game save = null;
-        foreach (Game g in savedGames)
+        Game myGame = null;
+        try
         {
-            //Debug.Log("Foreach: " + g.gameName);
-            if (g.gameName.Equals(saveName))
+            if (File.Exists(path + saveName + postfix))
             {
-                save = g;
-                break;
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream file = File.Open(path + saveName + postfix, FileMode.Open);
+                myGame = (Game)bf.Deserialize(file);
             }
         }
-        return save;
+        catch (Exception e)
+        {
+            Debug.Log(e.StackTrace);
+        }
+        return myGame;
     }
 }

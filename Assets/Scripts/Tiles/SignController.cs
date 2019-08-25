@@ -76,7 +76,7 @@ public class SignController : TileController {
     }
 
     override
-    public bool destroyMe()
+    public bool destroyMe(bool addUndo)
     {
         if (locked)
         {
@@ -93,6 +93,22 @@ public class SignController : TileController {
             homeObj.GetComponent<FloorTileController>().busy = false;
             GC.tiles[spotIndex] = null;
         }
+
+        if (addUndo)
+        {
+            int setting = 0;
+            string signText = "";
+            if (this.GetComponent<DelayerController>() != null)
+            {
+                setting = this.GetComponent<DelayerController>().getSetting();
+            }
+            else if (this.GetComponent<SignController>() != null)
+            {
+                signText = this.GetComponent<SignController>().text;
+            }
+            GC.UC.addUndo(new SingleTileUndo(this.ID, this.dir, this.spotIndex, setting, signText));
+        }
+
         Destroy(this.gameObject);
         ui.closeSign();
         StartCoroutine(waitClose());

@@ -5,9 +5,12 @@ using System.IO;
 using UnityEngine;
 
 public class SaveLoadComp : MonoBehaviour {
+
     public static List<ComponentSave> savedComponents = new List<ComponentSave>();
+
     public static string savePath = Application.persistentDataPath + "/components/"; //remember to add savename
-    //C:/Users/Sindre/AppData/Locallow/Sindrex/Boolean
+
+    public static string postfix = ".comp";
 
     public static void SaveComp(ComponentSave save)
     {
@@ -35,11 +38,9 @@ public class SaveLoadComp : MonoBehaviour {
             Directory.CreateDirectory(savePath);
         }
 
-        string fileName = save.name;
-
         Debug.Log("Comp: Creating new file...");
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(savePath + fileName + ".comp");
+        FileStream file = File.Create(savePath + save.name + postfix);
         bf.Serialize(file, save);
         file.Close();
     }
@@ -48,13 +49,14 @@ public class SaveLoadComp : MonoBehaviour {
     {
         if (savedComponents.Contains(save))
         {
-            Debug.Log("Removing save...");
+            Debug.Log("Removing comp save...");
             savedComponents.Remove(save);
-            if(File.Exists(savePath + save.name + ".comp"))
+            if(File.Exists(savePath + save.name + postfix))
             {
-                File.Delete(savePath + save.name + ".comp");
+                File.Delete(savePath + save.name + postfix);
                 return true;
             }
+            return true;
         }
         return false;
     }
@@ -65,7 +67,7 @@ public class SaveLoadComp : MonoBehaviour {
         if (Directory.Exists(savePath))
         {
             DirectoryInfo di = new DirectoryInfo(savePath);
-            FileInfo[] files = di.GetFiles("*.comp");
+            FileInfo[] files = di.GetFiles("*" + postfix);
 
             BinaryFormatter bf = new BinaryFormatter();
 
@@ -76,5 +78,11 @@ public class SaveLoadComp : MonoBehaviour {
                 file.Close();
             }
         }
+    }
+
+    public static bool saveExists(string saveName)
+    {
+        //Debug.Log("Checking for save: " + savePath + saveName + postfix);
+        return File.Exists(savePath + saveName + postfix);
     }
 }

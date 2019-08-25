@@ -9,7 +9,9 @@ public class ComponentUI : MonoBehaviour {
     public CamController CC;
     public UndoController UC;
 
-    public GameObject confirmComponent;
+    public GameObject confirmComp;
+    public Button confirmCompConfirmButton;
+    public Button confirmCompCancelButton;
     public InputField nameInput;
     public GameObject scrollContent;
     public GameObject scrollParent;
@@ -31,6 +33,8 @@ public class ComponentUI : MonoBehaviour {
     public bool showOverlay;
     public List<GameObject> overlays = new List<GameObject>();
 
+    public OverwriteNotification overwriteNotification;
+
     public void openConfirmComp()
     {
         if (GC.selectedTiles.Count <= 0)
@@ -38,7 +42,8 @@ public class ComponentUI : MonoBehaviour {
             print("No selection");
             return;
         }
-        confirmComponent.SetActive(true);
+        confirmComp.SetActive(true);
+        setInteractableConfirmComp(true);
         GC.AC.toggleSelectionBar(false);
         UtilBools.playerInteractLock(true);
     }
@@ -46,15 +51,21 @@ public class ComponentUI : MonoBehaviour {
     public void closeConfirmComp()
     {
         nameInput.text = "";
-        confirmComponent.SetActive(false);
+        confirmComp.SetActive(false);
         UtilBools.playerInteractLock(false);
     }
 
-    public void saveComp()
+    public void setInteractableConfirmComp(bool state)
     {
-        if(nameInput.text == null || nameInput.text.Trim() == "")
+        confirmCompConfirmButton.interactable = state;
+        confirmCompCancelButton.interactable = state;
+    }
+
+    public void preSaveComp()
+    {
+        if (nameInput.text == null || nameInput.text.Trim() == "")
         {
-            print("Error");
+            print("Error: Nameinput == null");
             return;
         }
         else if (GC.selectedHeight <= 0 || GC.selectedLength <= 0)
@@ -63,6 +74,26 @@ public class ComponentUI : MonoBehaviour {
             return;
         }
 
+        if (SaveLoadComp.saveExists(nameInput.text))
+        {
+            //Overwrite notification
+            print("Overwrite notification!");
+            setInteractableConfirmComp(false);
+            overwriteNotification.setOverwrite(saveComp, cancelOverwrite);
+        }
+        else
+        {
+            saveComp();
+        }
+    }
+
+    public void cancelOverwrite()
+    {
+        setInteractableConfirmComp(true);
+    }
+
+    public void saveComp()
+    {
         ComponentSave comp = new ComponentSave();
         comp.name = nameInput.text;
         comp.height = GC.selectedHeight;

@@ -74,15 +74,23 @@ public class MoverController : MonoBehaviour {
 
     private void OnMouseUp()
     {
-        if(GC.cacheList[GC.cacheList.Count - 1] != null)
+        if(GC.cacheList[GC.cacheList.Count - 1] != null && GC.cacheList[GC.cacheList.Count - 1].gameObject.activeSelf) //!= null
         {
+            //print("Mover: Cachelist not null & active");
             transform.position = GC.cacheList[GC.cacheList.Count - 1].transform.position + new Vector3(0,0,-2);
         }
         else
         {
+            //print("Mover: Cachelist entry null");
             transform.position = prevPos;
+            if(transform.position.z != -2)
+            {
+                //force z = -2
+                transform.position = new Vector3(transform.position.x, transform.position.y, -2);
+            }
         }
         drag = false;
         GC.unDragSelected();
+        //print("Mover Mouseup: " + transform.position);
     }
 }

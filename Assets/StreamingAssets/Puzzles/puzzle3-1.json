@@ -5,10 +5,10 @@
   "length": 9,
   "height": 5,
   "minDone": 8,
-  "info":"",
+  "info":"It is like a bigger AND-gate",
   "desc": "1 is on if ALL three: A, B and C is on.",
   "winDesc":"Logic gates does not need to be contained to only 2 inputs.",
-  "allowedTiles": [1, 2, 3, 4, 6, 7, 8],
+  "allowedTiles": [1, 2, 3, 4, 6, 7],
   "IO":
   [
     {

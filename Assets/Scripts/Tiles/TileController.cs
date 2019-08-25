@@ -117,7 +117,7 @@ public abstract class TileController : MonoBehaviour
 
         if (InputController.getInput(InputPurpose.DELETE_TILE))
         {
-            destroyMe();
+            destroyMe(false);
         }
         if (myCompOverlay != null)
         {
@@ -282,14 +282,14 @@ public abstract class TileController : MonoBehaviour
             print("Placing... Trying to destroy: " + GC.tiles[spotIndex].name);
             if(GC.tiles[spotIndex] != this.gameObject)
             {
-                if (GC.tiles[spotIndex].GetComponent<TileController>().destroyMe())
+                if (GC.tiles[spotIndex].GetComponent<TileController>().destroyMe(true))
                 {
                     GC.tiles[spotIndex] = this.gameObject;
                     AC.audioCon.playTilePlacedSFX();
                 }
                 else
                 {
-                    destroyMe();
+                    destroyMe(false);
                     return false;
                 }
             }
@@ -317,7 +317,7 @@ public abstract class TileController : MonoBehaviour
         return true;
     }
 
-    public virtual bool destroyMe()
+    public virtual bool destroyMe(bool addUndo)
     {
         if (locked)
         {
@@ -338,6 +338,21 @@ public abstract class TileController : MonoBehaviour
         {
             print("Removing Compoverlay!");
             GC.compUI.removeOverlay(myCompOverlay);
+        }
+
+        if (addUndo)
+        {
+            int setting = 0;
+            string signText = "";
+            if (this.GetComponent<DelayerController>() != null)
+            {
+                setting = this.GetComponent<DelayerController>().getSetting();
+            }
+            else if (this.GetComponent<SignController>() != null)
+            {
+                signText = this.GetComponent<SignController>().text;
+            }
+            GC.UC.addUndo(new SingleTileUndo(this.ID, this.dir, this.spotIndex, setting, signText));
         }
 
         Destroy(this.gameObject);

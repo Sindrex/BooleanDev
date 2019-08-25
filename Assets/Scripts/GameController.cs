@@ -36,13 +36,14 @@ public class GameController : MonoBehaviour {
 
     private bool loaded = false;
 
-    //GUI and select
+    //UI
     //public GameObject paused; //@DEPRECATED
     //public PausedController pausedController; //@DEPRECATED
     public SystemController SC;
     public ActionbarController AC;
     public GameObject cam;
 
+    //Select
     [SerializeField]
     private int startIndex = -1;
     public List<GameObject> selectedTiles = new List<GameObject>();
@@ -83,16 +84,9 @@ public class GameController : MonoBehaviour {
     public ComponentUI compUI;
     public bool changedLocked;
 
-    //Puzzle
-    //public GameObject puzzlePlay;
-    //public GameObject puzzleObjectve;
-    //public GameObject puzzleHint;
-    public GameObject ioPicker; //@DEPRECATED
-    //public PuzzleController PC; //@DEPRECATED
-
     //EOTP puzzle
+    public bool isPuzzle;
     public EOTP_PuzzleController ePC;
-    //public PuzzleTruthTable puzzleTruth;
 
     //Undos
     public UndoController UC;
@@ -107,15 +101,14 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-        cam.GetComponent<CamController>().speed = PlayerPrefs.GetFloat(OptionController.gameplayOK[1]);
+        cam.GetComponent<CamController>().speed = PlayerPrefs.GetFloat(OptionController.genericsOK[2]);
 
         length = 15;
         height = 10;
         bool newSave = false;
         EOTP_PuzzleCreator myPuzzle = null;
 
-        if(Game.current != null)
+        if(Game.current != null) //Has a game
         {
             length = Game.current.length;
             height = Game.current.height;
@@ -132,13 +125,20 @@ public class GameController : MonoBehaviour {
             //print(Game.current.dateCreated + " / " + Game.current.dateLastPlayed); 
             setWorldSettings();
         }
-        else
+        else //only in Unity editor
         {
             print(classTag + "Start():Game.current is null, creating temp");
             newSave = true;
             Game.current = new Game(null);
             Game.current.length = length;
             Game.current.height = height;
+
+            tileDIRs = new int[length * height];
+            tileIDs = new int[length * height];
+            tilePower = new bool[length * height];
+            tileSetting = new int[length * height];
+            tiles = new GameObject[length * height];
+            signTexts = new string[length * height];
         }
 
         cacheList = new List<GameObject>();
@@ -151,30 +151,16 @@ public class GameController : MonoBehaviour {
             if (!newSave)
             {
                 print(classTag + "Loading old floor!");
-                Vector2 current = start;
-                //make floor
-                for (int i = 0; i < height; i++)//For each unity in height
-                {
-                    for (int j = 0; j < length; j++)//For each unit in length
-                    {
-                        GameObject floor = Instantiate(floorTilePrefab, current, Quaternion.identity);
-                        floor.transform.parent = floorFather.transform;
-                        floor.GetComponent<FloorTileController>().spotIndex = index;
-                        index++;
 
-                        floorList.Add(floor);
-
-                        current += new Vector2(1.6f, 0);
-                    }
-                    current = start + new Vector2(0, -1.6f) * (i + 1);
-                }
+                //make new floor!
+                makeNewFloor(length, height);
                 if(tileIDs.Length > 0)
                 {
                     print(classTag + "spawning...");
                     spawn();
                 }
             }
-            else
+            else //new save
             {
                 if (Game.current != null)
                 {
@@ -182,33 +168,56 @@ public class GameController : MonoBehaviour {
                     Game.current.newSave = false;
                 }
 
-                //print("GameController:Start():EOTP-testing: Not making new floor this time!");
+                tileDIRs = new int[length * height];
+                tileIDs = new int[length * height];
+                tilePower = new bool[length * height];
+                tileSetting = new int[length * height];
+                tiles = new GameObject[length * height];
+                signTexts = new string[length * height];
+
                 makeNewFloor(length, height);
             }
             ePC.close();
-            ioPicker.gameObject.SetActive(false);
-            ioPicker.GetComponent<IOPicker>().isPuzzle = false;
             UtilBools.isPuzzle = false;
         }
         else //it is a puzzle
         {
-            print(classTag + myPuzzle.name);
-            if(myPuzzle.id <= 0)
+            print(">>>" + Game.current.toString());
+            print(classTag + "Puzzle: " + myPuzzle.name);
+
+            isPuzzle = true;
+            UtilBools.isPuzzle = true;
+            ePC.GC = this;
+
+            if (myPuzzle.id <= 0)
             {
                 //First puzzle
                 ePC.close();
             }
+
+            Game.current.height = myPuzzle.height;
+            Game.current.length = myPuzzle.length;
+            Game.current.gameName = "puzzle_" + myPuzzle.id; //also set when saved
             length = myPuzzle.length;
             height = myPuzzle.height;
+            tiles = new GameObject[length * height];
+
+            if (tileIDs.Length != (length * height))
+            {
+                tileDIRs = new int[length * height];
+                tileIDs = new int[length * height];
+                tilePower = new bool[length * height];
+                tileSetting = new int[length * height];
+                signTexts = new string[length * height];
+            }
+
             makeNewFloor(length, height);
-            ePC.GC = this;
-            ePC.setupPuzzle(myPuzzle);
-            ioPicker.gameObject.SetActive(false);
-            tileIDs = new int[length * height];
-            UtilBools.isPuzzle = true;
-            SC.close();
-            //pausedController.worldOptionsButton.interactable = false;
-            //pausedController.saveButton.interactable = false;
+
+            ePC.setupPuzzle(myPuzzle); //spawns input and output tiles
+            //tileIDs = new int[length * height];
+            SC.isPuzzle(); //makes worldoptions non-interactable
+
+            puzzleSpawn(); //spawn saved tiles
         }
 
         //Create the selectedtiles beforehand and put in cache
@@ -239,31 +248,14 @@ public class GameController : MonoBehaviour {
             {
                 GameObject floor = Instantiate(floorTilePrefab, current, Quaternion.identity);
                 floor.transform.parent = floorFather.transform;
-                //floor.transform.position += new Vector3(0, 0, 0);
                 floor.GetComponent<FloorTileController>().spotIndex = index;
-                if(j % 2 == 0)
-                {
-                    //floor.GetComponent<SpriteRenderer>().sprite = floorTileSprite1;
-                }
-                else
-                {
-                    //floor.GetComponent<SpriteRenderer>().sprite = floorTileSprite2;
-                }
                 index++;
-
                 floorList.Add(floor);
 
                 current += new Vector2(1.6f, 0);
             }
             current = start + new Vector2(0, -1.6f) * (i + 1);
         }
-
-        tileDIRs = new int[newLength * newHeight];
-        tileIDs = new int[newLength * newHeight];
-        tilePower = new bool[newLength * newHeight];
-        tileSetting = new int[newLength * newHeight];
-        tiles = new GameObject[newLength * newHeight];
-        signTexts = new string[newLength * newHeight];
     }
 
     private void Update()
@@ -293,7 +285,7 @@ public class GameController : MonoBehaviour {
             {
                 unDragSelected();
                 duplicating = false;
-                //print("Dupe exit 1");
+                print("Dupe exit 1");
                 prevPos = new Vector3(0, 0, 0);
                 startIndex = -1;
                 return;
@@ -392,14 +384,14 @@ public class GameController : MonoBehaviour {
             }
             else if (InputController.getInput(InputPurpose.DELETE_SELECTED)) //Destroy selected
             {
-                if (!compUI.confirmComponent.activeSelf)
+                if (!compUI.confirmComp.activeSelf)
                 {
                     deleteSelected();
                 }
             }
             else if (InputController.getInput(InputPurpose.TILE_ROTATE_LEFT)) //Rotate left
             {
-                if (!compUI.confirmComponent.activeSelf)
+                if (!compUI.confirmComp.activeSelf)
                 {
                     rotateSelected();
                 }
@@ -413,31 +405,6 @@ public class GameController : MonoBehaviour {
         }
 
         checkExpand();
-
-        //Lock tiles while tileLocked + unlock
-        /*
-        if(UtilBools.tileLock && !changedLocked)
-        {
-            foreach(GameObject g in tiles)
-            {
-                if(g != null)
-                {
-                    g.GetComponent<TileController>().locked = true;
-                }
-            }
-            changedLocked = true;
-        }
-        else if(!UtilBools.tileLock && changedLocked)
-        {
-            foreach (GameObject g in tiles)
-            {
-                if (g != null)
-                {
-                    g.GetComponent<TileController>().locked = false;
-                }
-            }
-            changedLocked = false;
-        }*/
     }
 
     public void updateData()
@@ -870,15 +837,15 @@ public class GameController : MonoBehaviour {
 
     public void unDragSelected()
     {
-        int[] endIndexes = new int[selectedTiles.Count];
-        //print("Undragging!");
+        //int[] endIndexes = new int[selectedTiles.Count];
+        print("Undragging!");
         for (int i = 0; i < selectedTiles.Count; i++)
         {
             if (selectedTiles[i] != null)
             {
                 selectedTiles[i].GetComponent<TileController>().drag = false;
-                endIndexes[i] = selectedTiles[i].GetComponent<TileController>().spotIndex;
-                //print("unDrag spotIndex: " + selectedTiles[i].GetComponent<TileController>().spotIndex);
+                //endIndexes[i] = selectedTiles[i].GetComponent<TileController>().spotIndex;
+                print("unDrag name: " + selectedTiles[i].name);
             }
         }
         StartCoroutine(afterUnDrag());
@@ -887,6 +854,7 @@ public class GameController : MonoBehaviour {
     private IEnumerator afterUnDrag()
     {
         yield return new WaitForSeconds(0.1f);
+        //gather for undo, after they set down!
         int[] endIndexes = new int[selectedTiles.Count];
         for (int i = 0; i < selectedTiles.Count; i++)
         {
@@ -941,7 +909,7 @@ public class GameController : MonoBehaviour {
                 signTexts[i] = go.GetComponent<SignController>().text;
             }
 
-            go.GetComponent<TileController>().destroyMe();
+            go.GetComponent<TileController>().destroyMe(false);
         }
         startIndex = -1;
         resetSelect();
@@ -983,6 +951,54 @@ public class GameController : MonoBehaviour {
             current = start + new Vector2(0, -1.6f) * (i + 1);
         }
         //print("Spawning done!");
+    }
+
+    private void puzzleSpawn()
+    {
+        print("Puzzlespawning!");
+        int[] allowedTiles = Game.current.puzzle.allowedTiles;
+        index = 0;
+        Vector2 current = start;
+        for (int i = 0; i < height; i++)//For each unit in height
+        {
+            for (int j = 0; j < length; j++)//For each unit in length
+            {
+                //print("Index: " + index);
+                //print("tileID: " + tileIDs[index]);
+
+                bool ok = false;
+                foreach(int k in allowedTiles)
+                {
+                    if(tileIDs[index] == k)
+                    {
+                        ok = true;
+                        break;
+                    }
+                }
+                //print("OK: " + ok);
+                if (tileIDs[index] > 0 && ok)
+                {
+                    print("spawning one: " + tileIDs[index]);
+                    GameObject prefab = Instantiate(tileHub.getPrefab(tileIDs[index]), current, Quaternion.identity);
+                    prefab.GetComponent<TileController>().spotIndex = index;
+                    prefab.GetComponent<TileController>().setDir(tileDIRs[index]);
+                    prefab.GetComponent<TileController>().beingPowered = tilePower[index];
+                    if (prefab.GetComponent<DelayerController>() != null)
+                    {
+                        prefab.GetComponent<DelayerController>().setSetting(tileSetting[index]);
+                    }
+                    else if (prefab.GetComponent<SignController>() != null)
+                    {
+                        prefab.GetComponent<SignController>().text = signTexts[index];
+                        //print(i + ": " + signTexts[index]);
+                    }
+                }
+                index++;
+                current += new Vector2(1.6f, 0);
+            }
+            current = start + new Vector2(0, -1.6f) * (i + 1);
+        }
+        print("Spawning done!");
     }
 
     public void spawnMultiple(int[] tileIds, int[] dirs, int[] spotIndexes, bool[] tilePowers, int[] settings, string[] signTexts)
@@ -1055,7 +1071,7 @@ public class GameController : MonoBehaviour {
     {
         if(tiles[spotIndex] != null)
         {
-            tiles[spotIndex].GetComponent<TileController>().destroyMe();
+            tiles[spotIndex].GetComponent<TileController>().destroyMe(false);
         }
     }
 
@@ -1081,7 +1097,7 @@ public class GameController : MonoBehaviour {
             int spot = spotIndex[i];
             if (tiles[spot] != null)
             {
-                tiles[spot].GetComponent<TileController>().destroyMe();
+                tiles[spot].GetComponent<TileController>().destroyMe(false);
             }
         }
     }

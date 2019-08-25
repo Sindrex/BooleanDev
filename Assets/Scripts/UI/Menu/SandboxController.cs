@@ -27,9 +27,9 @@ public class SandboxController : MonoBehaviour {
     public void createButtons()
     {
         //Create buttons
-        List<Game> games = SaveLoad.savedGames;
+        List<Game> games = SaveLoad.loadSaves();
         games.Sort((x, y) => x.dateLastPlayed.CompareTo(y.dateLastPlayed) == 0 ? x.gameName.CompareTo(y.gameName) : x.dateLastPlayed.CompareTo(y.dateLastPlayed));
-        //games.Reverse();
+        games.Reverse();
         foreach (Game g in games)
         {
             GameObject prefab = Instantiate(buttonPrefab, scrollContent.transform);
@@ -67,7 +67,7 @@ public class SandboxController : MonoBehaviour {
     }
     public void delete()
     {
-        if (SaveLoad.removeSave(selectedGame.gameName))
+        if (SaveLoad.removeSave(selectedGame))
         {
             print("Delete OK");
         }
@@ -76,5 +76,15 @@ public class SandboxController : MonoBehaviour {
     public void close()
     {
         MM.openMainMenu();
+    }
+
+    public void openSaveFolder()
+    {
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+        {
+            FileName = Application.persistentDataPath,
+            UseShellExecute = true,
+            Verb = "open"
+        });
     }
 }

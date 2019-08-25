@@ -325,6 +325,7 @@
     <Compile Include="Assets\Scripts\Puzzle\PuzzleTruthTable.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleTutorial.cs" />
     <Compile Include="Assets\Scripts\Puzzle\PuzzleVerdict.cs" />
+    <Compile Include="Assets\Scripts\Savefiles\Autosave.cs" />
     <Compile Include="Assets\Scripts\Savefiles\Game.cs" />
     <Compile Include="Assets\Scripts\Savefiles\SaveLoad.cs" />
     <Compile Include="Assets\Scripts\TileHub.cs" />
@@ -348,8 +349,6 @@
     <Compile Include="Assets\Scripts\UI\ExpandButton.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\UI\HoverNameScript.cs" />
-    <Compile Include="Assets\Scripts\UI\IO.cs" />
-    <Compile Include="Assets\Scripts\UI\IOPicker.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\HoverTipMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\MenuButtonController.cs" />
@@ -357,8 +356,7 @@
     <Compile Include="Assets\Scripts\UI\MoverController.cs" />
     <Compile Include="Assets\Scripts\UI\Options\AudioOptionsController.cs" />
     <Compile Include="Assets\Scripts\UI\Options\ControlsOptionsController.cs" />
-    <Compile Include="Assets\Scripts\UI\Options\GameplayOptionsController.cs" />
-    <Compile Include="Assets\Scripts\UI\Options\GraphicalOptionsController.cs" />
+    <Compile Include="Assets\Scripts\UI\Options\GenericsOptionsController.cs" />
     <Compile Include="Assets\Scripts\UI\Options\OptionController.cs" />
     <Compile Include="Assets\Scripts\UI\PausedController.cs" />
     <Compile Include="Assets\Scripts\UI\SignManager.cs" />
@@ -373,6 +371,7 @@
     <Compile Include="Assets\Scripts\Undo\Undo.cs" />
     <Compile Include="Assets\Scripts\Undo\UndoController.cs" />
     <Compile Include="Assets\Scripts\Utility\HoverDisplay.cs" />
+    <Compile Include="Assets\Scripts\Utility\OverwriteNotification.cs" />
     <Compile Include="Assets\Scripts\Utility\RenderLayerPicker.cs" />
     <Compile Include="Assets\Scripts\Utility\ResourceLoader.cs" />
     <Compile Include="Assets\Scripts\Utility\UtilBools.cs" />

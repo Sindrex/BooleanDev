@@ -10,9 +10,6 @@ public class MainMenu : MonoBehaviour {
     public GameObject mainMenu;
     public GameObject hoverTip;
 
-    public static readonly string openAtStartPrefKey = "openAtStart";
-    public static readonly string justOpenedGame = "justOpened";
-
     //Puzzles
     public GameObject puzzles;
     public Text puzzleWorldNameObj;
@@ -53,21 +50,12 @@ public class MainMenu : MonoBehaviour {
     public Vector3 currentTarget;
     public float currentTargetCamSize;
 
+    public OverwriteNotification overwriteNotification;
+
     private readonly string FIRST_TIMER_KEY = "firstTimer"; 
 
-    //Change Cursor (weird)
-    /*public Texture2D cursorTexture;
-    public CursorMode cursorMode = CursorMode.Auto;
-    public Vector2 hotSpot = Vector2.zero;
-
     private void Start()
     {
-        Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
-    }*/
-
-    private void Start()
-    {
-        SaveLoad.Load();
         setDefaultOptions();
 
         puzzlesDone = 0;
@@ -78,31 +66,6 @@ public class MainMenu : MonoBehaviour {
                 puzzlesDone++;
             }
         }
-
-        /*
-        int start = PlayerPrefs.GetInt(MainMenu.justOpenedGame, 0);
-        PlayerPrefs.SetInt(MainMenu.justOpenedGame, 1);
-
-        if (start == 0)
-        {
-            openMainMenu();
-        }
-
-        switch (PlayerPrefs.GetString(MainMenu.openAtStartPrefKey, "menu"))
-        {
-            case "sandbox":
-                openSandbox();
-                break;
-            case "puzzle":
-                puzzleOpen();
-                break;
-            case "menu":
-                openMainMenu();
-                break;
-            default:
-                openMainMenu();
-                break;
-        }*/
     }
 
     public void closeAll()
@@ -203,9 +166,19 @@ public class MainMenu : MonoBehaviour {
         {
             if (puzzleId < puzzleArray.EOTP_puzzles.Length + 1)
             {
-                //  print(PA.EOTP_puzzles.Length + "/" + PA.EOTP_puzzles[puzzleIndex - 1]);
-                Game.current = new Game(puzzleArray.EOTP_puzzles[puzzleId]);
-                //print(Game.current.puzzle);
+                //print(PA.EOTP_puzzles.Length + "/" + PA.EOTP_puzzles[puzzleIndex - 1]);
+                PlayerPrefs.SetInt(SystemController.puzzleSaveSlotKey, 0); //Default load, set pref to 0 to indicate we are on slot 0
+                if (SaveLoad.puzzleSaveExists(puzzleId, 0)) //Check if default save slot is created
+                {
+                    print("Puzzle save exists, loading old one");
+                    Game.current = SaveLoad.loadPuzzleSave(puzzleId);
+                }
+                else //if not, create it
+                {
+                    print("No puzzle save, creating game from puzzlearray");
+                    Game.current = new Game(puzzleArray.EOTP_puzzles[puzzleId]);
+                }
+                print(Game.current.puzzle);
                 SceneManager.LoadScene("Main");
             }
             else
@@ -256,17 +229,33 @@ public class MainMenu : MonoBehaviour {
             worldHeightInput.gameObject.GetComponent<Image>().color = Color.red;
         }
 
-
         if (ok)
         {
-            Game.current.gameName = worldNameInput.text;
+            string gameName = worldNameInput.text;
+            Game.current.gameName = gameName;
             Game.current.length = worldLength;
             Game.current.height = worldHeight;
-            //Save the current Game as a new saved Game
-            SaveLoad.Save();
-            //Move on to game...
-            SceneManager.LoadScene("Main");
+
+            //check if this filename exists and would overwrite
+            if (SaveLoad.saveExists(gameName))
+            {
+                //Overwrite notification
+                print("Overwrite notification!");
+                overwriteNotification.setOverwrite(saveGo);
+            }
+            else
+            {
+                saveGo();
+            }
         }
+    }
+    public void saveGo()
+    {
+        print("Saving game...");
+        //Save the current Game as a new saved Game
+        SaveLoad.save();
+        //Move on to game...
+        SceneManager.LoadScene("Main");
     }
 
     public void openOptions()
@@ -280,13 +269,7 @@ public class MainMenu : MonoBehaviour {
         currentTargetCamSize = optionsCamSize;
         optionCon.gameObject.SetActive(true);
         optionCon.loadSettingsUI();
-        optionCon.openGraphics();
-    }
-    public void saveExitOptions()
-    {
-        optionCon.saveExitMenu();
-        camLerp = true;
-        forwards = false;
+        optionCon.openGenerics();
     }
     public void justSaveOptions()
     {
@@ -355,8 +338,6 @@ public class MainMenu : MonoBehaviour {
 
     public void quit()
     {
-        //PlayerPrefs.SetInt(MainMenu.justOpenedGame, 0);
-        //print("setting justOpenedGame");
         Application.Quit();
     }
 

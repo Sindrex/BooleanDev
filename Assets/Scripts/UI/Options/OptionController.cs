@@ -4,33 +4,37 @@ using UnityEngine;
 
 public class OptionController : MonoBehaviour {
 
-    //option keys
-    public static readonly string[] graphicsOK = new string[] { "ScreenSize", "GraphicsQuality", "WindowedOption" };
-    public static readonly string[] gameplayOK = new string[] { "MouseSensitivity", "MovementSensitivity", "UndoLimit" };
+    //option keys (OK)
+    public static readonly string[] genericsOK = new string[] { "Resolution", "WindowedOption", "MovementSensitivity", "UndoLimit", "Autosave", "AutosaveTimer" };
+    //public static readonly string[] graphicsOK = new string[] { "ScreenSize", "GraphicsQuality", "WindowedOption" };
+    //public static readonly string[] gameplayOK = new string[] { "MouseSensitivity", "MovementSensitivity", "UndoLimit", "Autosave", "AutosaveTimer"};
     public static readonly string[] controlsOK = new string[] { "K_DeleteTile", "K_PlaceTile", "K_InteractTile", "K_RotateLeftTile",
                                                                 "K_RotateRightTile", "K_OpenSelectionBar", "K_Selector",
                                                                 "K_DeleteSelected" };
     public static readonly string[] audioOK = new string[] { "MasterVolume", "MusicVolume", "SFXVolume" };
 
     //Default
-    public static readonly int[] defaultAudioSettings = new int[] { 0, -40, -40 };
-    public static readonly int[] defaultGameplaySettings = new int[] { 20, 20, 20 };
-    public static readonly int[] defaultGraphicsSettings = new int[] { -1 , 4 , 0 };
+    public static readonly int[] defaultGenericsSettings = new int[] { -1, 0, 20, 20, 0, 60 };
+    //public static readonly int[] defaultGameplaySettings = new int[] { 20, 20, 20, 0, 60 };
+    //public static readonly int[] defaultGraphicsSettings = new int[] { -1 , 4 , 0 };
     public static readonly string[] defaultControlsSettings = { "R", "Mouse0", "Mouse1", "Q", "E", "Space", "Mouse0", "R"};
+    public static readonly int[] defaultAudioSettings = new int[] { 0, -40, -40 };
 
-    public GameObject graphics;
-    public GameObject gameplay;
+    //public GameObject graphics;
+    //public GameObject gameplay;
+    public GameObject generics;
     public GameObject controls;
     public GameObject audioObj;
 
-    public GraphicalOptionsController graphicalCon;
-    public GameplayOptionsController gameplayCon;
+    ///public GraphicalOptionsController graphicalCon;
+    //public GameplayOptionsController gameplayCon;
+    public GenericsOptionsController genericsCon;
     public ControlsOptionsController controlsCon;
     public AudioOptionsController audioCon;
 
     public GameObject appliedText;
 
-    public GameController GC;
+    //public GameController GC;
 
     private void Update()
     {
@@ -43,22 +47,15 @@ public class OptionController : MonoBehaviour {
     public void loadSettingsUI()
     {
         //load settings from PlayerPrefs into UI
-
+        genericsCon.loadGenericsSettingsUI();
         controlsCon.loadControlsSettingsUI();
-        graphicalCon.loadGraphicalSettingsUI();
-        gameplayCon.loadGameplaySettingsUI();
         audioCon.loadAudioSettingsUI();
     }
 
-    public void openGraphics()
+    public void openGenerics()
     {
         closeAll();
-        graphics.SetActive(true);
-    }
-    public void openGameplay()
-    {
-        closeAll();
-        gameplay.SetActive(true);
+        generics.SetActive(true);
     }
     public void openControls()
     {
@@ -71,50 +68,10 @@ public class OptionController : MonoBehaviour {
         audioObj.SetActive(true);
     }
 
-    public void saveExit()
-    {
-        print("OptionController:saveExit()");
-        openAll();
-
-        //save all settings in PlayerPrefs
-        graphicalCon.saveGraphicalSettings();
-        gameplayCon.saveGameplaySettings();
-        audioCon.saveAudioSettings();
-        savedFeedback();
-
-        //controlsCon.saveControlsSettings(); (are saved continuisly)
-
-        PlayerPrefs.Save();
-        loadSettingsUI();
-        closeAll();
-
-        UtilBools.options = false;
-
-        gameObject.SetActive(false);
-    }
-    public void saveExitMenu()
-    {
-        print("OptionController:saveExitMenu()");
-        openAll();
-
-        //save all settings in PlayerPrefs
-        graphicalCon.saveGraphicalSettings();
-        gameplayCon.saveGameplaySettings();
-        audioCon.saveAudioSettings();
-        savedFeedback();
-
-        //controlsCon.saveControlsSettings();
-
-        PlayerPrefs.Save();
-        closeAll();
-        openGraphics();
-        //loadSettings();
-    }
     public void justSave()
     {
         //save all settings in PlayerPrefs
-        graphicalCon.saveGraphicalSettings();
-        gameplayCon.saveGameplaySettings();
+        genericsCon.saveGenericsSettings();
         audioCon.saveAudioSettings();
         savedFeedback();
 
@@ -129,7 +86,7 @@ public class OptionController : MonoBehaviour {
         {
             audioCon.audioCon.loadAudioPref();
         }
-        GraphicalOptionsController.loadSettings();
+        GenericsOptionsController.loadSettings();
 
         //closeAll();
         //gameObject.SetActive(false);
@@ -151,16 +108,14 @@ public class OptionController : MonoBehaviour {
 
     private void closeAll()
     {
-        graphics.SetActive(false);
-        gameplay.SetActive(false);
+        generics.SetActive(false);
         controls.SetActive(false);
         audioObj.SetActive(false);
         appliedText.SetActive(false);
     }
     private void openAll()
     {
-        graphics.SetActive(true);
-        gameplay.SetActive(true);
+        generics.SetActive(true);
         controls.SetActive(true);
         audioObj.SetActive(true);
     }
@@ -193,21 +148,20 @@ public class OptionController : MonoBehaviour {
 
     public static void setDefaultOptions()
     {
-        for(int i = 0; i < graphicsOK.Length; i++)
+        for (int i = 0; i < genericsOK.Length; i++)
         {
-            PlayerPrefs.SetInt(graphicsOK[i], defaultGraphicsSettings[i]);
-        }
-        for (int i = 0; i < gameplayOK.Length; i++)
-        {
-            PlayerPrefs.SetFloat(gameplayOK[i], defaultGameplaySettings[i]);
+            PlayerPrefs.SetFloat(genericsOK[i], defaultGenericsSettings[i]);
+            //print(i);
         }
         for (int i = 0; i < audioOK.Length; i++)
         {
             PlayerPrefs.SetFloat(audioOK[i], defaultAudioSettings[i]);
+            //print(i);
         }
         for (int i = 0; i < controlsOK.Length; i++)
         {
             PlayerPrefs.SetString(controlsOK[i], defaultControlsSettings[i]);
+            //print(i);
         }
     }
 }

@@ -1,0 +1,23 @@
+{
+  "devNote":"Bridge",
+  "puzzleId":"4",
+  "exitOnfinish": false,
+  "hints":[
+    {
+      "text":"You have got access to a new tile!",
+      "x":0,
+      "y":0,
+      "ax":95,
+      "ay":-130,
+      "rotz":180
+    },
+    {
+      "text":"This tile is called a HopWire, and it lets wire pass other wire. Try using it on this puzzle!",
+      "x":0,
+      "y":0,
+      "ax":95,
+      "ay":-130,
+      "rotz":180
+    }
+  ]
+}

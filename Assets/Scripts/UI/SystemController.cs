@@ -15,6 +15,17 @@ public class SystemController : MonoBehaviour {
     public Button worldOptionsButton;
     public Button saveButton;
 
+    public static readonly string puzzleSaveSlotKey = "PuzzleSaveSlot";
+    public Button[] puzzleSaveSlots;
+    public Sprite[] puzzleSaveSlotHighlighted;
+
+    private void Start()
+    {
+        //Set right highlight for puzzlesaveslots
+        int slot = PlayerPrefs.GetInt(puzzleSaveSlotKey);
+        puzzleSaveSlots[slot].GetComponentInParent<Image>().sprite = puzzleSaveSlotHighlighted[slot];
+    }
+
     //every frame
     private void Update()
     {
@@ -29,10 +40,9 @@ public class SystemController : MonoBehaviour {
         }
     }
 
-    public void close()
+    public void isPuzzle()
     {
         worldOptionsButton.interactable = false;
-        saveButton.interactable = false;
     }
 
     public void save()
@@ -43,14 +53,34 @@ public class SystemController : MonoBehaviour {
         Game.current.tilePower = GC.tilePower;
         Game.current.tileSetting = GC.tileSetting;
         Game.current.signTexts = GC.signTexts;
-        if (SaveLoad.Save())
+
+        if (!GC.isPuzzle)
         {
-            StartCoroutine("savedOnOff");
+            if (SaveLoad.save())
+            {
+                saveGraphic();
+            }
+            else
+            {
+                print("Couldnt save!");
+            }
         }
         else
         {
-            print("Couldnt save!");
+            if (SaveLoad.savePuzzle(GC.ePC.myPuzzle, PlayerPrefs.GetInt(puzzleSaveSlotKey)))
+            {
+                saveGraphic();
+            }
+            else
+            {
+                print("Couldnt save puzzle!");
+            }
         }
+    }
+
+    public void saveGraphic()
+    {
+        StartCoroutine("savedOnOff");
     }
     IEnumerator savedOnOff()
     {
@@ -58,6 +88,7 @@ public class SystemController : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
         saved.SetActive(false);
     }
+
     public void openWorldOptions()
     {
         if (!UtilBools.isPuzzle)
@@ -74,27 +105,37 @@ public class SystemController : MonoBehaviour {
             print("is puzzle duh");
         }
     }
+
     public void toggleExitDialogue()
     {
         exitDialogue.SetActive(!exitDialogue.activeSelf);
     }
+
     public void exitToMenu()
     {
-        /*
-        print("isPuzzle: " + UtilBools.isPuzzle);
-        if (UtilBools.isPuzzle)
-        {
-            PlayerPrefs.SetString(MainMenu.openAtStartPrefKey, "puzzle");
-        }
-        else
-        {
-            PlayerPrefs.SetString(MainMenu.openAtStartPrefKey, "sandbox");
-        }*/
         SceneManager.LoadScene("Menu");
     }
     public void exitToDesk()
     {
-        //PlayerPrefs.SetInt(MainMenu.justOpenedGame, 0);
         Application.Quit();
+    }
+
+    public void loadPuzzleSaveSlot(int slot)
+    {
+        print("Loading slot: " + slot);
+    
+        int puzzleId = GC.ePC.myPuzzle.id;
+        PlayerPrefs.SetInt(puzzleSaveSlotKey, slot);
+        if (SaveLoad.puzzleSaveExists(puzzleId, slot)) //Check if save slot is created
+        {
+            print("Puzzle save slot exists, loading old one");
+            Game.current = SaveLoad.loadPuzzleSave(puzzleId, slot);
+        }
+        else //if not, create it
+        {
+            print("No puzzle save slot, creating game from same puzzle");
+            Game.current = new Game(GC.ePC.myPuzzle);
+        }
+        SceneManager.LoadScene("Main");
     }
 }

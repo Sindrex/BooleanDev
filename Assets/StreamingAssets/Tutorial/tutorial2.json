@@ -12,7 +12,7 @@
       "rotz":180
     },
     {
-      "text":"This tile is called a Notgate/Inverter, and as the name implies, it inverts its given input. Try using it on this puzzle.",
+      "text":"This tile is called a Notgate/Inverter, and as the name implies, it inverts its given input. It only has 1 input, so follow the arrow. Try using it on this puzzle.",
       "x":0,
       "y":0,
       "ax":95,

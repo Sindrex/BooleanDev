@@ -43,17 +43,6 @@ public class ComponentPlacerController : MonoBehaviour {
             return;
         }
         wrapper.SetActive(true);
-        if (InputController.getInput(InputPurpose.PLACE_TILE))
-        {
-            if (spotIndex < 0)
-            {
-                closePlacer();
-            }
-
-            //print("Placing comp!");
-
-            placeComp();
-        }
 
         for (int i = 0; i < hits.Length; i++)
         {
@@ -64,6 +53,26 @@ public class ComponentPlacerController : MonoBehaviour {
                 spotIndex = hit.transform.GetComponent<FloorTileController>().spotIndex;
                 transform.position = hit.transform.position + new Vector3(0, 0, -1);
             }
+            else if (hit.transform.CompareTag("Actionbar") == true)
+            {
+                wrapper.SetActive(false);
+                if (InputController.getInput(InputPurpose.PLACE_TILE) || InputController.getInput(InputPurpose.INTERACT_TILE))
+                {
+                    closePlacer();
+                    return;
+                }
+            }
+        }
+        if (InputController.getInput(InputPurpose.PLACE_TILE))
+        {
+            if (spotIndex < 0)
+            {
+                closePlacer();
+            }
+
+            //print("Placing comp!");
+
+            placeComp();
         }
     }
 
@@ -92,7 +101,7 @@ public class ComponentPlacerController : MonoBehaviour {
 
     private void placeComp()
     {
-        //undo
+        //for undo
         int[] spotIndexes = new int[myComp.tileIDs.Length];
 
         //place at currentPos
@@ -106,10 +115,10 @@ public class ComponentPlacerController : MonoBehaviour {
             int mySpotIndex = spotIndex - (myComp.length - column) - (GC.length * row);
             spotIndexes[i] = mySpotIndex;
 
-            //print("i: " + i + " - ID: " + comp.tileIDs[i]);
+            //print("i: " + i + " - ID: " + myComp.tileIDs[i]);
             if (myComp.tileIDs[i] != 0)
             {
-                //print("spotIndex: " + spotIndex + ", New: " + mySpotIndex);
+                //print("spotIndex Placer: " + spotIndex + ", spotIndex Tile: " + mySpotIndex);
                 bool ok = true;
                 if (UtilBools.isPuzzle)
                 {

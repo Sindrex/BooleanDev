@@ -24,12 +24,12 @@ public class SingleTileUndo : Undo{
         this.setting = setting;
         this.signText = signText;
     }
-    public SingleTileUndo(int spotIndex) : base()
+    public SingleTileUndo(int spotIndex) : base() //Tile was placed
     {
         this.deleted = false;
         this.spotIndex = spotIndex;
     }
-    public SingleTileUndo(int from, int to) : base()
+    public SingleTileUndo(int from, int to) : base() //Tile was moved
     {
         this.moved = true;
         this.spotIndex = from;

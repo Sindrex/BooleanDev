@@ -73,6 +73,22 @@
       "rotz":0
     },
     {
+      "text":"There are 2 locked tiles on the grid, 'A' and '1'. 'A' is an output, which means it will be powered when you click the Check Logic Button.",
+      "x":0,
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
+    },
+    {
+      "text":"'1' is the input, which means it is where you have to connect your wires to.",
+      "x":0,
+      "y":0,
+      "ax":0,
+      "ay":0,
+      "rotz":0
+    },
+    {
       "text":"That is all you need to get started! Give it a try on this puzzle and good luck on your Boolean journey!",
       "x":0,
       "y":0

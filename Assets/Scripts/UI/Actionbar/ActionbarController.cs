@@ -233,6 +233,7 @@ public class ActionbarController : MonoBehaviour {
                 if (InputController.getInput(InputPurpose.DELETE_TILE) && !UtilBools.tileLock)
                 {
                     //print(classTag + "Destroying!");
+
                     TileController tile = hit.transform.GetComponent<TileController>();
                     int setting = 0;
                     string text = "";
@@ -246,7 +247,7 @@ public class ActionbarController : MonoBehaviour {
                     }
                     GC.UC.addUndo(new SingleTileUndo(tile.ID, tile.getDir(), tile.spotIndex, setting, text));
                     //print(GC.UC.stringifyRoot());
-                    tile.destroyMe();
+                    tile.destroyMe(false);
                     prevSpotIndex = -1;
                 }
             }

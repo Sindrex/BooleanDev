@@ -30,7 +30,7 @@ public class Game {
     //History
     public string dateCreated;
     public string dateLastPlayed;
-    public string version = "Alpha 3";
+    public string version = "Alpha 4";
 
     public Game(EOTP_PuzzleCreator puzzle)
     {
@@ -51,5 +51,11 @@ public class Game {
         noPlaceTiles = false;
 
         dateCreated = System.DateTime.Today.ToString("dd/MM/yyyy");
+        dateLastPlayed = dateCreated;
+    }
+
+    public string toString()
+    {
+        return "Game Save: " + gameName + ", L/H: " + length + "/" + height;
     }
 }
