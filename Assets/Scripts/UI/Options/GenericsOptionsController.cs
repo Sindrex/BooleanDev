@@ -70,9 +70,9 @@ public class GenericsOptionsController : MonoBehaviour {
         PlayerPrefs.SetInt(OptionController.genericsOK[0], getResolution());
         PlayerPrefs.SetInt(OptionController.genericsOK[1], getDisplayOption());
         PlayerPrefs.SetFloat(OptionController.genericsOK[2], getMoveSense());
-        PlayerPrefs.SetFloat(OptionController.genericsOK[3], getUndoLimit());
-        PlayerPrefs.SetFloat(OptionController.genericsOK[4], getAutosave());
-        PlayerPrefs.SetFloat(OptionController.genericsOK[5], getAutosaveTimer());
+        PlayerPrefs.SetInt(OptionController.genericsOK[3], getUndoLimit());
+        PlayerPrefs.SetInt(OptionController.genericsOK[4], getAutosave());
+        PlayerPrefs.SetInt(OptionController.genericsOK[5], getAutosaveTimer());
     }
 
     public static void loadSettings()
@@ -118,9 +118,9 @@ public class GenericsOptionsController : MonoBehaviour {
 
         //Other
         float moveSense = PlayerPrefs.GetFloat(OptionController.genericsOK[2]);
-        int undoLimit = (int)PlayerPrefs.GetFloat(OptionController.genericsOK[3]);
-        int autosave = (int)PlayerPrefs.GetFloat(OptionController.genericsOK[4]);
-        int autosaveTimer = (int)PlayerPrefs.GetFloat(OptionController.genericsOK[5]);
+        int undoLimit = PlayerPrefs.GetInt(OptionController.genericsOK[3]);
+        int autosave = PlayerPrefs.GetInt(OptionController.genericsOK[4]);
+        int autosaveTimer = PlayerPrefs.GetInt(OptionController.genericsOK[5]);
 
         moveSlider.value = moveSense;
         undoLimitInput.text = "" + undoLimit;

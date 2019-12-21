@@ -11,8 +11,8 @@ public class Autosave : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        bool doAutosave = (int) PlayerPrefs.GetFloat(OptionController.genericsOK[4]) == 1 ? true : false;
-        int autosaveTimer = (int) PlayerPrefs.GetFloat(OptionController.genericsOK[5]);
+        bool doAutosave = PlayerPrefs.GetInt(OptionController.genericsOK[4]) == 1 ? true : false;
+        int autosaveTimer = PlayerPrefs.GetInt(OptionController.genericsOK[5]);
         if (doAutosave)
         {
             print("Autosave is on, timer: " + autosaveTimer);

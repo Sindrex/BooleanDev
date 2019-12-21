@@ -279,7 +279,7 @@ public abstract class TileController : MonoBehaviour
 
         if(GC.tiles[spotIndex] != null)
         {
-            print("Placing... Trying to destroy: " + GC.tiles[spotIndex].name);
+            //print("Placing... Trying to destroy: " + GC.tiles[spotIndex].name);
             if(GC.tiles[spotIndex] != this.gameObject)
             {
                 if (GC.tiles[spotIndex].GetComponent<TileController>().destroyMe(true))

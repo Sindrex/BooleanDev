@@ -16,6 +16,7 @@ public class UndoController : MonoBehaviour {
         }
         root = newUndo;
         root.checkLength(PlayerPrefs.GetInt(OptionController.genericsOK[3]), 1);
+        //print("Undo limit: " + PlayerPrefs.GetInt(OptionController.genericsOK[3]));
     }
 
     public void undo()
