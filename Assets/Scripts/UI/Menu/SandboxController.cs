@@ -18,6 +18,7 @@ public class SandboxController : MonoBehaviour {
 
     public void open()
     {
+        print("Opening sandbox menu");
         destroyButtons();
         savedGames = new List<GameObject>();
         createButtons();
@@ -61,17 +62,23 @@ public class SandboxController : MonoBehaviour {
     }
     public void play()
     {
+        MM.audioCon.playButtonSFX();
         Game.current = selectedGame;
         //Move on to game...
         SceneManager.LoadScene("Main");
     }
     public void delete()
     {
+        MM.audioCon.playButtonSFX();
         if (SaveLoad.removeSave(selectedGame))
         {
             print("Delete OK");
+            open();
         }
-        open();
+        else
+        {
+            print("Delete not OK");
+        }
     }
     public void close()
     {
@@ -86,5 +93,6 @@ public class SandboxController : MonoBehaviour {
             UseShellExecute = true,
             Verb = "open"
         });
+        MM.audioCon.playButtonSFX();
     }
 }

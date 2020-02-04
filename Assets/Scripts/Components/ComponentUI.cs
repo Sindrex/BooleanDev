@@ -121,7 +121,7 @@ public class ComponentUI : MonoBehaviour {
                     ok = true;
                 }
             }
-            print("saveComp(): i: " + i + ", index: " + index + ", ok: " + ok);
+            //print("saveComp(): i: " + i + ", index: " + index + ", ok: " + ok);
             if (ok)
             {
                 TileController TC = GC.selectedTiles[index].GetComponent<TileController>();

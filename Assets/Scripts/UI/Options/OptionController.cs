@@ -6,8 +6,6 @@ public class OptionController : MonoBehaviour {
 
     //option keys (OK)
     public static readonly string[] genericsOK = new string[] { "Resolution", "WindowedOption", "MovementSensitivity", "UndoLimit", "Autosave", "AutosaveTimer" };
-    //public static readonly string[] graphicsOK = new string[] { "ScreenSize", "GraphicsQuality", "WindowedOption" };
-    //public static readonly string[] gameplayOK = new string[] { "MouseSensitivity", "MovementSensitivity", "UndoLimit", "Autosave", "AutosaveTimer"};
     public static readonly string[] controlsOK = new string[] { "K_DeleteTile", "K_PlaceTile", "K_InteractTile", "K_RotateLeftTile",
                                                                 "K_RotateRightTile", "K_OpenSelectionBar", "K_Selector",
                                                                 "K_DeleteSelected" };
@@ -15,26 +13,20 @@ public class OptionController : MonoBehaviour {
 
     //Default
     public static readonly int[] defaultGenericsSettings = new int[] { -1, 0, 20, 20, 0, 60 };
-    //public static readonly int[] defaultGameplaySettings = new int[] { 20, 20, 20, 0, 60 };
-    //public static readonly int[] defaultGraphicsSettings = new int[] { -1 , 4 , 0 };
     public static readonly string[] defaultControlsSettings = { "R", "Mouse0", "Mouse1", "Q", "E", "Space", "Mouse0", "R"};
     public static readonly int[] defaultAudioSettings = new int[] { 0, -40, -40 };
 
-    //public GameObject graphics;
-    //public GameObject gameplay;
     public GameObject generics;
     public GameObject controls;
     public GameObject audioObj;
 
-    ///public GraphicalOptionsController graphicalCon;
-    //public GameplayOptionsController gameplayCon;
     public GenericsOptionsController genericsCon;
     public ControlsOptionsController controlsCon;
-    public AudioOptionsController audioCon;
+    public AudioOptionsController audioOpCon;
+
+    public MainMenu MM;
 
     public GameObject appliedText;
-
-    //public GameController GC;
 
     private void Update()
     {
@@ -49,7 +41,7 @@ public class OptionController : MonoBehaviour {
         //load settings from PlayerPrefs into UI
         genericsCon.loadGenericsSettingsUI();
         controlsCon.loadControlsSettingsUI();
-        audioCon.loadAudioSettingsUI();
+        audioOpCon.loadAudioSettingsUI();
     }
 
     public void openGenerics()
@@ -72,7 +64,7 @@ public class OptionController : MonoBehaviour {
     {
         //save all settings in PlayerPrefs
         genericsCon.saveGenericsSettings();
-        audioCon.saveAudioSettings();
+        audioOpCon.saveAudioSettings();
         savedFeedback();
 
         //controlsCon.saveControlsSettings();
@@ -82,9 +74,9 @@ public class OptionController : MonoBehaviour {
     public void justExit()
     {
         loadSettingsUI();
-        if(audioCon.audioCon != null)
+        if(audioOpCon.audioCon != null)
         {
-            audioCon.audioCon.loadAudioPref();
+            audioOpCon.audioCon.loadAudioPref();
         }
         GenericsOptionsController.loadSettings();
 
@@ -108,6 +100,7 @@ public class OptionController : MonoBehaviour {
 
     private void closeAll()
     {
+        MM.audioCon.playButtonSFX();
         generics.SetActive(false);
         controls.SetActive(false);
         audioObj.SetActive(false);

@@ -98,17 +98,20 @@ public static class SaveLoad{
 
     private static bool removeFile(Game save, string path)
     {
+        //Debug.Log("Trying to remove: " + save.gameName);
         try
         {
-            Debug.Log("Removing save...");
+            Debug.Log("Removing save: " + save.gameName);
             if (File.Exists(path + save.gameName + postfix))
             {
+                //Debug.Log("File exists, deleting...");
                 File.Delete(path + save.gameName + postfix);
             }
             return true;
         }
         catch (Exception e)
         {
+            Debug.Log(e);
             Debug.Log(e.StackTrace);
             return false;
         }
@@ -127,10 +130,12 @@ public static class SaveLoad{
             {
                 FileStream file = fi.Open(FileMode.Open);
                 savedGames.Add((Game)bf.Deserialize(file));
+                file.Close();
             }
         }
         catch (Exception e)
         {
+            Debug.Log(e);
             Debug.Log(e.StackTrace);
         }
         return savedGames;
@@ -165,10 +170,12 @@ public static class SaveLoad{
                 BinaryFormatter bf = new BinaryFormatter();
                 FileStream file = File.Open(path + saveName + postfix, FileMode.Open);
                 myGame = (Game)bf.Deserialize(file);
+                file.Close();
             }
         }
         catch (Exception e)
         {
+            Debug.Log(e);
             Debug.Log(e.StackTrace);
         }
         return myGame;

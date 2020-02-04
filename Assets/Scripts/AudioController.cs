@@ -9,6 +9,8 @@ public class AudioController : MonoBehaviour {
     public AudioSource SFXSource;
     public AudioSource musicSource;
     public AudioClip[] musicTracks;
+    public AudioClip tilePlaceSFX;
+    public AudioClip buttonClickSFX;
     private int currentSong = -1;
 
     // Use this for initialization
@@ -40,6 +42,13 @@ public class AudioController : MonoBehaviour {
     //plays SFX clip
     public void playTilePlacedSFX()
     {
+        SFXSource.clip = tilePlaceSFX;
+        SFXSource.Play();
+    }
+
+    public void playButtonSFX()
+    {
+        SFXSource.clip = buttonClickSFX;
         SFXSource.Play();
     }
 

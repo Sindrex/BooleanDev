@@ -121,7 +121,7 @@ public class GameController : MonoBehaviour {
             newSave = Game.current.newSave;
             myPuzzle = Game.current.puzzle;
 
-            Game.current.dateLastPlayed = System.DateTime.Today.ToString("dd/MM/yyyy");
+            Game.current.updateDateLastPlayed();
             //print(Game.current.dateCreated + " / " + Game.current.dateLastPlayed); 
             setWorldSettings();
         }
