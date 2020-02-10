@@ -80,6 +80,7 @@ public class SystemController : MonoBehaviour {
 
     public void saveGraphic()
     {
+        GC.audioMixer.playButtonSFX();
         StartCoroutine("savedOnOff");
     }
     IEnumerator savedOnOff()
@@ -91,6 +92,7 @@ public class SystemController : MonoBehaviour {
 
     public void openWorldOptions()
     {
+        GC.audioMixer.playButtonSFX();
         if (!UtilBools.isPuzzle)
         {
             worldOptions.SetActive(true);
@@ -108,15 +110,18 @@ public class SystemController : MonoBehaviour {
 
     public void toggleExitDialogue()
     {
+        GC.audioMixer.playButtonSFX();
         exitDialogue.SetActive(!exitDialogue.activeSelf);
     }
 
     public void exitToMenu()
     {
+        GC.audioMixer.playButtonSFX();
         SceneManager.LoadScene("Menu");
     }
     public void exitToDesk()
     {
+        GC.audioMixer.playButtonSFX();
         Application.Quit();
     }
 
@@ -136,6 +141,7 @@ public class SystemController : MonoBehaviour {
             print("No puzzle save slot, creating game from same puzzle");
             Game.current = new Game(GC.ePC.myPuzzle);
         }
+        GC.audioMixer.playButtonSFX();
         SceneManager.LoadScene("Main");
     }
 }

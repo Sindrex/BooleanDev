@@ -38,6 +38,7 @@ public class ExpandController : MonoBehaviour {
     public void acceptExpand()
     {
         //print("Expanding!!");
+        GC.audioMixer.playButtonSFX();
         int[] dirs = new int[4];
 
         int left = int.Parse(inputLeft.text);
@@ -64,6 +65,7 @@ public class ExpandController : MonoBehaviour {
 
     public void clearAll()
     {
+        GC.audioMixer.playButtonSFX();
         inputLeft.text = "0";
         inputRight.text = "0";
         inputUp.text = "0";

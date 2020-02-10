@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PuzzlePicker : MonoBehaviour
 {
+    //main menu prefab
     public int id;
     public MainMenu MM;
 

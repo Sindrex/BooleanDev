@@ -33,5 +33,6 @@ public class SelectbarController : MonoBehaviour {
         prefab.GetComponent<SelectbarItemDrag>().AC = AC;
         prefab.GetComponent<SelectbarItemDrag>().tileId = tileId;
         myPrefab = prefab;
+        AC.GC.audioMixer.playButtonSFX();
     }
 }

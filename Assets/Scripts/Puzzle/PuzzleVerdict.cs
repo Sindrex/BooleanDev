@@ -87,6 +87,7 @@ public class PuzzleVerdict : MonoBehaviour {
 
     public void nextPuzzle()
     {
+        GC.audioMixer.playButtonSFX();
         UtilBools.actionBarLock = false;
         print("Going to next puzzle!");
         if(myPuzzleId >= 0)
@@ -102,16 +103,17 @@ public class PuzzleVerdict : MonoBehaviour {
 
     public void exitMenu()
     {
+        GC.audioMixer.playButtonSFX();
         UtilBools.actionBarLock = false;
         SceneManager.LoadScene("Menu");
     }
 
     public void cancel()
     {
+        GC.audioMixer.playButtonSFX();
         solved.SetActive(true);
         nextPuzzleButton.SetActive(true);
         UtilBools.actionBarLock = false;
-
         verdictObject.SetActive(false);
     }
 

@@ -52,7 +52,7 @@ public class MainMenu : MonoBehaviour {
 
     public OverwriteNotification overwriteNotification;
 
-    public AudioController audioCon;
+    public AudioController audioMixer;
 
     private readonly string FIRST_TIMER_KEY = "firstTimer"; 
 
@@ -60,7 +60,7 @@ public class MainMenu : MonoBehaviour {
     {
         setDefaultOptions();
 
-        audioCon = GameObject.Find("AudioMixer").GetComponent<AudioController>();
+        audioMixer = GameObject.Find("AudioMixer").GetComponent<AudioController>();
 
         puzzlesDone = 0;
         for (int i = 0; i < 1000; i++)
@@ -91,7 +91,7 @@ public class MainMenu : MonoBehaviour {
         }
         Destroy(GameObject.FindGameObjectWithTag("cancel"));
 
-        audioCon.playButtonSFX();
+        audioMixer.playButtonSFX();
     }
     public void openMainMenu()
     {
@@ -115,7 +115,7 @@ public class MainMenu : MonoBehaviour {
     }
     public void puzzleNextWorld()
     {
-        audioCon.playButtonSFX();
+        audioMixer.playButtonSFX();
         puzzleNext.interactable = true;
         puzzlePrev.interactable = true;
         for (int i = 0; i < puzzleWorlds.Length; i++)
@@ -136,7 +136,7 @@ public class MainMenu : MonoBehaviour {
     }
     public void puzzlePrevWorld()
     {
-        audioCon.playButtonSFX();
+        audioMixer.playButtonSFX();
         puzzleNext.interactable = true;
         puzzlePrev.interactable = true;
         for (int i = 0; i < puzzleWorlds.Length; i++)
@@ -169,7 +169,7 @@ public class MainMenu : MonoBehaviour {
     }
     public void puzzlePickLevel(int id)
     {
-        audioCon.playButtonSFX();
+        audioMixer.playButtonSFX();
         puzzleId = id;
         if (puzzleId >= 0)
         {
@@ -211,7 +211,7 @@ public class MainMenu : MonoBehaviour {
     }
     public void createSandbox()
     {
-        audioCon.playButtonSFX();
+        audioMixer.playButtonSFX();
         worldNameInput.gameObject.GetComponent<Image>().color = Color.white;
         worldLengthInput.gameObject.GetComponent<Image>().color = Color.white;
         worldHeightInput.gameObject.GetComponent<Image>().color = Color.white;
@@ -251,7 +251,7 @@ public class MainMenu : MonoBehaviour {
             {
                 //Overwrite notification
                 print("Overwrite notification!");
-                overwriteNotification.setOverwrite(saveGo);
+                overwriteNotification.setOverwrite(saveGo, cancelSave);
             }
             else
             {
@@ -261,17 +261,21 @@ public class MainMenu : MonoBehaviour {
     }
     public void saveGo()
     {
-        audioCon.playButtonSFX();
+        audioMixer.playButtonSFX();
         print("Saving game...");
         //Save the current Game as a new saved Game
         SaveLoad.save();
         //Move on to game...
         SceneManager.LoadScene("Main");
     }
+    public void cancelSave()
+    {
+        audioMixer.playButtonSFX();
+    }
 
     public void openOptions()
     {
-        audioCon.playButtonSFX();
+        audioMixer.playButtonSFX();
         //print("MainMenu: OpenOptions(): Options not implemented");
         options.SetActive(true);
 
@@ -285,12 +289,12 @@ public class MainMenu : MonoBehaviour {
     }
     public void justSaveOptions()
     {
-        audioCon.playButtonSFX();
+        audioMixer.playButtonSFX();
         optionCon.justSave();
     }
     public void justExitOptions()
     {
-        audioCon.playButtonSFX();
+        audioMixer.playButtonSFX();
         optionCon.justExit();
         camLerp = true;
         forwards = false;
@@ -333,7 +337,7 @@ public class MainMenu : MonoBehaviour {
 
     public void openCredits()
     {
-        audioCon.playButtonSFX();
+        audioMixer.playButtonSFX();
         camLerp = true;
         forwards = true;
         currentTarget = creditsPos;
@@ -341,14 +345,14 @@ public class MainMenu : MonoBehaviour {
     }
     public void closeCredits()
     {
-        audioCon.playButtonSFX();
+        audioMixer.playButtonSFX();
         camLerp = true;
         forwards = false;
     }
 
     public void website()
     {
-        audioCon.playButtonSFX();
+        audioMixer.playButtonSFX();
         print("MainMenu: website()");
         Application.OpenURL("http://sindrex.wordpress.com/game-boolean/");
     }

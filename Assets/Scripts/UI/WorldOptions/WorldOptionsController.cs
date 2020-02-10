@@ -38,6 +38,7 @@ public class WorldOptionsController : MonoBehaviour {
         misc.SetActive(false);
         stats.SetActive(false);
         appliedText.SetActive(false);
+        GC.audioMixer.playButtonSFX();
     }
     public void openAll()
     {
@@ -69,14 +70,15 @@ public class WorldOptionsController : MonoBehaviour {
         savedFeedback();
     }
 
+    //unused
     public void saveExit()
     {
         openAll();
 
-        //Saving goes here
+        //Saving
         miscCon.saveSettings();
-        closeAll();
         savedFeedback();
+        closeAll();
 
         UtilBools.worldOptions = false;
         UtilBools.pausedBools(Game.current, false);
@@ -87,9 +89,6 @@ public class WorldOptionsController : MonoBehaviour {
     public void justExit()
     {
         openAll();
-
-        //Saving goes here
-        miscCon.saveSettings();
         closeAll();
 
         UtilBools.worldOptions = false;
@@ -100,6 +99,7 @@ public class WorldOptionsController : MonoBehaviour {
 
     private void savedFeedback()
     {
+        GC.audioMixer.playButtonSFX();
         appliedText.SetActive(true);
         StartCoroutine(waitSavedFeedback());
     }

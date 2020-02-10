@@ -44,7 +44,7 @@ public static class UtilBools {
 
     public static void puzzleInteractLock(bool state)
     {
-        Debug.Log("Utilbools: Setting puzzleInteract: " + state);
+        Debug.Log("Utilbools: Setting puzzleInteractLock: " + state);
         noPlaceTile = state;
         tileLock = state;
     }

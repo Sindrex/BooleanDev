@@ -134,7 +134,6 @@ public class ComponentPlacerController : MonoBehaviour {
                 if (ok)
                 {
                     GameObject prefab = GC.spawnSingle(mySpotIndex, myComp.tileIDs[i], myComp.tileDIRs[i], myComp.tilePower[i], myComp.tileSetting[i], myComp.signTexts[i], myComp.tileLabels[i]);
-
                     tiles.Add(prefab);
                 }
 
@@ -159,5 +158,6 @@ public class ComponentPlacerController : MonoBehaviour {
         }
         CUI.createOverlay(myComp, tiles, floorTiles);
         UC.addUndo(new MultipleTilesUndo(spotIndexes));
+        GC.audioMixer.playTilePlacedSFX();
     }
 }

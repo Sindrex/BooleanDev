@@ -153,6 +153,9 @@ public class EOTP_PuzzleController : MonoBehaviour {
         {
             EOTP_MIDDLE_WAIT_TIME_MS = DEFAULT_MIDDLE_WAIT_TIME;
         }
+
+        //show objective at start
+        PO.openObjective();
     }
 
     public void toggleInfo()
@@ -166,6 +169,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
         print(this.GetType().Name + ": Starting autoplay puzzle!");
         UtilBools.puzzleInteractLock(true);
         puzzlePlay(false);
+        GC.audioMixer.playButtonSFX();
     }
 
     public void puzzlePlay(bool stepping)
@@ -196,14 +200,19 @@ public class EOTP_PuzzleController : MonoBehaviour {
         //bool on = false;
         for (int i = 0; i < outputs.Count; i++)
         {
+            POutputController curOutObj = outputObjs[i].GetComponent<POutputController>();
             if (outputs[i].signal[EOTPPlayTurn] > 0)
             {
-                outputObjs[i].GetComponent<TileController>().beingPowered = true;
+                curOutObj.beingPowered = true;
+                curOutObj.tryPower(true);
+                curOutObj.sendPower(-1);
                 //on = true;
             }
             else
             {
-                outputObjs[i].GetComponent<TileController>().beingPowered = false;
+                curOutObj.beingPowered = false;
+                curOutObj.tryPower(false);
+                curOutObj.sendPower(-1);
             }
             //print(this.GetType().Name + ":puzzlePlay():" + outputs[i].getSignal()[EOTPPlayTurn]);
         }
@@ -310,7 +319,10 @@ public class EOTP_PuzzleController : MonoBehaviour {
         //reset powered
         for (int i = 0; i < outputs.Count; i++)
         {
-            outputObjs[i].GetComponent<TileController>().beingPowered = false;
+            POutputController curOutObj = outputObjs[i].GetComponent<POutputController>();
+            curOutObj.beingPowered = false;
+            curOutObj.tryPower(false);
+            curOutObj.sendPower(-1);
         }
         return ok;
     }
@@ -346,11 +358,13 @@ public class EOTP_PuzzleController : MonoBehaviour {
             stopStepButton.SetActive(false);
             //print(this.GetType().Name + ":puzzlePlay(): finished");
         }
+        GC.audioMixer.playButtonSFX();
     }
 
     public void stopStep()
     {
         resetPuzzle();
         stopStepButton.SetActive(false);
+        GC.audioMixer.playButtonSFX();
     }
 }

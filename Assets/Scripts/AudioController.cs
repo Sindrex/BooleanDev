@@ -50,6 +50,7 @@ public class AudioController : MonoBehaviour {
     {
         SFXSource.clip = buttonClickSFX;
         SFXSource.Play();
+        //print("Played sfx button");
     }
 
     //1 per frame

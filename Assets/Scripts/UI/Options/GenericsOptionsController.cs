@@ -14,8 +14,14 @@ public class GenericsOptionsController : MonoBehaviour {
     //Other
     public Slider moveSlider;
     public InputField undoLimitInput;
+
+    //Autosave
     public Toggle autosaveToggle;
     public InputField autosaveTimerInput;
+
+    //Hints & FPS
+    public Toggle hintsToggle;
+    public Toggle fpsToggle;
 
     public void setResolution(int resIndex)
     {
@@ -49,6 +55,7 @@ public class GenericsOptionsController : MonoBehaviour {
         }
         return res;
     }
+
     public int getAutosave()
     {
         return autosaveToggle.isOn ? 1 : 0;
@@ -64,6 +71,15 @@ public class GenericsOptionsController : MonoBehaviour {
         return res;
     }
 
+    public int getHints()
+    {
+        return hintsToggle.isOn ? 1 : 0;
+    }
+    public int getDisplayFPS()
+    {
+        return fpsToggle.isOn ? 1 : 0;
+    }
+
     public void saveGenericsSettings()
     {
         print("Saving generics!");
@@ -73,6 +89,8 @@ public class GenericsOptionsController : MonoBehaviour {
         PlayerPrefs.SetInt(OptionController.genericsOK[3], getUndoLimit());
         PlayerPrefs.SetInt(OptionController.genericsOK[4], getAutosave());
         PlayerPrefs.SetInt(OptionController.genericsOK[5], getAutosaveTimer());
+        PlayerPrefs.SetInt(OptionController.genericsOK[6], getHints());
+        PlayerPrefs.SetInt(OptionController.genericsOK[7], getDisplayFPS());
     }
 
     public static void loadSettings()
@@ -94,7 +112,7 @@ public class GenericsOptionsController : MonoBehaviour {
         Screen.fullScreen = (disIndex == 0);
     }
 
-    public void loadGenericsSettingsUI()
+    public void loadSettingsUI()
     {
         print("Loading generics to UI!");
         int resIndex = PlayerPrefs.GetInt(OptionController.genericsOK[0]);
@@ -119,12 +137,22 @@ public class GenericsOptionsController : MonoBehaviour {
         //Other
         float moveSense = PlayerPrefs.GetFloat(OptionController.genericsOK[2]);
         int undoLimit = PlayerPrefs.GetInt(OptionController.genericsOK[3]);
-        int autosave = PlayerPrefs.GetInt(OptionController.genericsOK[4]);
-        int autosaveTimer = PlayerPrefs.GetInt(OptionController.genericsOK[5]);
 
         moveSlider.value = moveSense;
         undoLimitInput.text = "" + undoLimit;
+
+        //Autosave
+        int autosave = PlayerPrefs.GetInt(OptionController.genericsOK[4]);
+        int autosaveTimer = PlayerPrefs.GetInt(OptionController.genericsOK[5]);
+
         autosaveToggle.isOn = autosave == 1 ? true : false;
         autosaveTimerInput.text = "" + autosaveTimer;
+
+        //Hints + fps
+        int hints = PlayerPrefs.GetInt(OptionController.genericsOK[6]);
+        int fps = PlayerPrefs.GetInt(OptionController.genericsOK[7]);
+
+        hintsToggle.isOn = hints == 1 ? true : false;
+        fpsToggle.isOn = fps == 1 ? true : false;
     }
 }

@@ -25,7 +25,7 @@
       "rotz":90
     },
     {
-      "text":"The Objective is shown on hover and tells you in plain text what the puzzle requires.",
+      "text":"The Objective is shown on click and tells you in plain text what the puzzle requires.",
       "x":0,
       "y":0,
       "ax":55,
@@ -33,7 +33,7 @@
       "rotz":0
     },
     {
-      "text":"The Check Logic button checks your current creation against the Truth Table to determine if it satisfies the objective.",
+      "text":"The Check Logic button checks your current creation against the Truth Table to determine if it satisfies the objective. Click to activate.",
       "x":0,
       "y":0,
       "ax":20,
@@ -41,7 +41,7 @@
       "rotz":0
     },
     {
-      "text":"The Step Logic button goes through each input-combination in increments. Which means you can see how your creation interacts with input on a step by step basis.",
+      "text":"The Step Logic button goes through each input-combination in increments. Which means you can see how your creation interacts with input on a step by step basis. Click to activate.",
       "x":0,
       "y":0,
       "ax":-20,

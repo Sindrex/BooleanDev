@@ -159,13 +159,14 @@ public class ActionbarController : MonoBehaviour {
         {
             prevSpotIndex = -1;
         }
-        if (InputController.getInput(InputPurpose.RESET_ACTIONBAR))
+        if (InputController.getInput(InputPurpose.RESET_ACTIONBAR) && !UtilBools.actionBarLock)
         {
             print(classTag + "Reset");
             selectedA = 0;
             actionBarSelect();
         }
-        if (InputController.getInput(InputPurpose.ACTIONBAR_RIGHT)) //backward
+
+        if (InputController.getInput(InputPurpose.ACTIONBAR_RIGHT)) //backward "scroll"
         {
             if (!UtilBools.actionBarLock)
             {
@@ -179,7 +180,7 @@ public class ActionbarController : MonoBehaviour {
                 actionBarSelect();
             }
         }
-        else if (InputController.getInput(InputPurpose.ACTIONBAR_LEFT))
+        else if (InputController.getInput(InputPurpose.ACTIONBAR_LEFT)) //forwards "scroll"
         {
             if (!UtilBools.actionBarLock)
             {
@@ -193,7 +194,7 @@ public class ActionbarController : MonoBehaviour {
                 actionBarSelect();
             }
         }
-        else if (InputController.tryNumbers() != -1)
+        else if (InputController.tryNumbers() != -1) //using numbers
         {
             if (!UtilBools.actionBarLock)
             {
@@ -204,9 +205,10 @@ public class ActionbarController : MonoBehaviour {
             }
         }
 
+        //open selectbar
         if (InputController.getInput(InputPurpose.SELECTIONBAR) && !UtilBools.selectionbarLock)
         {
-            toggleSelectionBar(!selectbar.activeSelf);
+            toggleSelectionBar(!selectbar.activeSelf); //toggle
         }
 
         //Rotating tiler
@@ -239,7 +241,7 @@ public class ActionbarController : MonoBehaviour {
                     string text = "";
                     if(hit.transform.GetComponent<DelayerController>() != null)
                     {
-                        setting = hit.transform.GetComponent<DelayerController>().getSetting();
+                        setting = hit.transform.GetComponent<DelayerController>().setting;
                     }
                     if (hit.transform.GetComponent<SignController>() != null)
                     {
@@ -273,6 +275,7 @@ public class ActionbarController : MonoBehaviour {
         selectedTileS.SetActive(state);
         UtilBools.selectLock = state;
         UtilBools.noPlaceTile = state;
+        GC.audioMixer.playButtonSFX();
     }
 
     private void showNameA()
@@ -355,6 +358,7 @@ public class ActionbarController : MonoBehaviour {
     public void actionBarSelect()
     {
         //Position the select right + reset rotation
+        GC.audioMixer.playButtonSFX();
         tiler.transform.rotation = Quaternion.Euler(0, 0, 0);
         selectedTileA.transform.position = actionbars[selectedA].transform.position;
         foreach(GameObject go in actionbars)
@@ -363,9 +367,10 @@ public class ActionbarController : MonoBehaviour {
         }
     }
 
-    public void rotate(int val) //val should be -1, 0 or 1
+    public void rotate(int val) //val should be -1, 0 or 1 (left, center, right)
     {
         //print("Rotating!");
+        GC.audioMixer.playButtonSFX();
         actionbars[selectedA].transform.Rotate(0, 0, 90 * val);
         tiler.transform.Rotate(0, 0, 90 * val);
     }
@@ -425,7 +430,7 @@ public class ActionbarController : MonoBehaviour {
         tiler.GetComponent<SpriteRenderer>().color = temp;
     }
 
-    //helping method
+    //help method
     private int getDir(Transform trans)
     {
         if (trans.rotation.eulerAngles.z == 0)
@@ -447,6 +452,7 @@ public class ActionbarController : MonoBehaviour {
         return 0;
     }
 
+    //help method
     public bool goArrayContains(GameObject[] array, GameObject item)
     {
         foreach(GameObject i in array)

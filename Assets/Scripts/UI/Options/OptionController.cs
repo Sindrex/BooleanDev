@@ -5,14 +5,14 @@ using UnityEngine;
 public class OptionController : MonoBehaviour {
 
     //option keys (OK)
-    public static readonly string[] genericsOK = new string[] { "Resolution", "WindowedOption", "MovementSensitivity", "UndoLimit", "Autosave", "AutosaveTimer" };
+    public static readonly string[] genericsOK = new string[] { "Resolution", "WindowedOption", "MovementSensitivity", "UndoLimit", "Autosave", "AutosaveTimer", "Hints", "FPS"};
     public static readonly string[] controlsOK = new string[] { "K_DeleteTile", "K_PlaceTile", "K_InteractTile", "K_RotateLeftTile",
                                                                 "K_RotateRightTile", "K_OpenSelectionBar", "K_Selector",
                                                                 "K_DeleteSelected" };
     public static readonly string[] audioOK = new string[] { "MasterVolume", "MusicVolume", "SFXVolume" };
 
     //Default
-    public static readonly int[] defaultGenericsSettings = new int[] { -1, 0, 20, 20, 0, 60 };
+    public static readonly int[] defaultGenericsSettings = new int[] { -1, 0, 20, 20, 0, 60, 1, 0 };
     public static readonly string[] defaultControlsSettings = { "R", "Mouse0", "Mouse1", "Q", "E", "Space", "Mouse0", "R"};
     public static readonly int[] defaultAudioSettings = new int[] { 0, -40, -40 };
 
@@ -39,7 +39,7 @@ public class OptionController : MonoBehaviour {
     public void loadSettingsUI()
     {
         //load settings from PlayerPrefs into UI
-        genericsCon.loadGenericsSettingsUI();
+        genericsCon.loadSettingsUI();
         controlsCon.loadControlsSettingsUI();
         audioOpCon.loadAudioSettingsUI();
     }
@@ -100,7 +100,7 @@ public class OptionController : MonoBehaviour {
 
     private void closeAll()
     {
-        MM.audioCon.playButtonSFX();
+        MM.audioMixer.playButtonSFX();
         generics.SetActive(false);
         controls.SetActive(false);
         audioObj.SetActive(false);

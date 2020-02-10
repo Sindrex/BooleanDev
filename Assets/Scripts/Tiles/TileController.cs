@@ -19,14 +19,9 @@ public abstract class TileController : MonoBehaviour
     [SerializeField]
     protected int dir = 0; //0 is up, 1 is left, 2 is down, 3 is right (for rotating!)
 
-    [SerializeField]
-    protected int[] output = new int[4]; //0 = off, 1 = on
-    [SerializeField]
-    protected List<int> possibleOutputs = new List<int>();
-
     public GameController GC;
     public ActionbarController AC;
-    public GameObject IOPicker;
+    public GameObject IOPicker;     //DEPRECATED
     public int spotIndex = -1;
 
     public bool beingPowered = false;
@@ -38,6 +33,7 @@ public abstract class TileController : MonoBehaviour
     public bool placed = false;
     protected GameObject homeObj;
 
+    //DEPRECATED?
     public label myLabel;
 
     public GameObject myCompOverlay = null;
@@ -46,7 +42,7 @@ public abstract class TileController : MonoBehaviour
     public int prevSpotIndex = -1;
     public bool dragged = false;
 
-    //For analyzing
+    //DEPRECATED?
     public enum label {
         NULL, IN, OUT, CARRY, RESET
     }
@@ -61,13 +57,6 @@ public abstract class TileController : MonoBehaviour
         GC = GameObject.Find("GameController").GetComponent<GameController>();
         AC = GC.AC;
     }
-
-    // Use this for initialization
-    protected virtual void Start () {
-        output = new int[4];
-    }
-
-    protected abstract void tryPower(bool state);
 
     protected void OnMouseDrag()
     {
@@ -142,7 +131,7 @@ public abstract class TileController : MonoBehaviour
         }
     }
 
-    public void rotateX(int times, bool rotate)
+    public virtual void rotateX(int times, bool rotate)
     {
         if(times < 0)
         {
@@ -156,39 +145,12 @@ public abstract class TileController : MonoBehaviour
             {
                 dir = 0;
             }
-
-            rotateInput();
-
-            for (int i = 0; i < possibleOutputs.Count; i++)
-            {
-                possibleOutputs[i] += 1;
-                if (possibleOutputs[i] > 3)
-                {
-                    possibleOutputs[i] = 0;
-                }
-            }
-
-            int temp = output[output.Length - 1];
-            for (int i = output.Length - 1; i >= 0; i--)
-            {
-                if (i - 1 >= 0)
-                {
-                    output[i] = output[i - 1]; //i: 3=2, 2=1, 1=0
-                }
-                else
-                {
-                    output[i] = temp; //0=3
-                }
-
-            }
             if (rotate)
             {
                 transform.Rotate(0, 0, 90);
             }
         }
     }
-
-    protected abstract void rotateInput();
 
     protected void OnMouseUp() //When mouse button is upped
     {
@@ -219,8 +181,7 @@ public abstract class TileController : MonoBehaviour
         }
     }
 
-    public abstract bool hasOutput(int DIR);
-
+    //help method
     protected bool Contains(GameObject[] objList, GameObject wanted)
     {
         for (int i = 0; i < objList.Length; i++)
@@ -298,6 +259,7 @@ public abstract class TileController : MonoBehaviour
         {
             GC.tiles[spotIndex] = this.gameObject;
         }
+
         if (dragged)
         {
             GC.UC.addUndo(new SingleTileUndo(prevSpotIndex, spotIndex));
@@ -314,6 +276,8 @@ public abstract class TileController : MonoBehaviour
         temp.a = 1f;
         GetComponent<SpriteRenderer>().color = temp;
 
+        GetComponent<BoxCollider2D>().isTrigger = true;
+
         return true;
     }
 
@@ -325,10 +289,6 @@ public abstract class TileController : MonoBehaviour
         }
 
         //print("DestroyMe: " + this.name + "/" + homeObj.name + "/" + spotIndex);
-        for(int i = 0; i < output.Length; i++)
-        {
-            output[i] = 0;
-        }
         if(homeObj != null)
         {
             homeObj.GetComponent<FloorTileController>().busy = false;
@@ -346,7 +306,7 @@ public abstract class TileController : MonoBehaviour
             string signText = "";
             if (this.GetComponent<DelayerController>() != null)
             {
-                setting = this.GetComponent<DelayerController>().getSetting();
+                setting = this.GetComponent<DelayerController>().setting;
             }
             else if (this.GetComponent<SignController>() != null)
             {
@@ -384,14 +344,5 @@ public abstract class TileController : MonoBehaviour
         Color temp = GetComponent<SpriteRenderer>().color;
         temp.a = 0.5f;
         GetComponent<SpriteRenderer>().color = temp;
-    }
-
-    public virtual bool canHasOutput(int DIR)
-    {
-        if (possibleOutputs.Contains(DIR))
-        {
-            return true;
-        }
-        return false;
     }
 }

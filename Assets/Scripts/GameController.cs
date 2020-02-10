@@ -37,8 +37,6 @@ public class GameController : MonoBehaviour {
     private bool loaded = false;
 
     //UI
-    //public GameObject paused; //@DEPRECATED
-    //public PausedController pausedController; //@DEPRECATED
     public SystemController SC;
     public ActionbarController AC;
     public GameObject cam;
@@ -93,6 +91,9 @@ public class GameController : MonoBehaviour {
     private int[] startIndexesSelect;
     private bool recentDupe = false;
 
+    //Audio
+    public AudioController audioMixer;
+
     public GameController()
     {
         loaded = false;
@@ -102,6 +103,11 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         cam.GetComponent<CamController>().speed = PlayerPrefs.GetFloat(OptionController.genericsOK[2]);
+        audioMixer = GameObject.Find("AudioMixer").GetComponent<AudioController>();
+
+        //testing fix for physics2d issue, defaults:
+        //Fixed Timestep = 0.02f
+        //Maximum allowed timestep = 0.33
 
         length = 15;
         height = 10;
@@ -132,6 +138,7 @@ public class GameController : MonoBehaviour {
             Game.current = new Game(null);
             Game.current.length = length;
             Game.current.height = height;
+            Game.current.gameName = "temp";
 
             tileDIRs = new int[length * height];
             tileIDs = new int[length * height];
@@ -429,7 +436,7 @@ public class GameController : MonoBehaviour {
                 tilePower[i] = tiles[i].GetComponent<TileController>().beingPowered;
                 if (tiles[i].GetComponent<DelayerController>() != null)
                 {
-                    tileSetting[i] = tiles[i].GetComponent<DelayerController>().getSetting();
+                    tileSetting[i] = tiles[i].GetComponent<DelayerController>().setting;
                 }
                 else if(tiles[i].GetComponent<SignController>() != null)
                 {
@@ -902,7 +909,7 @@ public class GameController : MonoBehaviour {
             tilePowers[i] = myTile.beingPowered;
             if(go.GetComponent<DelayerController>() != null)
             {
-                settings[i] = go.GetComponent<DelayerController>().getSetting();
+                settings[i] = go.GetComponent<DelayerController>().setting;
             }
             else if(go.GetComponent<SignController>() != null)
             {
@@ -936,7 +943,7 @@ public class GameController : MonoBehaviour {
                     prefab.GetComponent<TileController>().beingPowered = tilePower[index];
                     if(prefab.GetComponent<DelayerController>() != null)
                     {
-                        prefab.GetComponent<DelayerController>().setSetting(tileSetting[index]);
+                        prefab.GetComponent<DelayerController>().setting = tileSetting[index];
                     }
                     else if (prefab.GetComponent<SignController>() != null)
                     {
@@ -985,7 +992,7 @@ public class GameController : MonoBehaviour {
                     prefab.GetComponent<TileController>().beingPowered = tilePower[index];
                     if (prefab.GetComponent<DelayerController>() != null)
                     {
-                        prefab.GetComponent<DelayerController>().setSetting(tileSetting[index]);
+                        prefab.GetComponent<DelayerController>().setting = tileSetting[index];
                     }
                     else if (prefab.GetComponent<SignController>() != null)
                     {
@@ -1018,7 +1025,7 @@ public class GameController : MonoBehaviour {
                 prefab.GetComponent<TileController>().beingPowered = tilePowers[i];
                 if (prefab.GetComponent<DelayerController>() != null)
                 {
-                    prefab.GetComponent<DelayerController>().setSetting(settings[i]);
+                    prefab.GetComponent<DelayerController>().setting = settings[i];
                 }
                 else if (prefab.GetComponent<SignController>() != null)
                 {
@@ -1053,7 +1060,7 @@ public class GameController : MonoBehaviour {
             tiles[index] = prefab;
             if (prefab.GetComponent<DelayerController>() != null)
             {
-                prefab.GetComponent<DelayerController>().setSetting(setting);
+                prefab.GetComponent<DelayerController>().setting = setting;
             }
             else if (prefab.GetComponent<SignController>() != null)
             {

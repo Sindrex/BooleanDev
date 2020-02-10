@@ -27,13 +27,14 @@ public class PuzzleObjective : MonoBehaviour {
         desc.text = puzzle.desc;
     }
 
-    private void OnMouseOver()
+    public void openObjective()
     {
-        textFather.SetActive(true);
+        textFather.SetActive(!textFather.activeSelf);
     }
 
-    private void OnMouseExit()
+    public void toggleObjective()
     {
-        textFather.SetActive(false);
+        textFather.SetActive(!textFather.activeSelf);
+        GC.audioMixer.playButtonSFX();
     }
 }

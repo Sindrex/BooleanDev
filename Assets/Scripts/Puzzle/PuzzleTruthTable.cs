@@ -31,9 +31,10 @@ public class PuzzleTruthTable : MonoBehaviour {
         text.text = res;
     }
 
-    private void OnMouseOver()
+    private void OnMouseEnter()
     {
         textFather.SetActive(true);
+        GC.audioMixer.playButtonSFX();
     }
 
     private void OnMouseExit()

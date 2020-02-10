@@ -5,7 +5,10 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
-public class PuzzleTutorial : MonoBehaviour {
+public class PuzzleTutorial : MonoBehaviour
+{
+
+    public EOTP_PuzzleController PC;
 
     public GameObject hint;
     public Text hintText;
@@ -26,6 +29,13 @@ public class PuzzleTutorial : MonoBehaviour {
 
     public void setup(EOTP_PuzzleCreator puzzle, PuzzleTutorialHints hintsWrapper)
     {
+        int displayHints = PlayerPrefs.GetInt(OptionController.genericsOK[6]);
+        if (displayHints == 0) //do not display hints
+        {
+            hint.SetActive(false);
+            return;
+        }
+
         myPuzzle = puzzle;
         tutStep = -1;
 
@@ -45,8 +55,12 @@ public class PuzzleTutorial : MonoBehaviour {
 
     public void nextHint()
     {
-        tutStep++;
-        if (tutStep < myHints.Length - 1)
+        tutStep++; //starts at -1
+        if(tutStep != 0) //not first
+        {
+            PC.GC.audioMixer.playButtonSFX();
+        }
+        if (tutStep < myHints.Length - 1) //not last
         {
             //print("NextHint: " + tutStep);
             hintText.text = myHints[tutStep].text;
@@ -125,6 +139,7 @@ public class PuzzleTutorial : MonoBehaviour {
         }
         else
         {
+            //tutorial puzzle
             if (myHintWrapper.exitOnfinish)
             {
                 print(MainMenu.puzzlePrefKey + myPuzzle.id);
@@ -158,6 +173,7 @@ public class PuzzleTutorial : MonoBehaviour {
     public void closeHint()
     {
         hint.SetActive(false);
+        PC.GC.audioMixer.playButtonSFX();
     }
 }
 

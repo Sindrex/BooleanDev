@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class MiscController : MonoBehaviour {
 
+    public GameController GC;
+
     public Toggle lockTilesToggle;
     public Toggle noPlaceToggle;
 
@@ -13,11 +15,9 @@ public class MiscController : MonoBehaviour {
         //int lockTiles = PlayerPrefs.GetInt(WorldOptionsController.miscKeys[0]);
         bool lockTiles = Game.current.lockTiles;
         lockTilesToggle.isOn = lockTiles;
-        toggleLockTiles();
 
         bool noPlace = Game.current.noPlaceTiles;
         noPlaceToggle.isOn = noPlace;
-        toggleNoPlace();
     }
 
     public void saveSettings()
@@ -35,5 +35,10 @@ public class MiscController : MonoBehaviour {
     {
         //print("woo: " + noPlaceToggle.isOn);
         UtilBools.noPlaceTile = noPlaceToggle.isOn;
+    }
+
+    public void clickToggle()
+    {
+        GC.audioMixer.playButtonSFX();
     }
 }

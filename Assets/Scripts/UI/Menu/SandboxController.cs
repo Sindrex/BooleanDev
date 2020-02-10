@@ -62,14 +62,14 @@ public class SandboxController : MonoBehaviour {
     }
     public void play()
     {
-        MM.audioCon.playButtonSFX();
+        MM.audioMixer.playButtonSFX();
         Game.current = selectedGame;
         //Move on to game...
         SceneManager.LoadScene("Main");
     }
     public void delete()
     {
-        MM.audioCon.playButtonSFX();
+        MM.audioMixer.playButtonSFX();
         if (SaveLoad.removeSave(selectedGame))
         {
             print("Delete OK");
@@ -93,6 +93,6 @@ public class SandboxController : MonoBehaviour {
             UseShellExecute = true,
             Verb = "open"
         });
-        MM.audioCon.playButtonSFX();
+        MM.audioMixer.playButtonSFX();
     }
 }

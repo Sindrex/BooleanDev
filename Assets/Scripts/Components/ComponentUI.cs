@@ -33,6 +33,7 @@ public class ComponentUI : MonoBehaviour {
     public bool showOverlay;
     public List<GameObject> overlays = new List<GameObject>();
 
+    //overwrite
     public OverwriteNotification overwriteNotification;
 
     public void openConfirmComp()
@@ -46,6 +47,7 @@ public class ComponentUI : MonoBehaviour {
         setInteractableConfirmComp(true);
         GC.AC.toggleSelectionBar(false);
         UtilBools.playerInteractLock(true);
+        GC.audioMixer.playButtonSFX();
     }
 
     public void closeConfirmComp()
@@ -53,6 +55,7 @@ public class ComponentUI : MonoBehaviour {
         nameInput.text = "";
         confirmComp.SetActive(false);
         UtilBools.playerInteractLock(false);
+        GC.audioMixer.playButtonSFX();
     }
 
     public void setInteractableConfirmComp(bool state)
@@ -90,6 +93,7 @@ public class ComponentUI : MonoBehaviour {
     public void cancelOverwrite()
     {
         setInteractableConfirmComp(true);
+        GC.audioMixer.playButtonSFX();
     }
 
     public void saveComp()
@@ -131,7 +135,7 @@ public class ComponentUI : MonoBehaviour {
                 tileLabels[i] = TC.myLabel;
                 if (GC.selectedTiles[index].GetComponent<DelayerController>() != null)
                 {
-                    tileSetting[i] = GC.selectedTiles[index].GetComponent<DelayerController>().getSetting();
+                    tileSetting[i] = GC.selectedTiles[index].GetComponent<DelayerController>().setting;
                 }
                 else if (GC.selectedTiles[index].GetComponent<SignController>() != null)
                 {
@@ -174,6 +178,7 @@ public class ComponentUI : MonoBehaviour {
         scrollParent.SetActive(true);
         SaveLoadComp.LoadComp();
         createButtons();
+        GC.audioMixer.playButtonSFX();
     }
 
     public void toggleCompUI()
@@ -189,6 +194,7 @@ public class ComponentUI : MonoBehaviour {
             destroyButtons();
             scrollParent.SetActive(false);
         }
+        GC.audioMixer.playButtonSFX();
     }
 
     public void updateUI()
@@ -202,7 +208,7 @@ public class ComponentUI : MonoBehaviour {
     {
         destroyButtons();
         scrollParent.SetActive(false);
-        //openButton.SetActive(true);
+        GC.audioMixer.playButtonSFX();
     }
 
     private void createButtons()
@@ -241,6 +247,7 @@ public class ComponentUI : MonoBehaviour {
             placer.GetComponent<ComponentPlacerController>().myComp = comp;
             placer.GetComponent<ComponentPlacerController>().setBackdrop();
         }
+        GC.audioMixer.playButtonSFX();
     }
 
     public void createOverlay(ComponentSave myComp, List<GameObject> tiles, List<GameObject> floorTiles)
@@ -283,6 +290,7 @@ public class ComponentUI : MonoBehaviour {
                 }
             }
         }
+        GC.audioMixer.playButtonSFX();
     }
 
     public void removeOverlay(GameObject overlay)

@@ -29,6 +29,7 @@ public class SelectbarItemDrag : MonoBehaviour {
                     hit.transform.GetComponent<ActionBarItem>().tileId = tileId;
                 }
             }
+            AC.GC.audioMixer.playButtonSFX();
             Destroy(this.gameObject);
         }
         else

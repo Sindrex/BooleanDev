@@ -64,6 +64,7 @@ public class SignManager : MonoBehaviour {
             editing = false;
             UtilBools.playerInteractLock(false);
         }
+        GC.audioMixer.playButtonSFX();
     }
 
     public void closeSign()
@@ -80,5 +81,6 @@ public class SignManager : MonoBehaviour {
         signObj.transform.position = startPos;
         signObj.SetActive(false);
         UtilBools.playerInteractLock(false);
+        GC.audioMixer.playButtonSFX();
     }
 }

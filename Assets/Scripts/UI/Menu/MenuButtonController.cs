@@ -25,7 +25,7 @@ public class MenuButtonController : MonoBehaviour {
     }
     public void selectGame()
     {
-        SC.MM.audioCon.playButtonSFX();
+        SC.MM.audioMixer.playButtonSFX();
         SC.selectGame(myGame);
         GetComponent<Image>().sprite = selectedSprite;
     }
