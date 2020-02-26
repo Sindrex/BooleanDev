@@ -5,16 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class SwitchController : OutputBasedTile
 {
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (homeObj != null)
-        {
-            spotIndex = homeObj.GetComponent<FloorTileController>().spotIndex;
-        }
-    }
-
     override
     public void tryPower(bool state)
     {

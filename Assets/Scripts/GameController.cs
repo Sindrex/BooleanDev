@@ -318,7 +318,7 @@ public class GameController : MonoBehaviour {
                 for (int i = 0; i < hits.Length; i++)
                 {
                     RaycastHit2D hit = hits[i];
-                    if (hit.transform.GetComponent<FloorTileController>() != null)
+                    if (hit.transform.GetComponent<FloorTileController>() != null || hit.transform.GetComponent<TileController>() != null)
                     {
                         currentPos = hit.transform.position;
                     }
@@ -527,28 +527,39 @@ public class GameController : MonoBehaviour {
             RaycastHit2D hit = hits[i];
             //print("hit: " + hit.transform.name);
 
-            if(hit.transform.GetComponent<TileController>() != null)
+            TileController tile = hit.transform.GetComponent<TileController>();
+            if (tile != null)
             {
-                if (hit.transform.GetComponent<TileController>().drag || hit.transform.GetComponent<TileController>().locked)
+                if (tile.drag || tile.locked)
                 {
                     return;
                 }
             }
-            if(hit.transform.GetComponent<MoverController>() != null 
+            if (hit.transform.GetComponent<MoverController>() != null 
             || hit.transform.GetComponent<DupeController>() != null
             || hit.transform.GetComponent<ComponentPlacerController>() != null)
             {
                 return;
             }
 
-            if (hit.transform.GetComponent<FloorTileController>() != null)
+            FloorTileController floorTile = hit.transform.GetComponent<FloorTileController>();
+            if (floorTile != null)
             {
                 if (startIndex == -1)
                 {
-                    startIndex = hit.transform.GetComponent<FloorTileController>().spotIndex;
+                    startIndex = floorTile.spotIndex;
                 }
 
-                currentIndex = hit.transform.GetComponent<FloorTileController>().spotIndex;
+                currentIndex = floorTile.spotIndex;
+            }
+            else if(tile != null)
+            {
+                if (startIndex == -1)
+                {
+                    startIndex = tile.spotIndex;
+                }
+
+                currentIndex = tile.spotIndex;
             }
         }
         //print("Selecting & reseting!");
@@ -674,14 +685,14 @@ public class GameController : MonoBehaviour {
                 }
             }
             /*
-                * spotIndex - 1 = tile til venstre
-                * spotIndex + 1 = tile til høyre
-                * spotIndex - GC.length = tile over
-                * spotIndex + GC.length = tile under
+                * spotIndex - 1 = left
+                * spotIndex + 1 = right tile
+                * spotIndex - GC.length = tile up
+                * spotIndex + GC.length = tile down
                 * 
-                * spotIndex +- 1*n = tile til n høyre/venstre
+                * spotIndex +- 1*n = tile at n right/left
                 * 
-                * spotIndex +- (1*n +- GC.length*k) = tile k under/over og n til høyre/venstre
+                * spotIndex +- (1*n +- GC.length*k) = tile k under/over and at n right/left
             */
         }
 
@@ -852,7 +863,7 @@ public class GameController : MonoBehaviour {
             {
                 selectedTiles[i].GetComponent<TileController>().drag = false;
                 //endIndexes[i] = selectedTiles[i].GetComponent<TileController>().spotIndex;
-                print("unDrag name: " + selectedTiles[i].name);
+                //print("unDrag name: " + selectedTiles[i].name);
             }
         }
         StartCoroutine(afterUnDrag());

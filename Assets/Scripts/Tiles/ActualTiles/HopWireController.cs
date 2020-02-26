@@ -14,44 +14,6 @@ public class HopWireController : InputBasedTile
     private bool beingPoweredHoriz = false;
 
     override
-    protected void Update()
-    {
-        //new
-        if (checkNeighbourIndex >= 0) //for startup, check 1 neighbour each frame
-        {
-            checkNeighbour(checkNeighbourIndex);
-            checkNeighbourIndex++;
-            if (checkNeighbourIndex > 3)
-            {
-                checkNeighbourIndex = -1;
-            }
-        }
-
-        if (placed)
-        {
-            if (needUpdatePower)
-            {
-                getInput();
-                checkPower();
-                //tryPower(beingPoweredVert, beingPoweredHoriz);
-                sendPower(exludeSendPowerDir); //new
-                needUpdatePower = false; //new
-                exludeSendPowerDir = -1; //new
-            }
-        }
-        else
-        {
-            //tryPower(false);
-            currentInputs = new List<int>();
-        }
-
-        if (homeObj != null)
-        {
-            spotIndex = homeObj.GetComponent<FloorTileController>().spotIndex;
-        }
-    }
-
-    override
     protected void checkPower()
     {
         beingPoweredVert = false;
@@ -80,6 +42,9 @@ public class HopWireController : InputBasedTile
                 beingPoweredVert = true;
             }
         }
+
+        beingPowered = beingPoweredHoriz || beingPoweredVert;
+
         tryPower(beingPoweredVert, beingPoweredHoriz);
     }
 
@@ -93,19 +58,19 @@ public class HopWireController : InputBasedTile
 
             for (int j = 0; j < currentInputs.Count; j++)
             {
-                int DIR = currentInputs[j];
+                int inDIR = currentInputs[j];
                 for (int i = 0; i < possibleOutputs.Count; i++)
                 {
                     int outDIR = possibleOutputs[i];
-                    if (outDIR >= 0 && outDIR < output.Length && outDIR != DIR)
+                    if (outDIR >= 0 && outDIR < output.Length && outDIR != inDIR)
                     {
-                        if((DIR == 0 || DIR == 2) && (outDIR == 0 || outDIR == 2))
+                        if((inDIR == 0 || inDIR == 2) && (outDIR == 0 || outDIR == 2))
                         {
                             //print("OutDir: " + outDIR + ", DIR " + DIR);
                             output[outDIR] = 1;
                             okList.Add(outDIR);
                         }
-                        if ((DIR == 1 || DIR == 3) && (outDIR == 1 || outDIR == 3))
+                        if ((inDIR == 1 || inDIR == 3) && (outDIR == 1 || outDIR == 3))
                         {
                             //print("OutDir: " + outDIR + ", DIR " + DIR);
                             output[outDIR] = 1;
@@ -135,11 +100,11 @@ public class HopWireController : InputBasedTile
 
             for (int j = 0; j < currentInputs.Count; j++)
             {
-                int DIR = currentInputs[j];
+                int inDIR = currentInputs[j];
                 for (int i = 0; i < possibleOutputs.Count; i++)
                 {
                     int outDIR = possibleOutputs[i];
-                    if (outDIR >= 0 && outDIR < output.Length && outDIR != DIR)
+                    if (outDIR >= 0 && outDIR < output.Length && outDIR != inDIR)
                     {
                         if((outDIR == LEFT || outDIR == RIGHT) && (dir == 0 || dir == 2))
                         {
@@ -179,11 +144,11 @@ public class HopWireController : InputBasedTile
 
             for (int j = 0; j < currentInputs.Count; j++)
             {
-                int DIR = currentInputs[j];
+                int inDIR = currentInputs[j];
                 for (int i = 0; i < possibleOutputs.Count; i++)
                 {
                     int outDIR = possibleOutputs[i];
-                    if (outDIR >= 0 && outDIR < output.Length && outDIR != DIR)
+                    if (outDIR >= 0 && outDIR < output.Length && outDIR != inDIR)
                     {
                         if ((outDIR == UP || outDIR == DOWN) && (dir == 0 || dir == 2))
                         {
@@ -228,6 +193,71 @@ public class HopWireController : InputBasedTile
                 {
                     output[index] = 0;
                 }
+            }
+        }
+    }
+
+    override
+    public void sendPower(int exludeDir) //exludeDir -1 for no exlude
+    {
+        int leftTileIndex = spotIndex - 1;
+        int rightTileIndex = spotIndex + 1;
+        int upTileIndex = spotIndex - GC.length;
+        int downTileIndex = spotIndex + GC.length;
+
+        if(exludeDir == -1)
+        {
+            //possibleOutputs
+            for (int i = 0; i < possibleOutputs.Count; i++)
+            {
+                //Can we send power to left?
+                if (possibleOutputs[i] == LEFT && leftTileIndex >= 0 && exludeDir != LEFT)
+                {
+                    powerNeighbour(LEFT, leftTileIndex);
+                }
+                //Can we send power to right?
+                else if (possibleOutputs[i] == RIGHT && rightTileIndex < GC.tiles.Length && exludeDir != RIGHT)
+                {
+                    powerNeighbour(RIGHT, rightTileIndex);
+                }
+                //Can we send power to up?
+                else if (possibleOutputs[i] == UP && upTileIndex >= 0 && exludeDir != UP)
+                {
+                    powerNeighbour(UP, upTileIndex);
+                }
+                //Can we send power to down?
+                else if (possibleOutputs[i] == DOWN && downTileIndex < GC.tiles.Length && exludeDir != DOWN)
+                {
+                    powerNeighbour(DOWN, downTileIndex);
+                }
+            }
+        }
+        else if (exludeDir == LEFT)
+        {
+            if (possibleOutputs.Contains(RIGHT) && rightTileIndex < GC.tiles.Length)
+            {
+                powerNeighbour(RIGHT, rightTileIndex);
+            }
+        }
+        else if (exludeDir == RIGHT)
+        {
+            if (possibleOutputs.Contains(LEFT) && leftTileIndex >= 0)
+            {
+                powerNeighbour(LEFT, leftTileIndex);
+            }
+        }
+        else if (exludeDir == UP)
+        {
+            if (possibleOutputs.Contains(DOWN) && downTileIndex < GC.tiles.Length)
+            {
+                powerNeighbour(DOWN, downTileIndex);
+            }
+        }
+        else if (exludeDir == DOWN)
+        {
+            if (possibleOutputs.Contains(UP) && upTileIndex >= 0)
+            {
+                powerNeighbour(UP, upTileIndex);
             }
         }
     }

@@ -31,7 +31,7 @@ public abstract class TileController : MonoBehaviour
     //For tile-placement and movement
     public bool drag = false;
     public bool placed = false;
-    protected GameObject homeObj;
+    public GameObject homeObj;
 
     //DEPRECATED?
     public label myLabel;
@@ -64,12 +64,10 @@ public abstract class TileController : MonoBehaviour
         {
             return;
         }
+
         //Set drag true, get this' position based on mouseposition!
         drag = true;
         dragged = true;
-        //Old:
-        //float z = 7.9f;
-        //transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, z));
 
         RaycastHit2D[] hits;
         hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, -10), 100.0F);
@@ -79,7 +77,7 @@ public abstract class TileController : MonoBehaviour
             for (int i = 0; i < hits.Length; i++)
             {
                 RaycastHit2D hit = hits[i];
-                if (hit.transform.GetComponent<FloorTileController>() != null)
+                if (hit.transform.GetComponent<FloorTileController>() != null || hit.transform.GetComponent<TileController>() != null)
                 {
                     transform.position = hit.transform.position + new Vector3(0, 0, -1);
                 }
@@ -92,6 +90,7 @@ public abstract class TileController : MonoBehaviour
         if (homeObj != null)
         {
             homeObj.GetComponent<FloorTileController>().busy = false;
+            homeObj.GetComponent<BoxCollider2D>().enabled = true; //new
             GC.tiles[spotIndex] = null;
             prevSpotIndex = spotIndex;
             spotIndex = -1;
@@ -108,6 +107,7 @@ public abstract class TileController : MonoBehaviour
         {
             destroyMe(false);
         }
+
         if (myCompOverlay != null)
         {
             print("Removing Compoverlay!");
@@ -160,25 +160,75 @@ public abstract class TileController : MonoBehaviour
 
     protected void OnTriggerStay2D(Collider2D other)
     {
-        //print("triggering: " + drag + "/" + placed);
+        //print("triggering: " + spotIndex + ", by: " + other.gameObject.name);
         if (!drag && !placed)
         {
-            if(other.gameObject == homeObj)
-            {
-                print("returning!");
-                return;
-            }
-            //print(this.gameObject.name + ": Need home!");
+            //print(this.gameObject.name + ": Need home! Triggered by: " + other.gameObject.name);
             if (other.GetComponent<FloorTileController>() != null)
             {
                 place(other.gameObject);
-                if (!other.GetComponent<FloorTileController>().busy)
+            }
+            else if(other.GetComponent<TileController>() != null)
+            {
+                if (other.GetComponent<TileController>().homeObj != null)
                 {
-                    //print(this.gameObject.name + ": Placing");
-                    //place(other.gameObject);
+                    place(other.GetComponent<TileController>().homeObj);
                 }
             }
         }
+    }
+
+    public bool place(GameObject other) //other = floortile (floot)
+    {
+        spotIndex = other.GetComponent<FloorTileController>().spotIndex;
+        this.gameObject.name = GC.tileHub.getName(ID) + " (" + spotIndex + ")";
+
+        //check if occupied
+        if (GC.tiles[spotIndex] != null)
+        {
+            //print("Placing... Trying to destroy: " + GC.tiles[spotIndex].name);
+            if (GC.tiles[spotIndex] != this.gameObject)
+            {
+                if (GC.tiles[spotIndex].GetComponent<TileController>().destroyMe(true))
+                {
+                    GC.tiles[spotIndex] = this.gameObject;
+                    AC.audioCon.playTilePlacedSFX();
+                }
+                else
+                {
+                    destroyMe(false);
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            GC.tiles[spotIndex] = this.gameObject;
+        }
+
+        //add dragged undo
+        if (dragged)
+        {
+            GC.UC.addUndo(new SingleTileUndo(prevSpotIndex, spotIndex));
+            dragged = false;
+        }
+
+        //set position and homeobj
+        transform.position = other.transform.position + new Vector3(0, 0, -1);
+        placed = true;
+        homeObj = other;
+        homeObj.GetComponent<FloorTileController>().busy = true;
+
+        //color
+        Color temp = GetComponent<SpriteRenderer>().color;
+        temp.a = 1f;
+        GetComponent<SpriteRenderer>().color = temp;
+
+        //fix colliders
+        //GetComponent<BoxCollider2D>().isTrigger = true;
+        homeObj.GetComponent<BoxCollider2D>().enabled = false; //new
+
+        return true;
     }
 
     //help method
@@ -234,53 +284,6 @@ public abstract class TileController : MonoBehaviour
         return dir;
     }
 
-    public bool place(GameObject other)
-    {
-        spotIndex = other.GetComponent<FloorTileController>().spotIndex;
-
-        if(GC.tiles[spotIndex] != null)
-        {
-            //print("Placing... Trying to destroy: " + GC.tiles[spotIndex].name);
-            if(GC.tiles[spotIndex] != this.gameObject)
-            {
-                if (GC.tiles[spotIndex].GetComponent<TileController>().destroyMe(true))
-                {
-                    GC.tiles[spotIndex] = this.gameObject;
-                    AC.audioCon.playTilePlacedSFX();
-                }
-                else
-                {
-                    destroyMe(false);
-                    return false;
-                }
-            }
-        }
-        else
-        {
-            GC.tiles[spotIndex] = this.gameObject;
-        }
-
-        if (dragged)
-        {
-            GC.UC.addUndo(new SingleTileUndo(prevSpotIndex, spotIndex));
-            dragged = false;
-        }
-
-        //print("Placed!");
-        transform.position = other.transform.position + new Vector3(0, 0, -1);
-        placed = true;
-        homeObj = other;
-        homeObj.GetComponent<FloorTileController>().busy = true;
-
-        Color temp = GetComponent<SpriteRenderer>().color;
-        temp.a = 1f;
-        GetComponent<SpriteRenderer>().color = temp;
-
-        GetComponent<BoxCollider2D>().isTrigger = true;
-
-        return true;
-    }
-
     public virtual bool destroyMe(bool addUndo)
     {
         if (locked)
@@ -292,8 +295,11 @@ public abstract class TileController : MonoBehaviour
         if(homeObj != null)
         {
             homeObj.GetComponent<FloorTileController>().busy = false;
+            homeObj.GetComponent<BoxCollider2D>().enabled = true; //new
             GC.tiles[spotIndex] = null;
+            homeObj = null;
         }
+
         if(myCompOverlay != null)
         {
             print("Removing Compoverlay!");
@@ -327,7 +333,6 @@ public abstract class TileController : MonoBehaviour
         }
 
         drag = true;
-
         beingPowered = false;
         placed = false;
 
@@ -335,12 +340,14 @@ public abstract class TileController : MonoBehaviour
         {
             //print(this.name + " is setting homeObj false");
             homeObj.GetComponent<FloorTileController>().busy = false;
+            homeObj.GetComponent<BoxCollider2D>().enabled = true; //new
 
             GC.tiles[spotIndex] = null;
             spotIndex = -1;
             homeObj = null;
         }
 
+        //color
         Color temp = GetComponent<SpriteRenderer>().color;
         temp.a = 0.5f;
         GetComponent<SpriteRenderer>().color = temp;

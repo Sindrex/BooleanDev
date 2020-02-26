@@ -10,7 +10,7 @@ public class PInputController : InputBasedTile
 
     public string sign;
 
-    public void setSprite(int index)
+    public void setSprite(int index) //setup
     {
         this.spriteOn = inputSpritesOn[index];
         this.spriteOff = inputSpritesOff[index];

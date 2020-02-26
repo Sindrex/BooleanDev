@@ -13,6 +13,87 @@ public class DelayerController : InputBasedTile
 
     public Sprite[] mySprites = new Sprite[8]; //0-3 is off, 4-7 is on
 
+    //Special for delayer
+    override
+    protected void Update()
+    {
+        //new
+        if (checkNeighbourIndex >= 0) //for startup, check 1 neighbour each frame
+        {
+            checkNeighbour(checkNeighbourIndex);
+            checkNeighbourIndex++;
+            if (checkNeighbourIndex > 3)
+            {
+                checkNeighbourIndex = -1;
+            }
+        }
+
+        if (placed)
+        {
+            //getInput(); //checks neighbours for whether powered
+            if (needUpdatePower)
+            {
+                while (exludeDirs.Count > 0)
+                {
+                    int exludeDir = exludeDirs[0];
+                    exludeDirs.RemoveAt(0);
+                    getInput();
+                    checkPower(exludeDir);
+                }
+                needUpdatePower = false; //new
+            }
+        }
+    }
+
+    //override
+    protected void checkPower(int exludeDir)
+    {
+        canPower = false;
+        //All 4 dirs
+        for (int i = 0; i < 4; i++)
+        {
+            if (currentInputs.Contains(i))
+            {
+                //print("powered!");
+                canPower = true;
+                if (!beingPowered)
+                {
+                    StartCoroutine(powerOnDelay(exludeDir));
+                }
+            }
+        }
+        if (!canPower && beingPowered)
+        {
+            StartCoroutine(powerOffDelay(exludeDir));
+        }
+    }
+
+    IEnumerator powerOnDelay(int exludeDir)
+    {
+        yield return new WaitForSeconds(delayAmount * (1 + setting));
+        beingPowered = true;
+        tryPower(beingPowered);
+        switchSprite(beingPowered);
+
+        sendPower(exludeDir);
+
+        needUpdatePower = true;
+        exludeDirs.Add(-1);
+    }
+
+    IEnumerator powerOffDelay(int exludeDir)
+    {
+        yield return new WaitForSeconds(delayAmount * (1 + setting));
+        beingPowered = false;
+        tryPower(beingPowered);
+        switchSprite(beingPowered);
+
+        sendPower(exludeDir);
+
+        needUpdatePower = true;
+        exludeDirs.Add(-1);
+    }
+
     override
     public void tryPower(bool state)
     {
@@ -61,45 +142,6 @@ public class DelayerController : InputBasedTile
                 }
             }
         }
-    }
-
-    override
-    protected void checkPower()
-    {
-        canPower = false;
-        //All 4 dirs
-        for (int i = 0; i < 4; i++)
-        {
-            if (currentInputs.Contains(i))
-            {
-                //print("powered!");
-                canPower = true;
-                StartCoroutine("powerOnDelay");
-            }
-        }
-        if (!canPower)
-        {
-            StartCoroutine("powerOffDelay");
-        }
-    }
-
-    IEnumerator powerOnDelay()
-    {
-        yield return new WaitForSeconds(delayAmount * (1 + setting));
-        beingPowered = true;
-        tryPower(beingPowered);
-        switchSprite(beingPowered);
-        needUpdatePower = true;
-    }
-
-    IEnumerator powerOffDelay()
-    {
-        yield return new WaitForSeconds(delayAmount * (1 + setting));
-        beingPowered = false;
-        tryPower(beingPowered);
-        switchSprite(beingPowered);
-        needUpdatePower = true;
-        //print("done off!");
     }
 
     private void switchSprite(bool state)

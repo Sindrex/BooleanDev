@@ -5,39 +5,16 @@ using UnityEngine;
 [System.Serializable]
 public class NotGateController : InputBasedTile
 {
-    public float repeatRate;
-
     override
     protected void Start()
     {
         output = new int[4];
-        tryPower(beingPowered); //for notgate
-
         checkNeighbourIndex = 0;
         neighbours = getNeighbours();
-        sendPower(-1);
-    }
+        exludeDirs = new List<int>();
 
-    //deprecated
-    protected void myUpdate()
-    {
-        if (placed)
-        {
-            //getInput();
-            sendPower(-1); //new
-            checkPower();
-            tryPower(beingPowered);
-        }
-        else
-        {
-            tryPower(false);
-            currentInputs = new List<int>();
-        }
-
-        if (homeObj != null)
-        {
-            spotIndex = homeObj.GetComponent<FloorTileController>().spotIndex;
-        }
+        tryPower(beingPowered); //for notgate
+        sendPower(-1); //for notgate
     }
 
     override

@@ -16,13 +16,16 @@ public abstract class OutputBasedTile : TileController {
     public GameObject[] neighbours = new GameObject[4];
     public int checkNeighbourIndex = -1; //new
     public bool needUpdatePower = false; //new
-    public int exludeSendPowerDir = -1; //new
+    //public int[] exludeSendPowerDir = new int[4];
+    public List<int> exludeDirs; //queue
 
     protected virtual void Start()
     {
         output = new int[4];
         checkNeighbourIndex = 0;
         neighbours = getNeighbours();
+        //exludeSendPowerDir = new int[4];
+        exludeDirs = new List<int>();
     }
 
     protected GameObject[] getNeighbours()
@@ -65,33 +68,12 @@ public abstract class OutputBasedTile : TileController {
     }
 
     //NEW, instead of getInput
-    public void sendPower(int exludeDir) //exludeDir -1 for no exlude
+    public virtual void sendPower(int exludeDir) //exludeDir -1 for no exlude
     {
         int leftTileIndex = spotIndex - 1;
         int rightTileIndex = spotIndex + 1;
         int upTileIndex = spotIndex - GC.length;
         int downTileIndex = spotIndex + GC.length;
-
-        /*
-        for (int dir = 0; dir < output.Length; dir++)
-        {
-            if(output[dir] == 1 && dir == LEFT && leftTileIndex >= 0 && exludeDir != LEFT)
-            {
-                powerNeighbour(LEFT, leftTileIndex);
-            }
-            if (output[dir] == 1 && dir == RIGHT && rightTileIndex >= 0 && exludeDir != RIGHT)
-            {
-                powerNeighbour(RIGHT, rightTileIndex);
-            }
-            if (output[dir] == 1 && dir == UP && upTileIndex >= 0 && exludeDir != UP)
-            {
-                powerNeighbour(UP, upTileIndex);
-            }
-            if (output[dir] == 1 && dir == DOWN && downTileIndex >= 0 && exludeDir != DOWN)
-            {
-                powerNeighbour(DOWN, downTileIndex);
-            }
-        }*/
 
         //possibleOutputs
         for (int i = 0; i < possibleOutputs.Count; i++)
@@ -134,6 +116,7 @@ public abstract class OutputBasedTile : TileController {
                 int negDir = negDirection(dir);
                 if (inputTile.possibleInputs.Contains(negDir))
                 {
+                    //print(Time.frameCount + ": " + spotIndex + " is sending ripple to: " + tileIndex + " from: " + dir + ", negDir: " + negDir + ", output: " + output[dir]);
                     if (output[dir] == 1)
                     {
                         if (!inputTile.currentInputs.Contains(negDir))
@@ -141,13 +124,14 @@ public abstract class OutputBasedTile : TileController {
                             inputTile.currentInputs.Add(negDir);
                         }
                         inputTile.needUpdatePower = true;
-                        inputTile.exludeSendPowerDir = -1;
+                        inputTile.exludeDirs.Add(negDir);
+                        //inputTile.exludeSendPowerDir = -1;
                     }
                     else
                     {
                         inputTile.currentInputs.Remove(negDir);
                         inputTile.needUpdatePower = true;
-                        inputTile.exludeSendPowerDir = negDir;
+                        inputTile.exludeDirs.Add(negDir);
                     }
                 }
             }
@@ -247,6 +231,7 @@ public abstract class OutputBasedTile : TileController {
     {
         beingPowered = false;
         disableOutputs();
+        exludeDirs = new List<int>();
         sendPower(-1);
         disableOutputs();
 

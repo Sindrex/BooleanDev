@@ -47,7 +47,7 @@ public class MoverController : MonoBehaviour {
         for (int i = 0; i < hits.Length; i++)
         {
             RaycastHit2D hit = hits[i];
-            if(hit.transform.GetComponent<FloorTileController>() != null)
+            if(hit.transform.GetComponent<FloorTileController>() != null || hit.transform.GetComponent<TileController>() != null)
             {
                 currentPos = hit.transform.position;
             }

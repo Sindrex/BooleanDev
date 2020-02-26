@@ -43,7 +43,7 @@ public class ComponentSaveUIButtonController : MonoBehaviour {
         {
             //print("mousing over!");
             CUI.tip.SetActive(true);
-            CUI.tip.transform.position = this.transform.position + tipOffset;
+            CUI.tip.transform.position = new Vector2(CUI.tip.transform.position.x, this.transform.position.y);
             CUI.tipName.text = myComp.name;
 
             int number = 0;

@@ -10,19 +10,21 @@ public abstract class InputBasedTile : OutputBasedTile {
     public List<int> currentInputs = new List<int>();
     public List<int> possibleInputs = new List<int>();
 
-    //public int pokedFromDir = -1;
-
+    //for startup
     protected void checkNeighbour(int dir)  //new
     {
         GameObject go = neighbours[dir];
         if(go != null)
         {
-            InputBasedTile inputTile = go.GetComponent<InputBasedTile>();
-            if (inputTile != null)
+            if(possibleInputs.Contains(dir) || possibleOutputs.Contains(dir))
             {
-                //print("Updating neighbour: " + inputTile.spotIndex);
-                inputTile.needUpdatePower = true;
-                inputTile.exludeSendPowerDir = -1;
+                InputBasedTile inputTile = go.GetComponent<InputBasedTile>();
+                if (inputTile != null)
+                {
+                    //print("Updating neighbour: " + inputTile.spotIndex);
+                    inputTile.needUpdatePower = true;
+                    inputTile.exludeDirs.Add(-1);
+                }
             }
         }
     }
@@ -46,24 +48,17 @@ public abstract class InputBasedTile : OutputBasedTile {
             //getInput(); //checks neighbours for whether powered
             if (needUpdatePower)
             {
-                //print("Updating power for: " + spotIndex);
-                getInput();
-                checkPower();
-                sendPower(exludeSendPowerDir); //new
-                needUpdatePower = false; //new
-                exludeSendPowerDir = -1; //new
-                //tryPower(beingPowered);
-            }
-        }
-        else
-        {
-            //tryPower(false);
-            currentInputs = new List<int>();
-        }
+                while (exludeDirs.Count > 0) //one solution
+                {
+                    int exludeDir = exludeDirs[0];
+                    exludeDirs.RemoveAt(0);
 
-        if(homeObj != null)
-        {
-            spotIndex = homeObj.GetComponent<FloorTileController>().spotIndex;
+                    getInput();
+                    checkPower();
+                    sendPower(exludeDir); //new
+                }
+                needUpdatePower = false; //new
+            }
         }
     }
 
@@ -93,8 +88,8 @@ public abstract class InputBasedTile : OutputBasedTile {
             //print("beingPowered!");
             this.GetComponent<SpriteRenderer>().sprite = spriteOn;
 
-            List<int> okList = new List<int>();
-            List<int> notOkList = new List<int>();
+            //List<int> okList = new List<int>();
+            //List<int> notOkList = new List<int>();
 
             disableOutputs();
 
@@ -109,55 +104,6 @@ public abstract class InputBasedTile : OutputBasedTile {
                     }
                 }
             }
-            /*
-            for (int i = 0; i < possibleOutputs.Count; i++)
-            {
-                int DIR = possibleOutputs[i];
-                if (DIR >= 0 && DIR < output.Length)
-                {
-                    output[DIR] = 1;
-                }
-            }*/
-            /*
-            for (int j = 0; j < currentInputs.Count; j++)
-            {
-                int inDIR = currentInputs[j];
-                for (int i = 0; i < possibleOutputs.Count; i++)
-                {
-                    int outDIR = possibleOutputs[i];
-                    if (outDIR >= 0 && outDIR < output.Length && outDIR != inDIR)
-                    {
-                        //print("OutDir: " + outDIR + ", DIR " + inDIR);
-                        output[outDIR] = 1;
-                        okList.Add(outDIR);
-                    }
-                    else
-                    {
-                        notOkList.Add(outDIR);
-                    }
-                }
-            }
-            
-            foreach(int DIR in notOkList)
-            {
-                if(ID == 3 || ID == 4 || ID == 12 || ID == 13)
-                {
-                    //output[DIR] = 0; //makes race-conditions
-
-                    //Makes power loops
-                    if (!okList.Contains(DIR))
-                    {
-                        output[DIR] = 0;
-                    }
-                }
-                else
-                {
-                    if (!okList.Contains(DIR))
-                    {
-                        output[DIR] = 0;
-                    }
-                }
-            }*/
         }
         else //not being powered
         {
@@ -180,59 +126,50 @@ public abstract class InputBasedTile : OutputBasedTile {
     override
     protected void powerNeighbour(int dir, int tileIndex)
     {
-        //do we already get power from this dir?
-        //if (!currentInputs.Contains(dir))
+        //is there a tile there?
+        GameObject curTile = GC.tiles[tileIndex];
+        if (curTile != null)
         {
-            //is there a tile there?
-            GameObject curTile = GC.tiles[tileIndex];
-            if (curTile != null)
+            //can it get an input?
+            InputBasedTile inputTile = curTile.GetComponent<InputBasedTile>();
+            if (inputTile != null)
             {
-                //can it get an input?
-                InputBasedTile inputTile = curTile.GetComponent<InputBasedTile>();
-                if (inputTile != null)
+                //can it get input this way?
+                int negDir = negDirection(dir);
+                if (inputTile.possibleInputs.Contains(negDir))
                 {
-                    //can it get input this way?
-                    int negDir = negDirection(dir);
-                    if (inputTile.possibleInputs.Contains(negDir))
+                    //print(Time.frameCount + ": " + spotIndex + " is sending ripple to: " + tileIndex + " from: " + dir + ", negDir: " + negDir + ", output: " + output[dir]);
+                    if(output[dir] == 1 && inputTile.currentInputs.Contains(negDir))
                     {
-                        //print("This tile should update: " + inputTile.spotIndex + " -from " + spotIndex);
-                        if (output[dir] == 1) //send power
+                        return;
+                    }
+                    else if (output[dir] == 1) //send power
+                    {
+                        //print("Updating neighbour! I AM powered, but neighbour isnt");
+                        if (!inputTile.currentInputs.Contains(negDir))
                         {
-                            //if (!inputTile.beingPowered)
-                            {
-                                //print("Updating neighbour! I AM powered, but neighbour isnt");
-                                if (!inputTile.currentInputs.Contains(negDir))
-                                {
-                                    inputTile.currentInputs.Add(negDir);
-                                }
-                                inputTile.needUpdatePower = true;
-                                inputTile.exludeSendPowerDir = negDir;
-                            }
+                            inputTile.currentInputs.Add(negDir);
                         }
-                        else //if(pokedFromDir != dir)
-                        {
-                            //if (inputTile.beingPowered)
-                            {
-                                //print("Updating neighbour! I (" + spotIndex + ") am NOT powered, but neighbour is");
-                                inputTile.currentInputs.Remove(negDir);
-                                inputTile.needUpdatePower = true;
-                                inputTile.exludeSendPowerDir = negDir;
-                            }
-                            //inputTile.pokedFromDir = negDir;
-                        }
-                        /*
-                        else
-                        {
-                            inputTile.pokedFromDir = -1;
-                            pokedFromDir = -1;
-                        }*/
+                        inputTile.needUpdatePower = true;
+                        inputTile.exludeDirs.Add(negDir);
+                    }
+                    else if(output[dir] == 0 && !inputTile.beingPowered)
+                    {
+                        //print(spotIndex + " is sending ripple to: " + tileIndex + " -> is returning");
+                        return;
+                    }
+                    else
+                    {
+                        //print("Updating neighbour! I (" + spotIndex + ") am NOT powered, but neighbour is");
+                        inputTile.currentInputs.Remove(negDir);
+                        inputTile.needUpdatePower = true;
+                        inputTile.exludeDirs.Add(negDir);
                     }
                 }
             }
         }
     }
 
-    //old
     protected void getInput()
     {
         neighbours = getNeighbours();

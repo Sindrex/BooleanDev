@@ -77,6 +77,7 @@ public class SignController : TileController {
         if (homeObj != null)
         {
             homeObj.GetComponent<FloorTileController>().busy = false;
+            homeObj.GetComponent<BoxCollider2D>().enabled = true; //new
             GC.tiles[spotIndex] = null;
         }
 

@@ -9,29 +9,6 @@ public class ButtonController : OutputBasedTile
     public float waitTime = 0.5f;
 
     public GameObject hover;
-
-    // Update is called once per frame
-    void Update()
-    {
-        /*
-        if (placed)
-        {
-            if (!buttonWait)
-            {
-                beingPowered = false;
-            }
-            tryPower(beingPowered);
-        }
-        else
-        {
-            tryPower(false);
-        }*/
-
-        if (homeObj != null)
-        {
-            spotIndex = homeObj.GetComponent<FloorTileController>().spotIndex;
-        }
-    }
     
     override
     public void tryPower(bool state)
@@ -78,11 +55,11 @@ public class ButtonController : OutputBasedTile
             {
                 beingPowered = true;
                 AC.audioCon.playTilePlacedSFX();
+                tryPower(beingPowered); //new
+                sendPower(-1); //new
                 StartCoroutine("buttonWaiter");
             }
         }
-        tryPower(beingPowered); //new
-        sendPower(-1); //new
     }
 
     IEnumerator buttonWaiter()

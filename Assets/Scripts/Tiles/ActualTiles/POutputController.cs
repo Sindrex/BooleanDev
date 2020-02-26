@@ -10,30 +10,12 @@ public class POutputController : OutputBasedTile
 
     public string sign;
 
-    public void setSprite(int index)
+    public void setSprite(int index) //for setup
     {
         print("Setting sprite: " + index);
         this.spriteOn = outputSpritesOn[index];
         this.spriteOff = outputSpritesOff[index];
         tryPower(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (placed)
-        {
-            //tryPower(beingPowered);
-        }
-        else
-        {
-            //tryPower(false);
-        }
-
-        if (homeObj != null)
-        {
-            spotIndex = homeObj.GetComponent<FloorTileController>().spotIndex;
-        }
     }
 
     override

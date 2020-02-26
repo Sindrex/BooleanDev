@@ -22,7 +22,6 @@ public class ActionbarController : MonoBehaviour {
     public GameObject[] actionbars;
     public int selectbarMaxItemsPerRow = 10;
     public GameObject selectbar;
-    //public GameObject[] selectbars;
 
     public GameObject[] activePrefabs;
 
@@ -30,6 +29,7 @@ public class ActionbarController : MonoBehaviour {
     public int selectedA = 0;
     public readonly int maxSelectedA = 10;
 
+    //placing
     public GameObject tiler;
 
     //Showname
@@ -222,21 +222,18 @@ public class ActionbarController : MonoBehaviour {
         }
 
         //For placing and deleting
-        RaycastHit2D[] hits;
-        hits = Physics2D.RaycastAll(tiler.transform.position, new Vector3(0,0,-1), 100.0F);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(tiler.transform.position, new Vector3(0,0,-1), 100.0F);
         for (int i = 0; i < hits.Length; i++)
         {
             //print("got a hit");
             RaycastHit2D hit = hits[i];
-
-            if(hit.transform.GetComponent<TileController>() != null)
+            TileController tile = hit.transform.GetComponent<TileController>();
+            if (tile != null)
             {
                 //print("got a hit: " + hit.transform.name);
                 if (InputController.getInput(InputPurpose.DELETE_TILE) && !UtilBools.tileLock)
                 {
                     //print(classTag + "Destroying!");
-
-                    TileController tile = hit.transform.GetComponent<TileController>();
                     int setting = 0;
                     string text = "";
                     if(hit.transform.GetComponent<DelayerController>() != null)
@@ -252,6 +249,11 @@ public class ActionbarController : MonoBehaviour {
                     tile.destroyMe(false);
                     prevSpotIndex = -1;
                 }
+                else if (InputController.getInput(InputPurpose.PLACE_TILE) && !UtilBools.noPlaceTile)
+                {
+                    //print("Placing tile: " + UtilBools.noPlaceTile);
+                    spawnTile(tile.homeObj);
+                }
             }
             else if(hit.transform.GetComponent<FloorTileController>() != null)
             {
@@ -259,14 +261,10 @@ public class ActionbarController : MonoBehaviour {
                 {
                     //print("Placing tile: " + UtilBools.noPlaceTile);
                     spawnTile(hit.transform.gameObject);
-                    if (!hit.transform.GetComponent<FloorTileController>().busy)
-                    {
-                        //print("Hit && !busy!");
-                        //spawnTile(hit.transform.gameObject);
-                    }
                 }
             }
         }
+        
     }
 
     public void toggleSelectionBar(bool state)
@@ -401,12 +399,14 @@ public class ActionbarController : MonoBehaviour {
         RaycastHit2D[] hits;
         hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, -10), 100.0F);
 
+        //did we hit anything?
         if (hits.Length <= 0)
         {
             tiler.SetActive(false);
             return;
         }
 
+        //did we hit tiles/floortiles?
         foreach (RaycastHit2D hit in hits)
         {
             if (!hit.transform.CompareTag("FloorTile") && !hit.transform.CompareTag("Tile"))
@@ -419,12 +419,22 @@ public class ActionbarController : MonoBehaviour {
         for (int i = 0; i < hits.Length; i++)
         {
             RaycastHit2D hit = hits[i];
+            TileController tile = hit.transform.GetComponent<TileController>();
             if (hit.transform.GetComponent<FloorTileController>() != null)
             {
                 tiler.transform.position = hit.transform.position + new Vector3(0, 0, -2);
             }
+            else if(tile != null)
+            {
+                if(tile.homeObj != null)
+                {
+                    tiler.transform.position = tile.homeObj.transform.position + new Vector3(0, 0, -2);
+                    //tile.homeObj.GetComponent<BoxCollider2D>().enabled = true;
+                }
+            }
         }
 
+        //color
         Color temp = tiler.GetComponent<SpriteRenderer>().color;
         temp.a = 0.5f;
         tiler.GetComponent<SpriteRenderer>().color = temp;
