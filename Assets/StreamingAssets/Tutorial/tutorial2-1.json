@@ -1,6 +1,6 @@
 {
-  "devNote":"Bridge",
-  "puzzleId":"4",
+  "devNote":"NOT",
+  "puzzleId":"5",
   "exitOnfinish": false,
   "actions":[
     {
@@ -14,7 +14,7 @@
       },
       "arrow":{
         "enable":true,
-        "x":133,
+        "x":95,
         "y":-130,
         "rotz":180
       }
@@ -24,13 +24,13 @@
       "targetID":0,
       "spotIndex":0,
       "hint":{
-        "text":"This tile is called a HopWire, and it lets wire pass other wire. Try using it on this puzzle!",
+        "text":"This tile is called a Notgate/Inverter, and as the name implies, it inverts its given input. It only has 1 input, so follow the arrow. Try using it on this puzzle.",
         "x":0,
         "y":0
       },
       "arrow":{
         "enable":true,
-        "x":133,
+        "x":95,
         "y":-130,
         "rotz":180
       }

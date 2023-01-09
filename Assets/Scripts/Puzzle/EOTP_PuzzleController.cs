@@ -33,7 +33,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
     //logic
     public float EOTP_WAIT_TIME = 0.5f;
     public float DEFAULT_MIDDLE_WAIT_TIME = 0.5f;
-    private float EOTP_MIDDLE_WAIT_TIME_MS = 0.5f;
+    private float middleWaitTimeMs = 0.5f;
     private int EOTPPlayTurn = 0;
     private bool EOTP_waitforinput = false;
     [SerializeField]
@@ -43,12 +43,14 @@ public class EOTP_PuzzleController : MonoBehaviour {
     public List<EOTP_IOCreator> outputs = new List<EOTP_IOCreator>();
     public List<GameObject> outputObjs = new List<GameObject>();
     private List<List<int>> realInput = new List<List<int>>();
+    private bool autoplaying = false;
 
     //stepping
     public bool stepping = false;
     public GameObject stepButton;
     public Text stepText;
     public GameObject stopStepButton;
+    private float timeOfLastStep;
 
     public void close()
     {
@@ -127,6 +129,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
         //Tutorial
         List<PuzzleTutorialHints> temp = ResourceLoader.loadJsonFolder<PuzzleTutorialHints>("/Tutorial/");
         PuzzleTutorialHints myHintWrapper = null;
+        Debug.Log("Tutorials loaded: " + temp.Count);
         foreach (PuzzleTutorialHints hints in temp)
         {
             if (hints.puzzleId == myPuzzle.id)
@@ -147,11 +150,11 @@ public class EOTP_PuzzleController : MonoBehaviour {
         print("Puzzle Middle Time: " + puzzle.middleWaitTime);
         if(puzzle.middleWaitTime > 0)
         {
-            EOTP_MIDDLE_WAIT_TIME_MS = puzzle.middleWaitTime;
+            middleWaitTimeMs = puzzle.middleWaitTime;
         }
         else
         {
-            EOTP_MIDDLE_WAIT_TIME_MS = DEFAULT_MIDDLE_WAIT_TIME;
+            middleWaitTimeMs = DEFAULT_MIDDLE_WAIT_TIME;
         }
 
         //show objective at start
@@ -165,11 +168,17 @@ public class EOTP_PuzzleController : MonoBehaviour {
 
     public void autoPlay()
     {
+        if (autoplaying)
+        {
+            return;
+        }
+
         resetPuzzle();
         print(this.GetType().Name + ": Starting autoplay puzzle!");
         UtilBools.puzzleInteractLock(true);
         puzzlePlay(false);
         GC.audioMixer.playButtonSFX();
+        autoplaying = true;
     }
 
     public void puzzlePlay(bool stepping)
@@ -217,8 +226,8 @@ public class EOTP_PuzzleController : MonoBehaviour {
             //print(this.GetType().Name + ":puzzlePlay():" + outputs[i].getSignal()[EOTPPlayTurn]);
         }
 
-        print("Waiting for middle: " + EOTP_MIDDLE_WAIT_TIME_MS + "sec!");
-        yield return new WaitForSeconds(EOTP_MIDDLE_WAIT_TIME_MS);
+        print("Waiting for middle: " + middleWaitTimeMs + "sec!");
+        yield return new WaitForSeconds(middleWaitTimeMs);
 
         EOTP_waitforinput = true;
         EOTPPlayTurn++;
@@ -290,6 +299,7 @@ public class EOTP_PuzzleController : MonoBehaviour {
             print(this.GetType().Name + ":EOTPwaitFinish(): Try again dumbo!");
             PV.openLoss();
         }
+        autoplaying = false;
     }
 
     public bool resetPuzzle()
@@ -313,7 +323,6 @@ public class EOTP_PuzzleController : MonoBehaviour {
             //reset each list for next check logic
             realInput[li] = new List<int>();
         }
-        stepping = false;
         stepText.gameObject.SetActive(false);
         stopStepButton.SetActive(false);
         //reset powered
@@ -324,6 +333,9 @@ public class EOTP_PuzzleController : MonoBehaviour {
             curOutObj.tryPower(false);
             curOutObj.sendPower(-1);
         }
+
+        stepping = false;
+
         return ok;
     }
 
@@ -345,6 +357,21 @@ public class EOTP_PuzzleController : MonoBehaviour {
     //stepping logic
     public void stepPlay()
     {
+        if (autoplaying)
+        {
+            return;
+        }
+
+        float now = Time.fixedTime;
+        float tol = 0.5f;
+        print("timeOfLastStep=" + timeOfLastStep + ", EOTP_WAIT_TIME=" + EOTP_WAIT_TIME + ", sum=" + (timeOfLastStep + EOTP_WAIT_TIME + tol) + ", now=" + now);
+        if (timeOfLastStep + EOTP_WAIT_TIME + tol > now)
+        {
+            print("Too fast stepping! Returning.");
+            return; //not enough time has fast
+        }
+        timeOfLastStep = now;
+
         stopStepButton.SetActive(true);
         stepping = true;
         UtilBools.puzzleInteractLock(true);

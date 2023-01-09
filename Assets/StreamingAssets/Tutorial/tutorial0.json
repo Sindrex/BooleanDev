@@ -1,103 +1,199 @@
 {
   "devNote":"Tutorial",
-  "puzzleId":"0",
-  "exitOnfinish": true,
-  "hints":[
+  "puzzleId":0,
+  "exitOnfinish":true,
+  "actions":[
     {
-      "text":"Welcome to Boolean, a game about sending signals! This tutorial will go through the basic controls and placing of tiles. Good luck! ",
-      "x":0,
-      "y":0,
-      "ax":0,
-      "ay":0,
-      "rotz":0
+      "type":"text",
+      "targetID":0,
+      "spotIndex":0,
+      "hint":{
+        "text":"Welcome to Boolean, a game about sending signals! This tutorial will go through the basic controls and placing of tiles. Good luck!",
+        "x":0,
+        "y":0
+      },
+      "arrow":{
+        "enable":false,
+        "x":0,
+        "y":0,
+        "rotz":0
+      }
     },
     {
-      "text":"Move around with WASD, Arrow buttons or dragging MIDDLE MOUSE BUTTON.",
-      "x":0,
-      "y":0,
-      "ax":0,
-      "ay":0,
-      "rotz":0
+      "type":"control",
+      "targetID":0,
+      "spotIndex":0,
+      "hint":{
+        "text":"Move around with WASD, Arrow buttons or dragging MIDDLE MOUSE BUTTON.",
+        "x":0,
+        "y":0
+      },
+      "arrow":{
+        "enable":false,
+        "x":0,
+        "y":0,
+        "rotz":0
+      }
     },
     {
-      "text":"Zoom in and out with SHIFT + MOUSE SCROLL.",
-      "x":0,
-      "y":0,
-      "ax":0,
-      "ay":0,
-      "rotz":0
+      "type":"control",
+      "targetID":2,
+      "spotIndex":0,
+      "hint":{
+        "text":"Zoom in and out with SHIFT + MOUSE SCROLL.",
+        "x":0,
+        "y":0
+      },
+      "arrow":{
+        "enable":false,
+        "x":0,
+        "y":0,
+        "rotz":0
+      }
     },
     {
-      "text":"This is called a tile. Tiles are placed on the grid and interact with eachother.",
-      "x":0,
-      "y":0,
-      "ax":-95,
-      "ay":-130,
-      "rotz":180
+      "type":"text",
+      "targetID":0,
+      "spotIndex":0,
+      "hint":{
+        "text":"This is called a tile. Tiles are placed on the grid and interact with eachother.",
+        "x":0,
+        "y":0
+      },
+      "arrow":{
+        "enable":true,
+        "x":-95,
+        "y":-130,
+        "rotz":180
+      }
     },
     {
-      "text":"Use MOUSE SCROLL to change which tile you place.",
-      "x":0,
-      "y":-90,
-      "ax":0,
-      "ay":0,
-      "rotz":0
+      "type":"control",
+      "targetID":3,
+      "spotIndex":0,
+      "hint":{
+        "text":"Use MOUSE SCROLL to change which tile you place.",
+        "x":0,
+        "y":-90
+      },
+      "arrow":{
+        "enable":false,
+        "x":0,
+        "y":0,
+        "rotz":0
+      }
     },
     {
-      "text":"Try placing some tiles by using LEFT MOUSE BUTTON on the grid.",
-      "x":0,
-      "y":-90,
-      "ax":0,
-      "ay":0,
-      "rotz":0
+      "type":"place",
+      "targetID":1,
+      "spotIndex":36,
+      "hint":{
+        "text":"Try placing a Wire by using LEFT MOUSE BUTTON on the grid.",
+        "x":0,
+        "y":-90
+      },
+      "arrow":{
+        "enable":false,
+        "x":0,
+        "y":0,
+        "rotz":0
+      }
     },
     {
-      "text":"Change the direction of the tile you want to place by using Q and E.",
-      "x":0,
-      "y":-90,
-      "ax":0,
-      "ay":0,
-      "rotz":0
+      "type":"control",
+      "targetID":4,
+      "spotIndex":0,
+      "hint":{
+        "text":"Change the direction of the tile you want to place by using Q and E.",
+        "x":0,
+        "y":-90
+      },
+      "arrow":{
+        "enable":false,
+        "x":0,
+        "y":0,
+        "rotz":0
+      }
     },
     {
-      "text":"Press SPACE to open up the inventory. DRAG what tiles you want from the inventory onto the actionbar by holding LEFT MOUSE BUTTON.",
-      "x":0,
-      "y":50,
-      "ax":0,
-      "ay":0,
-      "rotz":0
+      "type":"control",
+      "targetID":5,
+      "spotIndex":0,
+      "hint":{
+        "text":"Press SPACE to open up the inventory. DRAG what tiles you want from the inventory onto the actionbar by holding LEFT MOUSE BUTTON.",
+        "x":0,
+        "y":50
+      },
+      "arrow":{
+        "enable":false,
+        "x":0,
+        "y":0,
+        "rotz":0
+      }
     },
     {
-      "text":"Delete a placed tile by hovering over it and pressing R.",
-      "x":230,
-      "y":0,
-      "ax":0,
-      "ay":0,
-      "rotz":0
+      "type":"control",
+      "targetID":6,
+      "spotIndex":0,
+      "hint":{
+        "text":"Delete a placed tile by hovering over it and pressing R.",
+        "x":230,
+        "y":0
+      },
+      "arrow":{
+        "enable":false,
+        "x":0,
+        "y":0,
+        "rotz":0
+      }
     },
     {
-      "text":"You can undo most changes by using SHIFT + Z.",
-      "x":230,
-      "y":0,
-      "ax":0,
-      "ay":0,
-      "rotz":0
+      "type":"control",
+      "targetID":7,
+      "spotIndex":0,
+      "hint":{
+        "text":"You can undo most changes by using SHIFT + Z.",
+        "x":230,
+        "y":0
+      },
+      "arrow":{
+        "enable":false,
+        "x":0,
+        "y":0,
+        "rotz":0
+      }
     },
     {
-      "text":"You can move placed tiles by selecting the Move symbol on the actionbar and dragging the tile.",
-      "x":230,
-      "y":0,
-      "ax":-134,
-      "ay":-130,
-      "rotz":180
+      "type":"text",
+      "targetID":0,
+      "spotIndex":0,
+      "hint":{
+        "text":"You can move placed tiles by selecting the Move symbol on the actionbar and dragging the tile.",
+        "x":230,
+        "y":0
+      },
+      "arrow":{
+        "enable":true,
+        "x":-134,
+        "y":-130,
+        "rotz":180
+      }
     },
     {
-      "text":"That concludes the basic tutorial. Next up is the first puzzle!",
-      "x":0,
-      "y":0,
-      "ax":0,
-      "ay":0,
-      "rotz":0
+      "type":"text",
+      "targetID":0,
+      "spotIndex":0,
+      "hint":{
+        "text":"That concludes the basic tutorial. Next up is the first puzzle!",
+        "x":0,
+        "y":0
+      },
+      "arrow":{
+        "enable":false,
+        "x":0,
+        "y":0,
+        "rotz":0
+      }
     }
   ]
 }

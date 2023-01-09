@@ -7,6 +7,7 @@ public class PInputController : InputBasedTile
 {
     public Sprite[] inputSpritesOn;
     public Sprite[] inputSpritesOff;
+    public SpriteRenderer Renderer;
 
     public string sign;
 
@@ -14,5 +15,6 @@ public class PInputController : InputBasedTile
     {
         this.spriteOn = inputSpritesOn[index];
         this.spriteOff = inputSpritesOff[index];
+        Renderer.sprite = this.spriteOff;
     }
 }

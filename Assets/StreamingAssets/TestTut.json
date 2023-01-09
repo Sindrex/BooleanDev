@@ -1,0 +1,20 @@
+{ "devNote":"Tutorial",
+  "puzzleId":0,
+  "exitOnfinish":true,
+  "actions":
+  [
+    {
+      "type":"place",
+      "text":"",
+      "ID":null,
+      "x":0,
+      "y":0,
+      "arrow":
+      {
+        "ax":0,
+        "ay":0,
+        "rotz":0
+      }
+    }
+  ]
+}

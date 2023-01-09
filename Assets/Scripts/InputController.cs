@@ -17,7 +17,8 @@ public enum InputPurpose
     ACTIONBAR_LEFT, ACTIONBAR_RIGHT, RESET_ACTIONBAR,
     SELECTOR, DELETE_SELECTED, DUPLICATE, 
     UNIVERSAL_BACK,
-    UNDO
+    UNDO,
+    ANY
 }
 
 public static class InputController {
@@ -66,6 +67,10 @@ public static class InputController {
                 return Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.D);
             case InputPurpose.CAM_MOVEMENT_DRAG:
                 return Input.GetMouseButton(2);
+            case InputPurpose.CAM_MOVEMENT_HORIZ:
+                return Input.GetAxis("Horizontal") != 0f;
+            case InputPurpose.CAM_MOVEMENT_VERT:
+                return Input.GetAxis("Vertical") != 0f;
         }
         return false;
     }

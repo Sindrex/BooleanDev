@@ -41,6 +41,7 @@ public class SignManager : MonoBehaviour {
         }
     }
 
+    //edit + save?
     public void editSign()
     {
         if (!editing)
@@ -72,7 +73,7 @@ public class SignManager : MonoBehaviour {
         print("Clicked close sign!");
         editSignButton.SetActive(true);
         saveSignButton.SetActive(false);
-        signText.text = signInput.text;
+        //signText.text = signInput.text;
         signText.gameObject.SetActive(true);
         signInput.gameObject.SetActive(false);
         currentSignTile.text = signText.text;

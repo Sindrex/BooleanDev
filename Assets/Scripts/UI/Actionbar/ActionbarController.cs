@@ -349,6 +349,8 @@ public class ActionbarController : MonoBehaviour {
 
                 GC.UC.addUndo(new SingleTileUndo(a.GetComponent<TileController>().spotIndex));
                 //print(GC.UC.stringifyRoot());
+
+                GC.ePC.PT.PlaceAction(prevSpotIndex, a.GetComponent<TileController>().ID);
             }
         }
     }
