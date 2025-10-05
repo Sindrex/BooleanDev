@@ -29,7 +29,15 @@ public class GenericsOptionsController : MonoBehaviour {
     }
     public void setDisplayMode(int displayIndex)
     {
-        Screen.fullScreen = (displayIndex == 0); //no borderless fullscreen unfortunately :c
+        var fullscreen = (displayIndex == 0);
+        if (fullscreen)
+        {
+            Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+        }
+        else
+        {
+            Screen.fullScreenMode = FullScreenMode.Windowed;   
+        }
     }
 
     public int getResolution()
