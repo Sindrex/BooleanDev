@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -114,13 +115,17 @@ public class ComponentUI : MonoBehaviour {
 
         TileController.label[] tileLabels = new TileController.label[arraySize];
 
+        //make copy of selectedFloor and selectedTiles, sort by index, then save in correct spawn order
+        var selectedTiles = GC.selectedTiles.OrderBy(e => e.GetComponent<TileController>().spotIndex).ToList();
+        var selectedTileIndex = GC.selectedTileIndex.OrderBy(e => e).ToList();
+
         int index = 0;
-        for(int i = 0; i < GC.selectedFloor.Count; i++)
+        for(int i = 0; i < selectedTiles.Count; i++)
         {
             bool ok = false;
-            if(index < GC.selectedTileIndex.Count)
+            if(index < selectedTileIndex.Count)
             {
-                if (i == GC.selectedTileIndex[index])
+                if (i == selectedTileIndex[index])
                 {
                     ok = true;
                 }
@@ -128,18 +133,18 @@ public class ComponentUI : MonoBehaviour {
             //print("saveComp(): i: " + i + ", index: " + index + ", ok: " + ok);
             if (ok)
             {
-                TileController TC = GC.selectedTiles[index].GetComponent<TileController>();
+                TileController TC = selectedTiles[index].GetComponent<TileController>();
                 tileIDs[i] = TC.ID;
                 tileDIRs[i] = TC.getDir();
                 tilePower[i] = TC.beingPowered;
                 tileLabels[i] = TC.myLabel;
-                if (GC.selectedTiles[index].GetComponent<DelayerController>() != null)
+                if (selectedTiles[index].GetComponent<DelayerController>() != null)
                 {
-                    tileSetting[i] = GC.selectedTiles[index].GetComponent<DelayerController>().setting;
+                    tileSetting[i] = selectedTiles[index].GetComponent<DelayerController>().setting;
                 }
-                else if (GC.selectedTiles[index].GetComponent<SignController>() != null)
+                else if (selectedTiles[index].GetComponent<SignController>() != null)
                 {
-                    signTexts[i] = GC.selectedTiles[index].GetComponent<SignController>().text;
+                    signTexts[i] = selectedTiles[index].GetComponent<SignController>().text;
                 }
                 else
                 {
@@ -300,6 +305,7 @@ public class ComponentUI : MonoBehaviour {
             if(obj != null)
             {
                 obj.GetComponent<TileController>().compLocked = false;
+                obj.GetComponent<TileController>().myCompOverlay = null;
             }
         }
         overlays.Remove(overlay);

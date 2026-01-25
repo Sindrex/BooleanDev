@@ -583,7 +583,7 @@ public class GameController : MonoBehaviour {
         //dragging downwards
         if (startIndex - currentIndex < 0)
         {
-            //print("Dragging down!");
+            print("Dragging down!");
 
             indexTop = currentIndex;
             while (indexTop > startIndex)
@@ -599,19 +599,22 @@ public class GameController : MonoBehaviour {
             }
             selectedHeight = boxHeight;
 
-            //print("indexDown: " + indexDown + ", StartIndex/CurrentIndex: " + startIndex + "/" + currentIndex);
+            print("indexDown: " + indexDown + ", StartIndex/CurrentIndex: " + startIndex + "/" + currentIndex + ", boxHeight: " + boxHeight);
 
             if (floorList[startIndex].transform.position.x < floorList[currentIndex].transform.position.x) //dragging on right side 
             {
                 int boxLength = currentIndex - (indexDown - length);
                 selectedLength = boxLength;
 
-                //print("Down right! BoxLength: " + boxLength + ", boxHeigthR: " + boxHeigthR + ", boxHeigthL: " + boxHeigthL);
+                print("Down right! BoxLength: " + boxLength);
+                print("Down right: StartIndex/CurrentIndex: " + startIndex + "/" + currentIndex + " | indexTop / IndexDown: " + indexTop + " / " + indexDown);
                 for (int k = 0; k < boxHeight; k++)
                 {
                     for (int n = 0; n <= boxLength; n++) //horizontal
                     {
-                        selectedFloor.Add(floorList[startIndex + (1 * n) + (length * k)]);
+                        var floorListIndex = startIndex + (1 * n) + (length * k);
+                        print("Adding floorListIndex: " + floorListIndex + " to selectedFloor");
+                        selectedFloor.Add(floorList[floorListIndex]);
                         //selectedTiles.Add(tiles[startIndex + (1 * n) + (length * k)]);
                     }
                 }
@@ -620,14 +623,17 @@ public class GameController : MonoBehaviour {
             {
                 int boxLength = indexDown - currentIndex;
                 selectedLength = boxLength;
+                selectedHeight++;
 
-                //print("Down left!");
-                //print("Down left: StartIndex/CurrentIndex: " + startIndex + "/" + currentIndex + " | TIT/TID: " + timesIndexTop + "/" + timesIndexDown + " | indexTop / IndexDown: " + indexTop + " / " + indexDown);
+                print("Down left! BoxLength: " + boxLength);
+                print("Down left: StartIndex/CurrentIndex: " + startIndex + "/" + currentIndex + " | indexTop / IndexDown: " + indexTop + " / " + indexDown);
                 for (int k = 0; k <= boxHeight; k++)
                 {
                     for (int n = 0; n <= boxLength; n++) //horizontal
                     {
-                        selectedFloor.Add(floorList[startIndex - (1 * n) + (length * k)]);
+                        var floorListIndex = startIndex - (1 * n) + (length * k);
+                        print("Adding floorListIndex: " + floorListIndex + " to selectedFloor");
+                        selectedFloor.Add(floorList[floorListIndex]);
                         //selectedTiles.Add(tiles[startIndex - (1 * n) + (length * k)]);
                     }
                 }
@@ -636,7 +642,7 @@ public class GameController : MonoBehaviour {
         //dragging upwards
         else if (startIndex - currentIndex > 0)
         {
-            //print("Dragging up!");
+            print("Dragging up!");
 
             indexTop = startIndex;
             while (indexTop > currentIndex)
@@ -652,19 +658,22 @@ public class GameController : MonoBehaviour {
             }
             selectedHeight = boxHeight;
 
-            //print("indexDown: " + indexDown + ", StartIndex/CurrentIndex: " + startIndex + "/" + currentIndex);
+            print("indexDown: " + indexDown + ", StartIndex/CurrentIndex: " + startIndex + "/" + currentIndex);
 
             if (floorList[startIndex].transform.position.x <= floorList[currentIndex].transform.position.x) //dragging on right side 
             {
                 int boxLength = indexDown - startIndex;
                 selectedLength = boxLength;
+                selectedHeight++;
 
-                //print("Up right!");
+                print("Up right!");
                 for (int k = 0; k <= boxHeight; k++)
                 {
                     for (int n = 0; n <= boxLength; n++) //horizontal
                     {
-                        selectedFloor.Add(floorList[startIndex + (1 * n) - (length * k)]);
+                        var floorListIndex = startIndex + (1 * n) - (length * k);
+                        print("Adding floorListIndex: " + floorListIndex + " to selectedFloor");
+                        selectedFloor.Add(floorList[floorListIndex]);
                         //selectedTiles.Add(tiles[startIndex + (1 * n) - (length * k)]);
                     }
                 }
@@ -674,12 +683,14 @@ public class GameController : MonoBehaviour {
                 int boxLength = startIndex - (indexDown - length);
                 selectedLength = boxLength;
 
-                //print("Up left!");
+                print("Up left!");
                 for (int k = 0; k < boxHeight; k++)
                 {
                     for (int n = 0; n <= boxLength; n++) //horizontal
                     {
-                        selectedFloor.Add(floorList[startIndex - (1 * n) - (length * k)]);
+                        var floorListIndex = startIndex - (1 * n) - (length * k);
+                        print("Adding floorListIndex: " + floorListIndex + " to selectedFloor");
+                        selectedFloor.Add(floorList[floorListIndex]);
                         //selectedTiles.Add(tiles[startIndex - (1 * n) - (length * k)]);
                     }
                 }
@@ -768,7 +779,7 @@ public class GameController : MonoBehaviour {
                 else
                 {
                     selectorBackdrop.transform.position = new Vector3(cornerPos[0].x, (cornerPos[0].y + cornerPos[1].y) / 2, 0);
-                    selectorBackdrop.transform.localScale = new Vector3(selectedLength, selectedHeight + 1, 1);
+                    selectorBackdrop.transform.localScale = new Vector3(selectedLength, selectedHeight, 1);
                 }
 
             }
@@ -778,12 +789,12 @@ public class GameController : MonoBehaviour {
                 if (cornerPos[0].x < cornerPos[1].x && cornerPos[0].y < cornerPos[2].y)
                 {
                     //print("here1");
-                    selectorBackdrop.transform.localScale = new Vector3(selectedLength, selectedHeight + 1, 1);
+                    selectorBackdrop.transform.localScale = new Vector3(selectedLength, selectedHeight, 1);
                 }
                 else if(cornerPos[0].x > cornerPos[1].x && cornerPos[0].y > cornerPos[2].y)
                 {
                     //print("here2");
-                    selectorBackdrop.transform.localScale = new Vector3(selectedLength, selectedHeight + 1, 1);
+                    selectorBackdrop.transform.localScale = new Vector3(selectedLength, selectedHeight, 1);
                 }
                 else
                 {
