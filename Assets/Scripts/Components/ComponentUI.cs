@@ -115,45 +115,15 @@ public class ComponentUI : MonoBehaviour {
 
         TileController.label[] tileLabels = new TileController.label[arraySize];
 
-        //make copy of selectedFloor and selectedTiles, sort by index, then save in correct spawn order
-        var selectedTiles = GC.selectedTiles.OrderBy(e => e.GetComponent<TileController>().spotIndex).ToList();
-        var selectedTileIndex = GC.selectedTileIndex.OrderBy(e => e).ToList();
+        //make copy of selectedFloor and selectedTiles, sort by index, then save in correct spawn order (index 0 => top left)
+        var selectedTiles = GC.selectedTiles.OrderBy(e => e.GetComponent<TileController>().spotIndex).ToList(); //contains only tiles selected
+        var selectedFloor = GC.selectedFloor; //contains all floor tiles that are inside select
 
-        int index = 0;
         for(int i = 0; i < selectedTiles.Count; i++)
         {
-            bool ok = false;
-            if(index < selectedTileIndex.Count)
-            {
-                if (i == selectedTileIndex[index])
-                {
-                    ok = true;
-                }
-            }
-            //print("saveComp(): i: " + i + ", index: " + index + ", ok: " + ok);
-            if (ok)
-            {
-                TileController TC = selectedTiles[index].GetComponent<TileController>();
-                tileIDs[i] = TC.ID;
-                tileDIRs[i] = TC.getDir();
-                tilePower[i] = TC.beingPowered;
-                tileLabels[i] = TC.myLabel;
-                if (selectedTiles[index].GetComponent<DelayerController>() != null)
-                {
-                    tileSetting[i] = selectedTiles[index].GetComponent<DelayerController>().setting;
-                }
-                else if (selectedTiles[index].GetComponent<SignController>() != null)
-                {
-                    signTexts[i] = selectedTiles[index].GetComponent<SignController>().text;
-                }
-                else
-                {
-                    tileSetting[i] = 0;
-                    signTexts[i] = "";
-                }
-                index++;
-            }
-            else
+            var selectedTile = selectedTiles[i];
+            var TC = selectedTiles[i].GetComponent<TileController>();
+            if(TC.IsNullTile) //empty spots
             {
                 tileIDs[i] = 0;
                 tileDIRs[i] = 0;
@@ -161,6 +131,25 @@ public class ComponentUI : MonoBehaviour {
                 tileSetting[i] = 0;
                 signTexts[i] = "";
                 tileLabels[i] = TileController.label.NULL;
+                continue;
+            }
+
+            tileIDs[i] = TC.ID;
+            tileDIRs[i] = TC.getDir();
+            tilePower[i] = TC.beingPowered;
+            tileLabels[i] = TC.myLabel;
+            if (selectedTiles[i].GetComponent<DelayerController>() != null)
+            {
+                tileSetting[i] = selectedTiles[i].GetComponent<DelayerController>().setting;
+            }
+            else if (selectedTiles[i].GetComponent<SignController>() != null)
+            {
+                signTexts[i] = selectedTiles[i].GetComponent<SignController>().text;
+            }
+            else
+            {
+                tileSetting[i] = 0;
+                signTexts[i] = "";
             }
         }
 

@@ -53,7 +53,6 @@ public class GameController : MonoBehaviour {
     public int selectedLength;
     public int selectedHeight;
     private int prevSelectedIndex;
-    public List<int> selectedTileIndex = new List<int>();
 
     public GameObject duperPrefab;
     private GameObject duper;
@@ -279,7 +278,7 @@ public class GameController : MonoBehaviour {
             }
         }
 
-        if (InputController.getInput(InputPurpose.UNDO))
+        if (InputController.getInput(InputPurpose.UNDO) && !UtilBools.undoLock)
         {
             UC.undo();
         }
@@ -472,22 +471,25 @@ public class GameController : MonoBehaviour {
                 cacheList[i].transform.parent = selectedCache.transform;
             }
 
-            //print("Resetting select");
+            print("Resetting select");
             if (selectedTiles.Count > 0)
             {
-                for (int i = 0; i < selectedTiles.Count; i++)
+                for (int i = selectedTiles.Count - 1; i >=0; i--)
                 {
-
-                    if(selectedTiles[i] != null)
+                    var tile = selectedTiles[i];
+                    if(tile.GetComponent<TileController>().IsNullTile)
+                    {
+                        Destroy(tile);
+                    }
+                    else if(tile != null)
                     {
                         //print("Setting selectedTiles' parent");
-                        selectedTiles[i].transform.parent = tileFather.transform;
+                        tile.transform.parent = tileFather.transform;
                     }
                 }
             }
             selectedFloor = new List<GameObject>();
             selectedTiles = new List<GameObject>();
-            selectedTileIndex = new List<int>();
             if(mover != null)
             {
                 //print("Killing mover");
@@ -718,8 +720,16 @@ public class GameController : MonoBehaviour {
                     //print("yo");
                     selectedTiles.Add(tiles[index]);
                     tiles[index].transform.parent = selectedFather.transform;
-                    selectedTileIndex.Add(i);
                 }
+            }
+            else
+            {
+                var nullObject = new GameObject();
+                nullObject.name = $"Empty Selection ({index})";
+                var nullObjectTile = nullObject.AddComponent<WireController>();
+                nullObjectTile.spotIndex = index;
+                nullObjectTile.IsNullTile = true;
+                selectedTiles.Add(nullObject);
             }
         }
         /*//remove locked
@@ -924,21 +934,24 @@ public class GameController : MonoBehaviour {
             GameObject go = selectedTiles[i];
             selectedTiles.RemoveAt(i);
 
-            TileController myTile = go.GetComponent<TileController>();
-            tileIds[i] = myTile.ID;
-            dirs[i] = myTile.getDir();
-            spotIndexes[i] = myTile.spotIndex;
-            tilePowers[i] = myTile.beingPowered;
-            if(go.GetComponent<DelayerController>() != null)
+            if(go != null)
             {
-                settings[i] = go.GetComponent<DelayerController>().setting;
-            }
-            else if(go.GetComponent<SignController>() != null)
-            {
-                signTexts[i] = go.GetComponent<SignController>().text;
-            }
+                TileController myTile = go.GetComponent<TileController>();
+                tileIds[i] = myTile.ID;
+                dirs[i] = myTile.getDir();
+                spotIndexes[i] = myTile.spotIndex;
+                tilePowers[i] = myTile.beingPowered;
+                if(go.GetComponent<DelayerController>() != null)
+                {
+                    settings[i] = go.GetComponent<DelayerController>().setting;
+                }
+                else if(go.GetComponent<SignController>() != null)
+                {
+                    signTexts[i] = go.GetComponent<SignController>().text;
+                }
 
-            go.GetComponent<TileController>().destroyMe(false);
+                go.GetComponent<TileController>().destroyMe(false);
+            }
         }
         startIndex = -1;
         resetSelect();

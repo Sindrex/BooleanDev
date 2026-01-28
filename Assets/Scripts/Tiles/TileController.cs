@@ -36,6 +36,10 @@ public abstract class TileController : MonoBehaviour
     //DEPRECATED?
     public label myLabel;
 
+    //Selection
+    public bool IsNullTile;
+
+    //Components
     public GameObject myCompOverlay = null;
 
     //Undo
@@ -302,7 +306,7 @@ public abstract class TileController : MonoBehaviour
 
         if(myCompOverlay != null)
         {
-            print("Removing Compoverlay!");
+            //print("Removing Compoverlay!");
             GC.compUI.removeOverlay(myCompOverlay);
         }
 

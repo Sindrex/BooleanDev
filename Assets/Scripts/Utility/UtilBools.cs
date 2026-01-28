@@ -10,6 +10,7 @@ public static class UtilBools {
     public static bool camMoveLock = false;
     public static bool tileLock = false;
     public static bool selectionbarLock = false;
+    public static bool undoLock = false;
 
     public static bool paused = false;
     public static bool options = false;
@@ -25,6 +26,7 @@ public static class UtilBools {
         selectLock = state;
         camMoveLock = state;
         paused = state;
+        undoLock = state;
 
         if (!state)
         {
@@ -40,6 +42,7 @@ public static class UtilBools {
         //selectLock = state;
         camMoveLock = state;
         selectionbarLock = state;
+        undoLock = state;
     }
 
     public static void puzzleInteractLock(bool state)
@@ -47,6 +50,7 @@ public static class UtilBools {
         Debug.Log("Utilbools: Setting puzzleInteractLock: " + state);
         noPlaceTile = state;
         tileLock = state;
+        undoLock = state;
     }
 
     public static void setDefaultGame(Game game)
@@ -60,7 +64,6 @@ public static class UtilBools {
         {
             Debug.Log("UtilBools: NB! Game is null");
         }
-
     }
 
     public static void setAll(bool state)
@@ -69,6 +72,7 @@ public static class UtilBools {
         noPlaceTile = state;
         selectLock = state;
         camMoveLock = state;
+        undoLock = state;
         paused = state;
         options = state;
         worldOptions = state;
