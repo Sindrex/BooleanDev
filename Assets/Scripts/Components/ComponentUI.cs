@@ -77,6 +77,11 @@ public class ComponentUI : MonoBehaviour {
             print("No selection: h/l: " + GC.selectedHeight + "/" + GC.selectedLength);
             return;
         }
+        else if (GC.selectedFloor.Count == 0)
+        {
+            print("Error: No floor tiles selected");
+            return;
+        }
 
         if (SaveLoadComp.saveExists(nameInput.text))
         {
@@ -117,13 +122,14 @@ public class ComponentUI : MonoBehaviour {
 
         //make copy of selectedFloor and selectedTiles, sort by index, then save in correct spawn order (index 0 => top left)
         var selectedTiles = GC.selectedTiles.OrderBy(e => e.GetComponent<TileController>().spotIndex).ToList(); //contains only tiles selected
-        var selectedFloor = GC.selectedFloor; //contains all floor tiles that are inside select
+        //contains all floor tiles that are inside select
+        var selectedFloor = GC.selectedFloor.OrderBy(e => e.GetComponent<FloorTileController>().spotIndex).ToList();
 
-        for(int i = 0; i < selectedTiles.Count; i++)
+        for(int i = 0; i < selectedFloor.Count; i++)
         {
-            var selectedTile = selectedTiles[i];
-            var TC = selectedTiles[i].GetComponent<TileController>();
-            if(TC.IsNullTile) //empty spots
+            var currentSpotIndex = selectedFloor[i].GetComponent<FloorTileController>().spotIndex;
+            var selectedTile = selectedTiles.FirstOrDefault(e => e.GetComponent<TileController>().spotIndex == currentSpotIndex);
+            if(selectedTile == null)
             {
                 tileIDs[i] = 0;
                 tileDIRs[i] = 0;
@@ -134,17 +140,18 @@ public class ComponentUI : MonoBehaviour {
                 continue;
             }
 
+            var TC = selectedTile.GetComponent<TileController>();
             tileIDs[i] = TC.ID;
             tileDIRs[i] = TC.getDir();
             tilePower[i] = TC.beingPowered;
             tileLabels[i] = TC.myLabel;
-            if (selectedTiles[i].GetComponent<DelayerController>() != null)
+            if (selectedTile.GetComponent<DelayerController>() != null)
             {
-                tileSetting[i] = selectedTiles[i].GetComponent<DelayerController>().setting;
+                tileSetting[i] = selectedTile.GetComponent<DelayerController>().setting;
             }
-            else if (selectedTiles[i].GetComponent<SignController>() != null)
+            else if (selectedTile.GetComponent<SignController>() != null)
             {
-                signTexts[i] = selectedTiles[i].GetComponent<SignController>().text;
+                signTexts[i] = selectedTile.GetComponent<SignController>().text;
             }
             else
             {

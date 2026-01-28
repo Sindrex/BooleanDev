@@ -477,11 +477,7 @@ public class GameController : MonoBehaviour {
                 for (int i = selectedTiles.Count - 1; i >=0; i--)
                 {
                     var tile = selectedTiles[i];
-                    if(tile.GetComponent<TileController>().IsNullTile)
-                    {
-                        Destroy(tile);
-                    }
-                    else if(tile != null)
+                    if(tile != null)
                     {
                         //print("Setting selectedTiles' parent");
                         tile.transform.parent = tileFather.transform;
@@ -722,26 +718,7 @@ public class GameController : MonoBehaviour {
                     tiles[index].transform.parent = selectedFather.transform;
                 }
             }
-            else
-            {
-                var nullObject = new GameObject();
-                nullObject.name = $"Empty Selection ({index})";
-                var nullObjectTile = nullObject.AddComponent<WireController>();
-                nullObjectTile.spotIndex = index;
-                nullObjectTile.IsNullTile = true;
-                selectedTiles.Add(nullObject);
-            }
         }
-        /*//remove locked
-        for(int i = 0; i < selectedTiles.Count; i++)
-        {
-            if (selectedTiles[i].GetComponent<TileController>().locked)
-            {
-                selectedTiles.Remove(selectedTiles[i]);
-                i--;
-            }
-            //print(selectedTiles[i].name);
-        }*/
 
         //Cornerpos
         List<Vector3> cornerPos = new List<Vector3>();

@@ -36,9 +36,6 @@ public abstract class TileController : MonoBehaviour
     //DEPRECATED?
     public label myLabel;
 
-    //Selection
-    public bool IsNullTile;
-
     //Components
     public GameObject myCompOverlay = null;
 
